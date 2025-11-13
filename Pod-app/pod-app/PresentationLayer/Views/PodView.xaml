@@ -5,8 +5,84 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:pod_app.PresentationLayer.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+             Background="#333333"
+             d:DesignHeight="120" Width="486">
+    <Border BorderBrush="White" BorderThickness="2" Padding="10">
+    
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <!-- Left picture column -->
+                <ColumnDefinition Width="110"/>
+                <!-- Right info column -->
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Main Image -->
+            <Border HorizontalAlignment="Left" Grid.Column="0" Height="100" Width="100" CornerRadius="12">
+                <Border.Background>
+                    <ImageBrush ImageSource="https://hips.hearstapps.com/clv.h-cdn.co/assets/16/18/gettyimages-586890581.jpg?crop=0.668xw:1.00xh;0.219xw,0"/>
+                </Border.Background>
+            </Border>
+
+
+
+            <!-- Right info container -->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <!-- Title and like button -->
+                    <RowDefinition Height="1*"/>
+                    <!-- Description -->
+                    <RowDefinition Height="2*"/>
+                    <!-- Metadata and linkss -->
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Title and like button container -->
+                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <!-- Title column -->
+                        <ColumnDefinition Width="7*"/>
+                        <!-- Like column -->
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock HorizontalAlignment="Left" Grid.Column="0" FontSize="14" FontFamily="Tahoma" Height="24" TextAlignment="Center" Width="auto" Foreground="White" Text="Joe Rogan eps 1002"/>
+
+                    <Button BorderBrush="Transparent" Background="Transparent" Width="30" Height="30" Grid.Column="1" HorizontalAlignment="Right">
+                        <Image Source="/PresentationLayer/Views/Assets/heart_no_fill.png"/>
+                    </Button>
+
+                </Grid>
+
+                <!-- Description -->
+                <TextBlock FontSize="12" Foreground="DarkGray" TextWrapping="WrapWithOverflow" Text="Sveriges besta podkast om hur hundar är bäst, awdnwdwda, ,wa ,wd a,dw,dwa,d,dwadwoawddaowda  wdaiodwa" Grid.Row="1">
+
+                </TextBlock>
+
+                <!-- Metadata and links -->
+                <Grid Grid.Row="2" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <!-- Release date -->
+                        <ColumnDefinition Width="2*"/>
+                        <!-- Duration -->
+                        <ColumnDefinition Width="2*"/>
+                        <!-- Link -->
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Release date -->
+                    <TextBlock FontSize="12" FontFamily="Sans Serif Collection" FontWeight="UltraLight" Foreground="White" Grid.Column="0" VerticalAlignment="Center" Text="1 jun 2025"/>
+                    <!-- Duration -->
+                    <TextBlock FontSize="12" FontFamily="Sans Serif Collection" FontWeight="UltraLight" Foreground="White" Grid.Column="1" VerticalAlignment="Center" Text="1h 30m"/>
+                    <!-- Link -->
+                    <Button Grid.Column="2" VerticalAlignment="Center" BorderBrush="Transparent" Background="Transparent" Width="25" Height="25" HorizontalAlignment="Right">
+                        <Image Source="/PresentationLayer/Views/Assets/share.png"/>
+                    </Button>
+
+                </Grid>
+            </Grid>
+        </Grid>
             
-    </Grid>
+    </Border>
+
 </UserControl>

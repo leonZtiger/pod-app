@@ -20,8 +20,13 @@ namespace pod_app.PresentationLayer.Views
     /// </summary>
     public partial class PodView : UserControl
     {
+        private Models.PodModel podcast;
         public PodView()
         {
+            podcast = new Models.PodModel();
+            podcast.ImageUrl = "https://hips.hearstapps.com/clv.h-cdn.co/assets/16/18/gettyimages-586890581.jpg?crop=0.668xw:1.00xh;0.219xw,0";
+           
+            this.DataContext = podcast;
             InitializeComponent();
         }
     }
