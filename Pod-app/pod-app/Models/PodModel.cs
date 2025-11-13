@@ -22,6 +22,6 @@ namespace pod_app.Models
         public string Duration { get; set; }
         public string URL { get; set; }
         public string Category { get; set; }
-        public bool isSaved { get; set; }
+        public bool IsSaved { get; set; }
     }
 }
