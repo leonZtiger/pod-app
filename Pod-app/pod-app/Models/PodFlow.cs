@@ -9,5 +9,7 @@ namespace pod_app.Models
     internal class PodFlow
     {
         public List<PodModel> Pods { get; set; }
+        public string Category { get; set; }
+        
     }
 }
