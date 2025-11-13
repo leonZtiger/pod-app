@@ -5,8 +5,38 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:pod_app.PresentationLayer.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450">
     <Grid>
-            
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Top label -->
+        
+        <!-- Result container -->
+        <ListView Grid.Row="1" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+           
+            <ListView.Resources>
+                <Style TargetType="ScrollBar">
+                    <Setter Property="Height" Value="auto"/>
+                    <Setter Property="Background" Value="Gray"/>
+                </Style>
+            </ListView.Resources>
+
+            <ListViewItem>
+                <local:PodView />
+            </ListViewItem>
+            <ListViewItem>
+                <local:PodView />
+            </ListViewItem>
+            <ListViewItem>
+                <local:PodView />
+            </ListViewItem>
+            <ListViewItem>
+                <local:PodView />
+            </ListViewItem>
+        </ListView>
     </Grid>
 </UserControl>

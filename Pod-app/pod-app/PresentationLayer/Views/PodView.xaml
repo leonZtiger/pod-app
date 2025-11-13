@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              Background="#333333"
              d:DesignHeight="120" Width="486">
-    <Border BorderBrush="White" BorderThickness="2" Padding="10">
+    <Border  BorderBrush="Gray" BorderThickness="0 0 0 2" Padding="10">
     
         <Grid>
             <Grid.ColumnDefinitions>
@@ -48,7 +48,7 @@
 
                     <TextBlock HorizontalAlignment="Left" Grid.Column="0" FontSize="14" FontFamily="Tahoma" Height="24" TextAlignment="Center" Width="auto" Foreground="White" Text="Joe Rogan eps 1002"/>
 
-                    <Button BorderBrush="Transparent" Background="Transparent" Width="30" Height="30" Grid.Column="1" HorizontalAlignment="Right">
+                    <Button BorderBrush="Transparent" Background="Transparent" Width="25" Height="25" Grid.Column="1" HorizontalAlignment="Right">
                         <Image Source="/PresentationLayer/Views/Assets/heart_no_fill.png"/>
                     </Button>
 
