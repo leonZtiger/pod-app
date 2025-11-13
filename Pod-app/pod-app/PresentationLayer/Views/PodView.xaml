@@ -5,10 +5,60 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:pod_app.PresentationLayer.Views"
              mc:Ignorable="d" 
-             Background="#333333"
-             d:DesignHeight="120" Width="486">
-    <Border  BorderBrush="Gray" BorderThickness="0 0 0 2" Padding="10">
-    
+            
+              Width="486">
+
+    <!-- Styling -->
+    <UserControl.Resources >
+
+        <!-- Buttons -->
+        <Style x:Key="IconButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Width" Value="24"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            
+            <!-- Animate on click and hover -->
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Opacity" Value="0.3"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Text -->
+        <Style x:Key="TextStyle" TargetType="TextBlock">
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="TextTrimming" Value="WordEllipsis"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+
+    </UserControl.Resources>
+
+    <Border  
+        CornerRadius="22"
+        Background="#1F1F23"
+        BorderBrush="Gray"
+        BorderThickness="0 0 0 0"
+        Padding="10 10 14 10"
+        Height="120">
+
         <Grid>
             <Grid.ColumnDefinitions>
                 <!-- Left picture column -->
@@ -20,7 +70,7 @@
             <!-- Main Image -->
             <Border HorizontalAlignment="Left" Grid.Column="0" Height="100" Width="100" CornerRadius="12">
                 <Border.Background>
-                    <ImageBrush ImageSource="https://hips.hearstapps.com/clv.h-cdn.co/assets/16/18/gettyimages-586890581.jpg?crop=0.668xw:1.00xh;0.219xw,0"/>
+                    <ImageBrush ImageSource="{Binding ImageUrl}" RenderOptions.BitmapScalingMode="Fant" d:ImageSource="https://hips.hearstapps.com/clv.h-cdn.co/assets/16/18/gettyimages-586890581.jpg?crop=0.668xw:1.00xh;0.219xw,0"/>
                 </Border.Background>
             </Border>
 
@@ -46,18 +96,41 @@
                         <ColumnDefinition Width="3*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock HorizontalAlignment="Left" Grid.Column="0" FontSize="14" FontFamily="Tahoma" Height="24" TextAlignment="Center" Width="auto" Foreground="White" Text="Joe Rogan eps 1002"/>
+                    <!-- Title -->
+                    <TextBlock d:Text="#321 MMA Fight Islam" Foreground="White" FontSize="15" Grid.Column="0" Style="{StaticResource TextStyle}" Text="{Binding Title}"/>
 
-                    <Button BorderBrush="Transparent" Background="Transparent" Width="25" Height="25" Grid.Column="1" HorizontalAlignment="Right">
-                        <Image Source="/PresentationLayer/Views/Assets/heart_no_fill.png"/>
+                    <!-- Like button -->
+                    <Button Grid.Column="1" Click="OnLikeClicked">
+                        <!-- Change image based on the state of IsSaved -->
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource IconButtonStyle}">
+                                <Style.Triggers>
+                                    <!-- On saved -->
+                                    <DataTrigger Binding="{Binding IsSaved}" Value="True">
+                                        <Setter Property="Content">
+                                            <Setter.Value>
+                                                <Image RenderOptions.BitmapScalingMode="Fant" Source="/PresentationLayer/Views/Assets/heart_fill.png"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+
+                                    <!-- On not saved -->
+                                    <DataTrigger Binding="{Binding IsSaved}" Value="False">
+                                        <Setter Property="Content">
+                                            <Setter.Value>
+                                                <Image RenderOptions.BitmapScalingMode="Fant" Source="/PresentationLayer/Views/Assets/heart_no_fill.png"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
                     </Button>
 
                 </Grid>
 
                 <!-- Description -->
-                <TextBlock FontSize="12" Foreground="DarkGray" TextWrapping="WrapWithOverflow" Text="Sveriges besta podkast om hur hundar är bäst, awdnwdwda, ,wa ,wd a,dw,dwa,d,dwadwoawddaowda  wdaiodwa" Grid.Row="1">
-
-                </TextBlock>
+                <TextBlock Foreground="DarkGray" d:Text="In this episode Joe Rogan takes shrooms and trip while the MMA fighter Islam Makhachev talks about how to do a safe-guard." Grid.Row="1" Style="{StaticResource TextStyle}" Text="{Binding Description}"/>
 
                 <!-- Metadata and links -->
                 <Grid Grid.Row="2" VerticalAlignment="Center">
@@ -71,18 +144,15 @@
                     </Grid.ColumnDefinitions>
 
                     <!-- Release date -->
-                    <TextBlock FontSize="12" FontFamily="Sans Serif Collection" FontWeight="UltraLight" Foreground="White" Grid.Column="0" VerticalAlignment="Center" Text="1 jun 2025"/>
+                    <TextBlock d:Text="23 Juni 2024" FontSize="12" Style="{StaticResource TextStyle}" Foreground="White" Grid.Column="0" VerticalAlignment="Center" Text="{Binding ReleaseDate, StringFormat={}{0:d MMM yyyy}}"/>
                     <!-- Duration -->
-                    <TextBlock FontSize="12" FontFamily="Sans Serif Collection" FontWeight="UltraLight" Foreground="White" Grid.Column="1" VerticalAlignment="Center" Text="1h 30m"/>
+                    <TextBlock d:Text="2hrs 20min" FontSize="12" Style="{StaticResource TextStyle}" Foreground="White" Grid.Column="1" VerticalAlignment="Center" Text="{Binding Duration}"/>
                     <!-- Link -->
-                    <Button Grid.Column="2" VerticalAlignment="Center" BorderBrush="Transparent" Background="Transparent" Width="25" Height="25" HorizontalAlignment="Right">
-                        <Image Source="/PresentationLayer/Views/Assets/share.png"/>
+                    <Button Click="OnOpenLinkClicked" Grid.Column="2"  Style="{StaticResource IconButtonStyle}">
+                        <Image RenderOptions.BitmapScalingMode="Fant" Source="/PresentationLayer/Views/Assets/share.png"/>
                     </Button>
-
                 </Grid>
             </Grid>
         </Grid>
-            
     </Border>
-
 </UserControl>

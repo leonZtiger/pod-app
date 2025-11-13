@@ -9,5 +9,7 @@
 
     <Grid>
         <Frame NavigationUIVisibility="Hidden" Name="mainFrame" Content="" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+    
+        
     </Grid>
 </Window>

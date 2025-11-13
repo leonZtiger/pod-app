@@ -13,7 +13,7 @@ namespace pod_app.Models
     /// release date, url for the actual podcast site,
     /// category and a per-user defined isSaved field.
     /// </summary>
-    internal class PodModel
+    public class PodModel
     {
         public string Title { get; set; }
         public string Description { get; set; }
