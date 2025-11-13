@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 namespace pod_app.Models
 {
+    /// <summary>
+    /// Model that represents a podcast episode. 
+    /// 
+    /// Contains the title, description, image url,
+    /// release date, url for the actual podcast site,
+    /// category and a per-user defined isSaved field.
+    /// </summary>
     internal class PodModel
     {
         public string Title { get; set; }
