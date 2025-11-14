@@ -24,6 +24,7 @@ namespace pod_app
 
             homePage = new HomePage();
             mainFrame.Navigate(homePage);
+           
         }
     }
 }
