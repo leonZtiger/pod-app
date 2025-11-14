@@ -1,4 +1,5 @@
-﻿using System;
+﻿using pod_app.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,14 +21,21 @@ namespace pod_app.PresentationLayer.Views
     /// </summary>
     public partial class PodView : UserControl
     {
-        private Models.PodModel podcast;
         public PodView()
         {
-            podcast = new Models.PodModel();
-            podcast.ImageUrl = "https://hips.hearstapps.com/clv.h-cdn.co/assets/16/18/gettyimages-586890581.jpg?crop=0.668xw:1.00xh;0.219xw,0";
-           
-            this.DataContext = podcast;
             InitializeComponent();
+        }
+
+        public PodModel PodModel { get { return this.DataContext as PodModel; } set { this.DataContext = value; } }
+
+        private void OnLikeClicked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void OnOpenLinkClicked(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
