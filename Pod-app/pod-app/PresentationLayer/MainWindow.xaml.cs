@@ -17,14 +17,17 @@ namespace pod_app
     /// </summary>
     public partial class MainWindow : Window
     {
-        public HomePage homePage;
+        public static HomePage? homePage = null;
+        public static SavedPage? savedPage = null;
+
         public MainWindow()
         {
             InitializeComponent();
 
             homePage = new HomePage();
+            savedPage = new SavedPage(mainFrame);
+
             mainFrame.Navigate(homePage);
-           
         }
     }
 }

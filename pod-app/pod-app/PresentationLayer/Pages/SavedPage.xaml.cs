@@ -20,8 +20,10 @@ namespace pod_app.PresentationLayer.Pages
     /// </summary>
     public partial class SavedPage : Page
     {
-        public SavedPage()
+        private Frame parentFrame;
+        public SavedPage(Frame parentFrame)
         {
+            this.parentFrame = parentFrame;
             InitializeComponent();
         }
 
