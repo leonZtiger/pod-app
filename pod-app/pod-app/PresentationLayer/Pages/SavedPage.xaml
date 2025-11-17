@@ -9,7 +9,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="SavedPage">
 
-    <Grid Background="LightBlue">
+    <Grid>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -129,6 +129,6 @@
 
 
         <views:PodView x:Name="podViewControl"
-                       Margin="157,20,157,66" Grid.RowSpan="2"/>
+                       Margin="150,30,150,60" Grid.RowSpan="2"/>
     </Grid>
 </Page>

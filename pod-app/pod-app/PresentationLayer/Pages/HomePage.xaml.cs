@@ -20,9 +20,20 @@ namespace pod_app.PresentationLayer.Pages
     /// </summary>
     public partial class HomePage : Page
     {
+        private Frame parentFrame;
         public HomePage()
         {
             InitializeComponent();
+        }
+
+        public HomePage(Frame parentFrame) : this()
+        {
+            this.parentFrame = parentFrame;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            parentFrame.Navigate(MainWindow.savedPage);
         }
     }
 }
