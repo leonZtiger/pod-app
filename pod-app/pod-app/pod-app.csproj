@@ -11,8 +11,14 @@
 
   <ItemGroup>
     <Folder Include="DataLayer\" />
-    <Folder Include="BusinessLogicLayer\" />
     <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="PresentationLayer\Views\Assets\Fonts\Inter.ttc" />
+    <Resource Include="PresentationLayer\Views\Assets\heart_fill.png" />
+    <Resource Include="PresentationLayer\Views\Assets\heart_no_fill.png" />
+    <Resource Include="PresentationLayer\Views\Assets\share.png" />
   </ItemGroup>
 
 </Project>

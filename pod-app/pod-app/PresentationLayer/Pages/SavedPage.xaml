@@ -7,8 +7,84 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="SavedPage">
+    
 
     <Grid>
-        
+
+        <Button Name="btnFilter"
+        Content="Filtrera"
+        Width="110"
+        Height="40"
+        Margin="345,125,345,285"
+        Background="White"
+        Foreground="#333"
+        FontWeight="SemiBold" Click="btnFilter_Click">
+
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                    Background="Gray"
+                    BorderBrush="#C5C5C5"
+                    BorderThickness="1.5"
+                    CornerRadius="12"
+                    Padding="10"
+                    SnapsToDevicePixels="True">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+                    </Border>
+
+                   
+
+                </ControlTemplate>
+            </Button.Template>
+
+            <Button.ContextMenu>
+                <ContextMenu x:Name="filterMenu">
+                    <MenuItem Header="Alla" Click="FilterItem_Click"/>
+                    <MenuItem Header="Nyheter" Click="FilterItem_Click"/>
+                    <MenuItem Header="Sport" Click="FilterItem_Click"/>
+                    <MenuItem Header="Humor" Click="FilterItem_Click"/>
+                    <MenuItem Header="Dokumentär" Click="FilterItem_Click"/>
+                </ContextMenu>
+            </Button.ContextMenu>
+        </Button>
+
+
+
+
+
+        <Button 
+            Name="btnBack" 
+            Content="Tillbaka"  
+            Width="110" 
+            Height="40" 
+            Margin="25,40,665,370" 
+            Background="White"
+Foreground="#333"
+FontWeight="SemiBold" Click="btnBack_Click">
+
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+            Background="Gray"
+            BorderBrush="#C5C5C5"
+            BorderThickness="1.5"
+            CornerRadius="12"
+            Padding="10"
+            SnapsToDevicePixels="True">
+                        <ContentPresenter HorizontalAlignment="Center"
+                          VerticalAlignment="Center"/>
+                    </Border>
+
+
+
+                </ControlTemplate>
+            </Button.Template> 
+        </Button>
+
+
+
+
+
     </Grid>
 </Page>

@@ -20,9 +20,31 @@ namespace pod_app.PresentationLayer.Pages
     /// </summary>
     public partial class SavedPage : Page
     {
-        public SavedPage()
+        private Frame parentFrame;
+        public SavedPage(Frame parentFrame)
         {
+            this.parentFrame = parentFrame;
             InitializeComponent();
+        }
+
+            private void btnFilter_Click(object sender, RoutedEventArgs e)
+        {
+            btnFilter.ContextMenu.IsOpen = true;
+        }
+
+        // När man väljer en kategori i menyn
+        private void FilterItem_Click(object sender, RoutedEventArgs e)
+        {
+            // Filtreringslogik
+
+        }
+          
+        
+
+        private void btnBack_Click(object sender, RoutedEventArgs e)
+        {
+            // Gå tillbaka till HomePage
+
         }
     }
 }

@@ -9,6 +9,73 @@
       Title="HomePage">
 
     <Grid>
+
+        <Button Width="120"
+         Height="35"
+         Margin="10,22,0,0"
+         HorizontalAlignment="Left"
+         VerticalAlignment="Top">
+         
+         
+     
+            <!-- Rundar hörnen på knapp -->
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border CornerRadius="12"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}">
+                        <ContentPresenter HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+
+            <TextBlock Text="Sparade" VerticalAlignment="Center"/>
+        </Button>
+
+        <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Sökfält -->
+            <Border Grid.Column="0"
+            Background="White"
+            CornerRadius="20"
+            Padding="10,5"
+            Height="40"
+            MinWidth="300">
+                <TextBox x:Name="SearchBox"
+                 Background="Transparent"
+                 BorderThickness="0"
+                 FontSize="16"
+                 Foreground="Black"
+                 VerticalContentAlignment="Center"/>
+            </Border>
+
+            <!-- Sökknapp -->
+            <Border Grid.Column="2"
+            Background="White"
+            CornerRadius="20"
+            Width="40"
+            Height="40"
+            VerticalAlignment="Center">
+                <Button x:Name="SearchButton"
+                Background="Transparent"
+                BorderThickness="0"
+                FontSize="16"
+                Padding="0">
+                    <!-- Ikon -->
+                    🔍
+                </Button>
+            </Border>
+        </Grid>
         
+       
+
     </Grid>
+
 </Page>
