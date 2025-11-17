@@ -10,15 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="PresentationLayer\Views\Assets\Fonts\Inter.ttc" />
-    <None Remove="PresentationLayer\Views\Assets\heart_fill.png" />
-    <None Remove="PresentationLayer\Views\Assets\heart_no_fill.png" />
-    <None Remove="PresentationLayer\Views\Assets\share.png" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="DataLayer\" />
-    <Folder Include="BusinessLogicLayer\" />
     <Folder Include="Services\" />
   </ItemGroup>
 

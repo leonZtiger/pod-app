@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace pod_app.Models
 {
-    internal class PodFlow
+    public class PodFlow
     {
         public List<PodModel> Pods { get; set; }
         public string Category { get; set; }

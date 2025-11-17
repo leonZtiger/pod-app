@@ -15,13 +15,13 @@ namespace pod_app.Models
     /// </summary>
     public class PodModel
     {
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string ImageUrl { get; set; }
-        public DateTime ReleaseDate { get; set; }
-        public string Duration { get; set; }
-        public string URL { get; set; }
-        public string Category { get; set; }
-        public bool IsSaved { get; set; }
+        public required string Title { get; set; }
+        public required string Description { get; set; }
+        public required string ImageUrl { get; set; }
+        public required DateTime ReleaseDate { get; set; }
+        public required string Duration { get; set; }
+        public required string URL { get; set; }
+        public required string Category { get; set; }
+        public required bool IsSaved { get; set; }
     }
 }
