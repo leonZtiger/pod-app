@@ -6,11 +6,10 @@ using pod_app.Models;
 
 namespace pod_app.BusinessLogicLayer
 {
-    internal static class RssUtilHelpers
+    public static class RssUtilHelpers
     {
 
-
-        public static async Task<PodFlow> GetPodFeedTask(string rss_url)
+        public static async Task<string> GetRssXMLFile(string rss_url)
         {
             // Send get request to the rss url
             HttpResponseMessage response = await (new HttpClient()).GetAsync(rss_url);
@@ -19,16 +18,17 @@ namespace pod_app.BusinessLogicLayer
             {
                 throw new HttpRequestException("Could not get rss document from server.");
             }
+            return await response.Content.ReadAsStringAsync();
+        }
 
-            // Parse the xml code received 
-            string responseBody = await response.Content.ReadAsStringAsync();
-
-            XDocument xmlReader = XDocument.Parse(responseBody);
+        public static PodFlow GetPodFeedFromXML(string XML_str)
+        {
+            XDocument xmlReader = XDocument.Parse(XML_str);
             PodFlow podFeed = new PodFlow();
-
+            podFeed.Pods = new();
             // Read all items
             if (xmlReader.Root != null)
-                // Create a podcast model per item
+                // Create a podcast model per item and push to podFeed
                 foreach (var item in xmlReader.Root.Elements("item"))
                 {
                     string? title = item.Element("title")?.Value;
@@ -42,27 +42,23 @@ namespace pod_app.BusinessLogicLayer
                     podFeed.Pods.Add(MapStrings(title, desc, image, release, duration, url, category));
                 }
 
-
-
-            // Create feed of all episodes
-
-
-
             return podFeed;
         }
 
-        private static PodModel MapStrings(string? title, string? desc, string? image, string? release, string? duration, string? url, string? category)
+
+        public static PodModel MapStrings(string? title, string? desc, string? image, string? release, string? duration, string? url, string? category)
         {
-            PodModel pod = new PodModel(
-            title ?? "Unknown",
-             = desc ?? "No description";
-             = image ?? "";
-             = release != null ? DateTime.Parse(release) : DateTime.MinValue;
-             = duration ?? "Unknown";
-              category ?? "Unknown";
-             url ?? "";
-             false
-);
+            PodModel pod = new PodModel()
+            {
+                Title = title ?? "Unknown",
+                Description = desc ?? "No description",
+                ImageUrl = image ?? "",
+                ReleaseDate = release != null ? DateTime.Parse(release) : DateTime.MinValue,
+                Duration = duration ?? "Unknown",
+                Category = category ?? "Unknown",
+                URL = url ?? "",
+                IsSaved = false
+            };
             return pod;
         }
     }
