@@ -10,7 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DataLayer\" />
     <Folder Include="Services\" />
   </ItemGroup>
 

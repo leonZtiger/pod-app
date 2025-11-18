@@ -9,14 +9,52 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="SavedPage">
 
-    <Grid>
+    <Page.Resources>
+        
+        <Style x:Key="HeaderButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="110"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="#F5F5F5"
+                                BorderBrush="#C5C5C5"
+                                BorderThickness="1.5"
+                                CornerRadius="18"
+                                Padding="10"
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border"
+                                        Property="Background"
+                                        Value="#E6E6E6"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border"
+                                        Property="Background"
+                                        Value="White"/>
+                                <Setter TargetName="border"
+                                        Property="BorderBrush"
+                                        Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
 
+    <Grid Background="#0F0F10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>  
+            <RowDefinition Height="*"/>      
         </Grid.RowDefinitions>
 
-
+        <!-- TOPBAR -->
         <Grid Grid.Row="0" Margin="20,20,20,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -24,97 +62,25 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-
             <Button Name="BtnBack"
                     Grid.Column="0"
                     Content="Tillbaka"
-                    Width="110"
-                    Height="36"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Click="BtnBack_Click">
+                    Click="BtnBack_Click"
+                    Style="{StaticResource HeaderButtonStyle}"/>
 
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="border"
-                                Background="#F5F5F5"
-                                BorderBrush="#C5C5C5"
-                                BorderThickness="1.5"
-                                CornerRadius="14"
-                                Padding="10"
-                                SnapsToDevicePixels="True">
-
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
-                        </Border>
-
-                        <ControlTemplate.Triggers>
-
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border"
-                                        Property="Background"
-                                        Value="#E6E6E6"/>
-                            </Trigger>
-
-
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="border"
-                                        Property="Background"
-                                        Value="#DADADA"/>
-                                <Setter TargetName="border"
-                                        Property="BorderBrush"
-                                        Value="#B0B0B0"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
-
+            <TextBlock Grid.Column="1"
+                       Text="Sparade poddar"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="20"
+                       FontWeight="SemiBold"
+                       Foreground="White"/>
 
             <Button Name="BtnFilter"
                     Grid.Column="2"
                     Content="Filtrera"
-                    Width="110"
-                    Height="36"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    Click="BtnFilter_Click">
-
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="border"
-                                Background="#F5F5F5"
-                                BorderBrush="#C5C5C5"
-                                BorderThickness="1.5"
-                                CornerRadius="14"
-                                Padding="10"
-                                SnapsToDevicePixels="True">
-
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
-                        </Border>
-
-                        <ControlTemplate.Triggers>
-
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border"
-                                        Property="Background"
-                                        Value="#E6E6E6"/>
-                            </Trigger>
-
-
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="border"
-                                        Property="Background"
-                                        Value="#DADADA"/>
-                                <Setter TargetName="border"
-                                        Property="BorderBrush"
-                                        Value="#B0B0B0"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Button.Template>
-
+                    Click="BtnFilter_Click"
+                    Style="{StaticResource HeaderButtonStyle}">
                 <Button.ContextMenu>
                     <ContextMenu x:Name="filterMenu">
                         <MenuItem Header="Alla" Click="FilterItem_Click"/>
@@ -127,8 +93,13 @@
             </Button>
         </Grid>
 
-
-        <views:PodView x:Name="podViewControl"
-                       Margin="150,30,150,60" Grid.RowSpan="2"/>
+      
+        <Border Grid.Row="1"
+                Margin="40,0,40,30"
+                Padding="20">
+            <views:PodView x:Name="podViewControl"
+                           Margin="10"/>
+        </Border>
     </Grid>
 </Page>
+
