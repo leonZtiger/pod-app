@@ -38,7 +38,7 @@ namespace pod_app.BusinessLogicLayer
         {
             XDocument xmlReader = XDocument.Parse(XML_str);
             PodFlow podFeed = new PodFlow();
-            podFeed.Pods = new();
+            podFeed.Podcasts = new();
             // Read all items
             if (xmlReader.Root != null)
                 // Create a podcast model per item and push to podFeed
@@ -52,7 +52,7 @@ namespace pod_app.BusinessLogicLayer
                     string? url = item.Element("link")?.Value;
                     string? category = item.Element("category")?.Value;
 
-                    podFeed.Pods.Add(MapStrings(title, desc, image, release, duration, url, category));
+                    podFeed.Podcasts.Add(MapStrings(title, desc, image, release, duration, url, category));
                 }
 
             return podFeed;
@@ -100,7 +100,7 @@ namespace pod_app.BusinessLogicLayer
         /// <param name="url">Url of the podcast</param>
         /// <param name="category">Category of the podcast</param>
         /// <returns>The hash generate by the MD5 algorithm</returns>
-        public static ulong GeneratePodId(string? title, string? desc, string? image, string? release, string? duration, string? url, string? category)
+        public static string GeneratePodId(string? title, string? desc, string? image, string? release, string? duration, string? url, string? category)
         {
             string hash_src;
             if (url is null)
@@ -118,8 +118,8 @@ namespace pod_app.BusinessLogicLayer
                 hash_src = url;
             }
             // TODO: MD5 returns a 128 bit hash, but we cast it for now since c# dont support long longs.
-            // This highers the risk of collitions but for now is fixed to 64 bits.
-            return BitConverter.ToUInt64(MD5.Create().ComputeHash(Encoding.ASCII.GetBytes(hash_src)));
+            // This highers the risk of collisions but for now is fixed to 64 bits.
+            return string.Format("{0:X}",BitConverter.ToUInt64(MD5.Create().ComputeHash(Encoding.ASCII.GetBytes(hash_src))));
         }
     }
 }
