@@ -10,8 +10,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DataLayer\" />
     <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="2.21.0" />
   </ItemGroup>
 
   <ItemGroup>

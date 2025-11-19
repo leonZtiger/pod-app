@@ -24,7 +24,7 @@ namespace pod_app
         {
             InitializeComponent();
 
-            homePage = new HomePage();
+            homePage = new HomePage(mainFrame);
             savedPage = new SavedPage(mainFrame);
 
             mainFrame.Navigate(homePage);

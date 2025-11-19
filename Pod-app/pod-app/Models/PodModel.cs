@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,15 +15,38 @@ namespace pod_app.Models
     /// release date, url for the actual podcast site,
     /// category and a per-user defined isSaved field.
     /// </summary>
-    public class PodModel
+    public class PodModel 
     {
-        public required string Title { get; set; }
-        public required string Description { get; set; }
-        public required string ImageUrl { get; set; }
-        public required DateTime ReleaseDate { get; set; }
-        public required string Duration { get; set; }
-        public required string URL { get; set; }
-        public required string Category { get; set; }
-        public required bool IsSaved { get; set; }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; } = default!;
+
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string PodcastFeedId { get; set; } = default!;
+
+        [BsonElement("title")]
+        public string Title { get; set; } = default!;
+
+        [BsonElement("description")]
+        public string Description { get; set; } = default!;
+
+        [BsonElement("imageUrl")]
+        public string ImageUrl { get; set; } = default!;
+
+        [BsonElement("releaseDate")]
+        [BsonDateTimeOptions(Representation = BsonType.Document)]
+        public DateTime ReleaseDate { get; set; } = default;
+
+        [BsonElement("duration")]
+        public string Duration { get; set; } = default!;
+
+        [BsonElement("url")]
+        public string URL { get; set; } = default!;
+
+        [BsonElement("category")]
+        public string Category { get; set; } = default!;
+
+        [BsonElement("isSaved")]
+        public bool IsSaved { get; set; } = default!;
     }
 }
