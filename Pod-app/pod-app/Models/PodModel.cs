@@ -48,5 +48,8 @@ namespace pod_app.Models
 
         [BsonElement("isSaved")]
         public bool IsSaved { get; set; } = default!;
+
+        [BsonElement("episode")]
+        public int Episode { get; set; } = default;
     }
 }
