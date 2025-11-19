@@ -8,13 +8,13 @@ using MongoDB.Driver;
 
 namespace pod_app.DataLayer
 {
-    public class PodRepository // Implementera IPodRepository
+    public class PodFlowRepository // Implementera IPodRepository
     {
      
-        private readonly IMongoCollection<PodModel> podCollection;
+        private readonly IMongoCollection<PodFlow> podCollection;
         private readonly IMongoClient client;
 
-    public PodRepository()
+    public PodFlowRepository()
     {
         
          client = new MongoClient();
@@ -23,7 +23,7 @@ namespace pod_app.DataLayer
          var database = client.GetDatabase("OruMongoDB");
 
       
-         podCollection = database.GetCollection<PodModel>("PodProjekt");
+         podCollection = database.GetCollection<PodFlow>("PodProjekt");
     }
         
 

@@ -9,6 +9,6 @@ namespace pod_app.BusinessLogicLayer
 {
     public interface IRssService
     {
-        Task<PodFlow> LoadFeedAsync(string rssUrl);
+    
     }
 }
