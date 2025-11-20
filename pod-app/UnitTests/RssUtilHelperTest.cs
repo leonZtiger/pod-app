@@ -126,7 +126,8 @@ public class RssUtilHelperTest
             release: null,
             duration: null,
             url: null,
-            category: null
+            category: null,
+            episode: null
         );
 
         // Assert
@@ -154,7 +155,8 @@ public class RssUtilHelperTest
             release: releaseString,
             duration: "1h 30m",
             url: "https://example.com",
-            category: "Tech"
+            category: "Tech",
+            episode: "1"
         );
 
         // Assert
