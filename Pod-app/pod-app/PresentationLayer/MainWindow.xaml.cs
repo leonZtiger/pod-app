@@ -1,4 +1,5 @@
-﻿using pod_app.PresentationLayer.Pages;
+﻿using pod_app.BusinessLogicLayer;
+using pod_app.PresentationLayer.Pages;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,7 +20,7 @@ namespace pod_app
     {
         public static HomePage? homePage = null;
         public static SavedPage? savedPage = null;
-
+        public static PodcastManager? podcastManager;
         public MainWindow()
         {
             InitializeComponent();

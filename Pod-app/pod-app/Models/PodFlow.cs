@@ -18,10 +18,13 @@ namespace pod_app.Models
         public string Id { get; set; }   
 
         [BsonIgnore]
-        public List<PodModel> Podcasts { get; set; }
+        public List<PodModel> Podcasts { get; set; } // Filled by separated logic.
+        
+        [BsonIgnore]
+        public string ImageUrl { get; set; }
 
         [BsonElement("category")]
         public string Category { get; set; }
-    
+        
     }
 }
