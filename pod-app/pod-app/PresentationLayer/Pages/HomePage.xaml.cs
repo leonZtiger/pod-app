@@ -70,7 +70,8 @@ namespace pod_app.PresentationLayer.Pages
 
             // Clear previus results
             resultsList.Clear();
-
+            PodcastImageUrl.Value = "";
+            PodcastTitle.Value = "";
             try
             {
                 // Start search

@@ -8,7 +8,9 @@
       d:DesignHeight="600"
       d:DesignWidth="1000"
       Title="HomePage"
-      Background="#1F1F21">
+      Background="#1F1F21"
+      UseLayoutRounding="True"
+      >
 
     <Page.Resources>
         <DropShadowEffect x:Key="ShadowEffect"
@@ -27,8 +29,7 @@
                     Margin="10,22,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Click="Button_Click"
-                    >
+                    Click="Button_Click">
 
 
 
@@ -66,7 +67,8 @@
                 <StackPanel HorizontalAlignment="Center"
                             VerticalAlignment="Bottom"
                             Height="auto">
-                    <Border Effect="{StaticResource ShadowEffect}"
+                    <Border SnapsToDevicePixels="True"
+                            Effect="{StaticResource ShadowEffect}"
                             HorizontalAlignment="Center"
                             Grid.Column="0"
                             Height="150"
@@ -181,7 +183,8 @@
                             </EventTrigger>
                         </Border.Triggers>
 
-                        <TextBox x:Name="SearchBox"
+                        <TextBox SnapsToDevicePixels="True"
+                                 x:Name="SearchBox"
                                  Background="Transparent"
                                  BorderThickness="0"
                                  FontSize="16"
@@ -197,7 +200,8 @@
                             Height="40"
                             Effect="{StaticResource ShadowEffect}"
                             VerticalAlignment="Center">
-                        <Button x:Name="SearchButton"
+                        <Button SnapsToDevicePixels="True"
+                                x:Name="SearchButton"
                                 Background="Transparent"
                                 BorderThickness="0"
                                 FontSize="16"
