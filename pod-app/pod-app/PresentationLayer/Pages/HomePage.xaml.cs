@@ -107,14 +107,14 @@ namespace pod_app.PresentationLayer.Pages
         private void PodView_LikeClicked(object sender, EventArgs e)
         {
             var p = sender as PodView;
-            
-            if(p is not null && MainWindow.podcastManager is not null && currentPodcastFeed is not null)
+
+            if (p is not null && MainWindow.podcastManager is not null && currentPodcastFeed is not null)
             {
                 MainWindow.podcastManager.PushPod(p.PodModel, currentPodcastFeed);
             }
-            else
+            else if (MainWindow.podcastManager is null)
             {
-                // TODO: Ask user for connection string
+                MainWindow.InitDbManager();
             }
 
         }
