@@ -9,5 +9,7 @@
 
     <Grid Background="Black">
         <Frame NavigationUIVisibility="Hidden" Name="mainFrame" Content="" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+       
     </Grid>
 </Window>
