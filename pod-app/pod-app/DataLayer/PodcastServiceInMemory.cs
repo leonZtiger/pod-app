@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace pod_app.Service
+namespace pod_app.DataLayer
 {
-    public class PodcastServiceInMemory : IPodcastDataService
+    public class PodcastServiceInMemory : IPodcastRepository
     {
         private readonly List<PodFlow> feedCollection = new();
         private readonly List<PodModel> podcastCollection = new();

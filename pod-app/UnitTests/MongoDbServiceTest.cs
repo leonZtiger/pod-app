@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
+using pod_app.DataLayer;
 using pod_app.Models;
-using pod_app.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace UnitTests
 {
     public class MongoDbServiceTest : IDisposable
     {
-        private readonly IPodcastDataService service;
+        private readonly IPodcastRepository service;
 
         public MongoDbServiceTest()
         {

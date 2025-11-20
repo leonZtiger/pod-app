@@ -1,21 +1,22 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
-using pod_app.DataLayer;
 using pod_app.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 
-namespace pod_app.Service
+namespace pod_app.DataLayer
 {
-    public class PodcastServiceMongoDb : IPodcastDataService
+    public class MongoDbRepository : IPodcastRepository
     {
+        
         private readonly IMongoCollection<PodFlow> feedCollection;
         private readonly IMongoCollection<PodModel> podcastCollection;
 
-        public PodcastServiceMongoDb(string connection_str)
+        public MongoDbRepository(string connection_str)
         {
 
             var settings = MongoClientSettings.FromConnectionString(connection_str);
@@ -24,8 +25,8 @@ namespace pod_app.Service
 
             var client = new MongoClient(settings);
      
-            this.feedCollection = client.GetDatabase("Smultron-storage").GetCollection<PodFlow>("Podcasts");
-            this.podcastCollection = client.GetDatabase("Smultron-storage").GetCollection<PodModel>("Episodes");
+            feedCollection = client.GetDatabase("Smultron-storage").GetCollection<PodFlow>("Podcasts");
+            podcastCollection = client.GetDatabase("Smultron-storage").GetCollection<PodModel>("Episodes");
 
         }
 
@@ -33,6 +34,7 @@ namespace pod_app.Service
         {
             feedCollection.InsertOne(feed);
         }
+
 
         public void DeleteFeed(PodFlow feed)
         {
