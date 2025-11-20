@@ -96,9 +96,26 @@
       
         <Border Grid.Row="1"
                 Margin="40,0,40,30"
-                Padding="20">
-            <views:PodView x:Name="podViewControl"
+                Padding="20"
+                Background="#1A1A1D"
+                CornerRadius="14">
+
+
+
+        <ItemsControl x:Name="PodListControl">
+              <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                        <views:PodView  />
+                  </DataTemplate>
+              </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+
+            <!--
+    <views:PodView x:Name="podViewControl"
                            Margin="10"/>
+            -->
+
         </Border>
     </Grid>
 </Page>

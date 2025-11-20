@@ -19,7 +19,7 @@ namespace pod_app.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; } = default!;
+        public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 
         [BsonRepresentation(BsonType.ObjectId)]
         public string PodcastFeedId { get; set; } = default!;
