@@ -19,6 +19,46 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
 
+/*
+ 
+  <!-- Like button-->
+                    <Button Grid.Column="1"
+                            Click="OnLikeClicked">
+                        <!-- Change image based on the state of IsSaved -->
+                        <Button.Style>
+                            <Style TargetType="Button"
+                                   BasedOn="{StaticResource IconButtonStyle}">
+                                <Style.Triggers>
+                                    <!-- On saved -->
+                                    <DataTrigger Binding="{Binding PodModel.IsSaved}"
+                                                 Value="True">
+                                        <Se
+                                            tter Property="Content">
+                                            <Se.Value>
+                                                <Image RenderOptions.BitmapScalingMode="Fant"
+                                                       Source="/PresentationLayer/Views/Assets/heart_fill.png" />
+                                            </Se.Value>
+                                        </Se>
+                                    </DataTrigger>
+
+                                    <!-- On not saved -->
+                                    <DataTrigger Binding="{Binding PodModel.IsSaved}"
+                                                 Value="False">
+                                        <Setter Property="Content">
+                                            <Setter.Value>
+                                                <Image RenderOptions.BitmapScalingMode="Fant"
+                                                       Source="/PresentationLayer/Views/Assets/heart_no_fill.png" />
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+ 
+ */
+
 namespace pod_app.PresentationLayer.Pages
 {
     /// <summary>
@@ -85,26 +125,24 @@ namespace pod_app.PresentationLayer.Pages
 
                 if (feed.Podcasts.Count == 0)
                 {
-                    MessageBox.Show("No results");
+                    // 
                     return;
                 }
 
                 // Create all episode views
                 foreach (var item in feed.Podcasts)
                 {
-                    ResultsList.Add(new PodView(PodView_LikeClicked, item));
+                    ResultsList.Add(new PodView(item));
                 }
 
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-
-                // TODO: Prompt error message
             }
         }
 
-        private void PodView_LikeClicked(object sender, EventArgs e)
+        private void PodcastFeed_LikeClicked(object sender, EventArgs e)
         {
             var p = sender as PodView;
 
@@ -116,7 +154,6 @@ namespace pod_app.PresentationLayer.Pages
             {
                 MainWindow.InitDbManager();
             }
-
         }
 
         private void FilterButton_Click(object sender, RoutedEventArgs e)

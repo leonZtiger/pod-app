@@ -19,7 +19,10 @@ namespace pod_app.Models
 
         [BsonIgnore]
         public List<PodModel> Podcasts { get; set; } // Filled by separated logic.
-        
+
+        [BsonElement("url")]
+        public string Url { get; set; }
+
         [BsonIgnore]
         public string ImageUrl { get; set; }
 

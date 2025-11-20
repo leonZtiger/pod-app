@@ -17,39 +17,15 @@ namespace pod_app.Models
     /// </summary>
     public class PodModel 
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; } = default!;
-
-        [BsonRepresentation(BsonType.ObjectId)]
         public string PodcastFeedId { get; set; } = default!;
-
-        [BsonElement("title")]
         public string Title { get; set; } = default!;
-
-        [BsonElement("description")]
         public string Description { get; set; } = default!;
-
-        [BsonElement("imageUrl")]
         public string ImageUrl { get; set; } = default!;
-
-        [BsonElement("releaseDate")]
-        [BsonDateTimeOptions(Representation = BsonType.Document)]
         public DateTime ReleaseDate { get; set; } = default;
-
-        [BsonElement("duration")]
         public string Duration { get; set; } = default!;
-
-        [BsonElement("url")]
         public string URL { get; set; } = default!;
-
-        [BsonElement("category")]
         public string Category { get; set; } = default!;
-
-        [BsonElement("isSaved")]
         public bool IsSaved { get; set; } = default!;
-
-        [BsonElement("episode")]
         public int Episode { get; set; } = default;
     }
 }

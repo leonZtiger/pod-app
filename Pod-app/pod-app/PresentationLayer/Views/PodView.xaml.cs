@@ -21,21 +21,10 @@ namespace pod_app.PresentationLayer.Views
     /// <summary>
     /// Interaction logic for PodView.xaml
     /// </summary>
-    public partial class PodView : UserControl, INotifyPropertyChanged
+    public partial class PodView : UserControl
     {
         private PodModel podModel;
-        public PodModel PodModel
-        {
-            get { return podModel; }
-            set
-            {
-                if (podModel != value)
-                {
-                    podModel = value;
-                    OnPropertyChanged(nameof(PodModel));
-                }
-            }
-        }
+        public PodModel PodModel { get; set; }
 
         private event EventHandler LikeClicked;
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -48,30 +37,16 @@ namespace pod_app.PresentationLayer.Views
             InitializeComponent();
         }
 
-        public PodView(EventHandler LikeClicked, PodModel podModel)
+        public PodView(PodModel podModel)
         {
             InitializeComponent();
-            this.LikeClicked = LikeClicked;
             this.podModel = podModel;
             DataContext = this;
         }
 
-
-        private void OnLikeClicked(object sender, RoutedEventArgs e)
-        {
-            PodModel.IsSaved = !PodModel.IsSaved;
-            OnPropertyChanged(nameof(PodModel));
-
-            LikeClicked?.Invoke(this, EventArgs.Empty);
-        }
-        protected void OnPropertyChanged(string property)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
-        }
-
         private void OnOpenLinkClicked(object sender, RoutedEventArgs e)
         {
-            if(string.IsNullOrEmpty(podModel.URL))
+            if (string.IsNullOrEmpty(podModel.URL))
             {
                 return;
             }
