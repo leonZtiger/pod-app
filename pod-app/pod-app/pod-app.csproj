@@ -10,6 +10,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="PresentationLayer\Views\Assets\appIcon.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Folder Include="Services\" />
 	</ItemGroup>
 
@@ -18,11 +22,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Resource Include="PresentationLayer\Views\Assets\appIcon.ico">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
 		<Resource Include="PresentationLayer\Views\Assets\Fonts\Inter.ttc" />
 		<Resource Include="PresentationLayer\Views\Assets\heart_fill.png" />
 		<Resource Include="PresentationLayer\Views\Assets\heart_no_fill.png" />
 		<Resource Include="PresentationLayer\Views\Assets\share.png" />
-		<Resource Include="PresentationLayer\Views\Assets\NoImage.png"/>
+		<Resource Include="PresentationLayer\Views\Assets\NoImage.png" />
 	</ItemGroup>
 
 </Project>

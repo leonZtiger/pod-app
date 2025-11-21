@@ -12,7 +12,8 @@ namespace pod_app.Models
     /// 
     /// </summary>
     public class Podcast
-    {    
+    {
+
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }   
@@ -28,6 +29,11 @@ namespace pod_app.Models
 
         [BsonElement("category")]
         public string Category { get; set; }
-        
+
+        [BsonIgnore]
+        public string About { get; set; }
+
+        [BsonIgnore]
+        public string Genre { get; set; }
     }
 }
