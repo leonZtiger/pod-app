@@ -30,8 +30,10 @@ namespace pod_app.PresentationLayer.Pages
         private Frame parentFrame;
         public ObservableString PodcastImageUrl { get; set; }
         public ObservableString PodcastTitle { get; set; }
-        public ObservableString PodcastGenre { get; set; }
+        public ObservableString PodcastCategory { get; set; }
         public ObservableString PodcastDescription { get; set; }
+
+        private readonly int ItemsPerPage = 10;
 
         private Podcast? currentPodcastFeed;
         public ObservableCollection<Episode> ResultsList { get; set; }
@@ -43,7 +45,7 @@ namespace pod_app.PresentationLayer.Pages
             ResultsList = new();
             PodcastImageUrl = new();
             PodcastTitle = new();
-            PodcastGenre = new();
+            PodcastCategory = new();
             PodcastDescription = new();
             this.DataContext = this;
         }
@@ -74,7 +76,7 @@ namespace pod_app.PresentationLayer.Pages
             PodcastImageUrl.Value = "";
             PodcastTitle.Value = "";
             PodcastDescription.Value = "";
-            PodcastGenre.Value = "";
+            PodcastCategory.Value = "";
             currentPodcastFeed = null;
             IsSearching = true;
             try
@@ -88,7 +90,7 @@ namespace pod_app.PresentationLayer.Pages
                 PodcastTitle.Value = feed.Category;
                 currentPodcastFeed = feed;
                 PodcastDescription.Value = feed.About;
-                PodcastGenre.Value = feed.Genre;
+                PodcastCategory.Value = feed.Genre;
                 LoadNextPage();
             }
             catch (Exception ex)
@@ -143,7 +145,7 @@ namespace pod_app.PresentationLayer.Pages
             if (currentPodcastFeed is null || currentPodcastFeed.Episodes is null || currentPodcastFeed.Episodes.Count == 0) return;
 
             int alreadyLoaded = ResultsList.Count;
-            int toTake = Math.Min(20, currentPodcastFeed.Episodes.Count - alreadyLoaded);
+            int toTake = Math.Min(ItemsPerPage, currentPodcastFeed.Episodes.Count - alreadyLoaded);
 
             for (int i = 0; i < toTake; i++)
             {

@@ -50,9 +50,10 @@ namespace pod_app.BusinessLogicLayer
 
                 var channel = xmlReader.Root?.Element("channel");
                 // Get show title
-                podFeed.Category = channel?.Element("title")?.Value ?? "Unknown";
+                podFeed.Category = channel?.Element(itunes + "category")?.Attribute("text")?.Value ?? "No category yet";
                 podFeed.About = channel?.Element("description")?.Value ?? "No description found.";
-                podFeed.Genre = channel?.Element(itunes + "category")?.Attribute("text")?.Value ?? "";
+                podFeed.Title = channel?.Element("title")?.Value ?? "No title yet.";
+
                 // Get show image
                 podFeed.ImageUrl = channel?
                                     .Element("image")?

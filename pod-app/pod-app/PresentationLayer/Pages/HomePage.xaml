@@ -15,7 +15,7 @@
 
     <Page.Resources>
         <DropShadowEffect x:Key="ShadowEffect"
-                          Color="Black"
+                          Color="#5f0f0f"
                           BlurRadius="15"
                           ShadowDepth="0"
                           Opacity="1" />
@@ -268,8 +268,7 @@
                             </Style.Triggers>
                         </Style>
                     </Border.Style>
-                    
-                    
+
                     <Grid HorizontalAlignment="Stretch">
 
                         <Grid.ColumnDefinitions>
@@ -301,7 +300,6 @@
                                 <RowDefinition Height="1*" />
                                 <RowDefinition Height="2*" />
                                 <RowDefinition Height="1*" />
-
                             </Grid.RowDefinitions>
 
                             <TextBlock d:Text="Test title about podcat"
@@ -331,12 +329,12 @@
                                             <Setter Property="Visibility"
                                                     Value="Visible" />
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding PodcastGenre.Value}"
+                                                <DataTrigger Binding="{Binding PodcastCategory.Value}"
                                                              Value="">
                                                     <Setter Property="Visibility"
                                                             Value="Hidden" />
                                                 </DataTrigger>
-                                                <DataTrigger Binding="{Binding PodcastGenre.Value}"
+                                                <DataTrigger Binding="{Binding PodcastCategory.Value}"
                                                              Value="{x:Null}">
                                                     <Setter Property="Visibility"
                                                             Value="Hidden" />
@@ -349,7 +347,7 @@
                                            Grid.Row="2"
                                            FontSize="15"
                                            d:Text="Krim, Humor"
-                                           Text="{Binding PodcastGenre.Value}" />
+                                           Text="{Binding PodcastCategory.Value}" />
 
 
                             </StackPanel>
