@@ -1,13 +1,13 @@
-﻿using pod_app.Models;
+using pod_app.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace pod_app.Service
+namespace pod_app.DataLayer
 {
-    public interface IPodcastDataService
+    public interface IPodcastRepository
     {
         /// <summary>
         /// Returns all stored podcast feeds.
@@ -30,7 +30,7 @@ namespace pod_app.Service
         /// <exception cref="ArgumentNullException">If feed is null.</exception>
         /// <exception cref="InvalidOperationException">If a feed with the same Id already exists.</exception>
         /// <exception cref="TimeoutException">If writing to storage fails.</exception>
-        void PushFeed(Podcast feed);
+        void PushFeed (Podcast feed);
 
         /// <summary>
         /// Deletes the specified feed.

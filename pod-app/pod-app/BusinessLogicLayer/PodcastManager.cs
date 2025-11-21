@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
+using pod_app.DataLayer;
 using pod_app.Models;
-using pod_app.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,14 +13,14 @@ namespace pod_app.BusinessLogicLayer
     public class PodcastManager
     {
 
-        private readonly IPodcastDataService podcastDataService;
+        private readonly IPodcastRepository podcastDataService;
 
         /// <summary>
         /// Initiates a PodcastManager object with the service usages of the passed argument.
         /// </summary>
         /// <param name="podcastDataService">The service to use</param>
         /// <exception cref="ArgumentNullException">If service was null</exception>
-        public PodcastManager(IPodcastDataService podcastDataService)
+        public PodcastManager(IPodcastRepository podcastDataService)
         {
             // Create data layer object pass connetion string
             this.podcastDataService = podcastDataService ?? throw new ArgumentNullException(nameof(podcastDataService)); ;

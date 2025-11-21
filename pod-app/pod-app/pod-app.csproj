@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
@@ -9,9 +9,12 @@
 		<UseWPF>true</UseWPF>
 	</PropertyGroup>
 
-	<ItemGroup>
-		<Folder Include="Services\" />
-	</ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Services\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <None Remove="Services\**" />
+    <Page Remove="Services\**" />
+  </ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="MongoDB.Driver" Version="2.21.0" />
