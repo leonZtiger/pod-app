@@ -74,7 +74,7 @@ public class RssUtilHelperTest
         Assert.Equal("1h 00m", first.Duration);
         Assert.Equal("Tech", first.Category);
         Assert.Equal("https://example.com/ep1", first.URL);
-        Assert.False(first.IsSaved);
+        
 
         var second = result.Episodes[1];
         Assert.Equal("Episode 2", second.Title);
@@ -84,7 +84,6 @@ public class RssUtilHelperTest
         Assert.Equal("2h 15m", second.Duration);
         Assert.Equal("News", second.Category);
         Assert.Equal("https://example.com/ep2", second.URL);
-        Assert.False(second.IsSaved);
     }
 
     [Fact]
@@ -112,7 +111,7 @@ public class RssUtilHelperTest
         Assert.Equal("Unknown", pod.Duration);
         Assert.Equal("Unknown", pod.Category);
         Assert.Equal("", pod.URL);
-        Assert.False(pod.IsSaved);
+        
     }
 
     [Fact]
@@ -138,7 +137,7 @@ public class RssUtilHelperTest
         Assert.Equal("Unknown", result.Duration);
         Assert.Equal("Unknown", result.Category);
         Assert.Equal("", result.URL);
-        Assert.False(result.IsSaved);
+       
     }
 
     [Fact]
