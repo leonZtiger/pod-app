@@ -10,7 +10,8 @@
       Title="HomePage"
       Background="#1F1F21"
       UseLayoutRounding="True"
-      >
+      xmlns:views="clr-namespace:pod_app.PresentationLayer.Views"
+      xmlns:models="clr-namespace:pod_app.Models">
 
     <Page.Resources>
         <DropShadowEffect x:Key="ShadowEffect"
@@ -20,34 +21,29 @@
                           Opacity="1" />
     </Page.Resources>
 
-    <ScrollViewer  VerticalScrollBarVisibility="Auto"
-                   HorizontalScrollBarVisibility="Disabled">
+    <ScrollViewer ScrollChanged="ScrollContainer_ScrollChanged"
+                  VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
         <Grid>
 
+            <!-- Naviagte to Savedpage button -->
             <Button Width="120"
                     Height="35"
                     Margin="10,22,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Click="Button_Click">
-
-
-
-                <!-- Rundar hörnen på knapp -->
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border CornerRadius="12"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-
-                <TextBlock Text="Sparade"
-                           VerticalAlignment="Center" />
+                    Click="Button_Click"
+                    Content="Sparade"
+                    Background="#1f1f1f"
+                    Foreground="White"
+                    Effect="{StaticResource ShadowEffect}"
+                    FontSize="14">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius"
+                                Value="20" />
+                    </Style>
+                </Button.Resources>
             </Button>
 
             <!-- Main container -->
@@ -75,6 +71,7 @@
                             Width="150"
                             CornerRadius="150"
                             RenderTransformOrigin="0.5,0.5">
+
                         <Border.Background>
                             <ImageBrush ImageSource="{Binding PodcastImageUrl.Value}"
                                         RenderOptions.BitmapScalingMode="HighQuality"
@@ -130,6 +127,54 @@
 
                     </Grid.ColumnDefinitions>
 
+                    <!-- On focus and un-focused animation -->
+                    <Grid.Triggers>
+                        <!-- On focus -->
+                        <EventTrigger RoutedEvent="GotFocus"
+                                      SourceName="SearchBox">
+                            <BeginStoryboard>
+                                <Storyboard>
+
+                                    <DoubleAnimation Storyboard.TargetName="SearchBarBorder"
+                                                     Storyboard.TargetProperty="Opacity"
+                                                     To="1"
+                                                     Duration="0:0:0.2" />
+
+                                    <DoubleAnimation Storyboard.TargetName="SearchBarBorder"
+                                                     Storyboard.TargetProperty="Width"
+                                                     To="300"
+                                                     Duration="0:0:0.2">
+                                        <DoubleAnimation.EasingFunction>
+                                            <CircleEase EasingMode="EaseOut" />
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                        <!-- On search pressed -->
+                        <EventTrigger RoutedEvent="Button.Click"
+                                      SourceName="SearchButton">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetName="SearchBarBorder"
+                                                     Storyboard.TargetProperty="Opacity"
+                                                     To="0.9"
+                                                     Duration="0:0:0.2" />
+
+                                    <DoubleAnimation Storyboard.TargetName="SearchBarBorder"
+                                                     Storyboard.TargetProperty="Width"
+                                                     To="200"
+                                                     Duration="0:0:0.2">
+                                        <DoubleAnimation.EasingFunction>
+                                            <CircleEase EasingMode="EaseOut" />
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Grid.Triggers>
+
                     <!-- Sökfält -->
                     <Border Grid.Column="0"
                             Background="White"
@@ -137,51 +182,8 @@
                             Padding="10,5"
                             Height="40"
                             Width="200"
+                            x:Name="SearchBarBorder"
                             Effect="{StaticResource ShadowEffect}">
-
-                        <!-- On focus and un-focused animation -->
-                        <Border.Triggers>
-                            <!-- On focus -->
-                            <EventTrigger RoutedEvent="GotFocus"
-                                          SourceName="SearchBox">
-                                <BeginStoryboard>
-                                    <Storyboard>
-
-                                        <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                                         To="1"
-                                                         Duration="0:0:0.2" />
-
-                                        <DoubleAnimation Storyboard.TargetProperty="Width"
-                                                         To="300"
-                                                         Duration="0:0:0.2">
-                                            <DoubleAnimation.EasingFunction>
-                                                <CircleEase EasingMode="EaseOut" />
-                                            </DoubleAnimation.EasingFunction>
-                                        </DoubleAnimation>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-
-                            <!-- On un-focused -->
-                            <EventTrigger RoutedEvent="LostFocus"
-                                          SourceName="SearchBox">
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                                         To="0.9"
-                                                         Duration="0:0:0.2" />
-
-                                        <DoubleAnimation Storyboard.TargetProperty="Width"
-                                                         To="200"
-                                                         Duration="0:0:0.2">
-                                            <DoubleAnimation.EasingFunction>
-                                                <CircleEase EasingMode="EaseOut" />
-                                            </DoubleAnimation.EasingFunction>
-                                        </DoubleAnimation>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                        </Border.Triggers>
 
                         <TextBox SnapsToDevicePixels="True"
                                  x:Name="SearchBox"
@@ -210,6 +212,17 @@
                                 Click="SearchButton_Click">
                             <!-- Ikon -->
                             🔍
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border CornerRadius="20"
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}">
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
                         </Button>
                     </Border>
 
@@ -221,12 +234,25 @@
                             Height="25"
                             Effect="{StaticResource ShadowEffect}"
                             VerticalAlignment="Center">
+
                         <Button Background="Transparent"
                                 BorderThickness="0"
                                 Padding="0"
                                 Cursor="Hand"
                                 Foreground="Black"
                                 Click="FilterButton_Click">
+
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border CornerRadius="17"
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}">
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
 
                             <StackPanel Orientation="Horizontal"
                                         HorizontalAlignment="Center">
@@ -247,9 +273,13 @@
                     </Border>
                 </Grid>
 
+
+                <!-- On searching animation -->
+
+
                 <!-- Result Container -->
                 <ItemsControl Grid.Row="2"
-                              ItemsSource="{Binding ResultsList}"
+                              ItemsSource="{Binding ResultsList,IsAsync=True}"
                               HorizontalAlignment="Center"
                               Background="Transparent"
                               MaxWidth="1100"
@@ -261,7 +291,15 @@
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
 
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type models:Episode}">
+                            <views:EpisodeView />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
                 </ItemsControl>
+
+
             </Grid>
         </Grid>
     </ScrollViewer>

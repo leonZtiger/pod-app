@@ -11,14 +11,14 @@ namespace pod_app.DataLayer
     {
         Task<bool> PodExistsAsync(string id);
 
-        Task<List<PodFlow>> GetAllPodFlowsAsync();
+        Task<List<Podcast>> GetAllPodFlowsAsync();
 
         // C
-        Task AddNewPodAsync(PodFlow pod);
+        Task AddNewPodAsync(Podcast pod);
         // R
-        Task<PodFlow?> GetPodFlowAsync(string id);
+        Task<Podcast?> GetPodFlowAsync(string id);
         // U
-        Task<bool> UpdatePodFlowAsync(PodFlow updatedFlow);
+        Task<bool> UpdatePodFlowAsync(Podcast updatedFlow);
         // D
         Task DeletePodFlowAsync(string id);
     }
