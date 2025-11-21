@@ -7,11 +7,11 @@ using Xunit;
 
 namespace UnitTests
 {
-    public class MongoDbServiceAsyncTests
+    public class MongoDbRepositoryAsyncTests
     {
         private readonly IPodcastRepositoryAsync service;
 
-        public MongoDbServiceAsyncTests()
+        public MongoDbRepositoryAsyncTests()
         {
            
             service = new PodcastRepositoryInMemoryAsync();
