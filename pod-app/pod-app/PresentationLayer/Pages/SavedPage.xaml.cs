@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using pod_app.PresentationLayer.Views;
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace pod_app.PresentationLayer.Pages
 {
@@ -20,9 +11,39 @@ namespace pod_app.PresentationLayer.Pages
     /// </summary>
     public partial class SavedPage : Page
     {
+        private Frame parentFrame;
+
+      
         public SavedPage()
         {
             InitializeComponent();
         }
+
+       
+        public SavedPage(Frame parentFrame) : this()
+        {
+            this.parentFrame = parentFrame;
+        }
+
+        private void BtnFilter_Click(object sender, RoutedEventArgs e)
+        {
+            BtnFilter.ContextMenu.IsOpen = true;
+        }
+
+        private void FilterItem_Click(object sender, RoutedEventArgs e)
+        {
+            // Filtreringslogik
+        }
+
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        {
+            parentFrame.Navigate(MainWindow.homePage);
+        }
+
+        private void podViewControl_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
+
