@@ -36,12 +36,12 @@ namespace pod_app.BusinessLogicLayer
         /// </summary>
         /// <param name="XML_str">The complete XML document in raw format.</param>
         /// <returns>The parsed Xml items to a single podcast feed.</returns>
-        public static PodFlow GetPodFeedFromXML(string XML_str)
+        public static Podcast GetPodFeedFromXML(string XML_str)
         {
             XDocument xmlReader = XDocument.Parse(XML_str);
 
-            PodFlow podFeed = new PodFlow();
-            podFeed.Podcasts = new();
+            Podcast podFeed = new Podcast();
+            podFeed.Episodes = new();
             // Read all items
             if (xmlReader.Root != null)
             {
@@ -70,7 +70,7 @@ namespace pod_app.BusinessLogicLayer
                     string? category = item.Element("category")?.Value;
                     string? episode = item.Element(itunes + "episode")?.Value;
 
-                    podFeed.Podcasts.Add(MapStrings(title, desc, image, release, duration, url, category, episode));
+                    podFeed.Episodes.Add(MapStrings(title, desc, image, release, duration, url, category, episode));
                 }
             }
 
@@ -89,7 +89,7 @@ namespace pod_app.BusinessLogicLayer
         /// <param name="url"></param>
         /// <param name="category"></param>
         /// <returns>The created podcast model object</returns>
-        public static PodModel MapStrings(string? title, string? desc, string? image, string? release, string? duration, string? url, string? category, string? episode)
+        public static Episode MapStrings(string? title, string? desc, string? image, string? release, string? duration, string? url, string? category, string? episode)
         {
             // Parse duration from seconds as string to string of hour:minute
             if (int.TryParse(duration, out var duration_int))
@@ -103,9 +103,8 @@ namespace pod_app.BusinessLogicLayer
 
             bool validEpisode = int.TryParse(episode, out var episodeId);
 
-            PodModel pod = new PodModel()
+            Episode pod = new Episode()
             {
-                Id = GeneratePodId(title, desc, image, release, duration, url, category),
                 Title = title ?? "Unknown",
                 Description = desc ?? "No description",
                 ImageUrl = image ?? "",
@@ -113,8 +112,7 @@ namespace pod_app.BusinessLogicLayer
                 Duration = duration ?? "Unknown",
                 Category = category ?? "Unknown",
                 URL = url ?? "",
-                IsSaved = false,
-                Episode = validEpisode ? episodeId : 1
+                EpisodeNum = validEpisode ? episodeId : 1
             };
             return pod;
         }

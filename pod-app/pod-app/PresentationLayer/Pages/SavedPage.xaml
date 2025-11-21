@@ -97,7 +97,7 @@
         <Border Grid.Row="1"
                 Margin="40,0,40,30"
                 Padding="20">
-            <views:PodView x:Name="podViewControl"
+            <views:EpisodeView x:Name="podViewControl"
                            Margin="10"/>
         </Border>
     </Grid>

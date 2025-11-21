@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="pod_app.PresentationLayer.Views.PodView"
+﻿<UserControl x:Class="pod_app.PresentationLayer.Views.EpisodeView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -135,7 +135,7 @@
                     Width="100"
                     CornerRadius="12">
                 <Border.Background>
-                    <ImageBrush ImageSource="{Binding PodModel.ImageUrl}"
+                    <ImageBrush ImageSource="{Binding ImageUrl}"
                                 RenderOptions.BitmapScalingMode="HighQuality"
                                 d:ImageSource="https://hips.hearstapps.com/clv.h-cdn.co/assets/16/18/gettyimages-586890581.jpg?crop=0.668xw:1.00xh;0.219xw,0" />
                 </Border.Background>
@@ -170,42 +170,7 @@
                                FontSize="15"
                                Grid.Column="0"
                                Style="{StaticResource TextStyle}"
-                               Text="{Binding PodModel.Title}" />
-
-                    <!-- Like button -->
-                    <Button Grid.Column="1"
-                            Click="OnLikeClicked">
-                        <!-- Change image based on the state of IsSaved -->
-                        <Button.Style>
-                            <Style TargetType="Button"
-                                   BasedOn="{StaticResource IconButtonStyle}">
-                                <Style.Triggers>
-                                    <!-- On saved -->
-                                    <DataTrigger Binding="{Binding PodModel.IsSaved}"
-                                                 Value="True">
-                                        <Setter Property="Content">
-                                            <Setter.Value>
-                                                <Image RenderOptions.BitmapScalingMode="Fant"
-                                                       Source="/PresentationLayer/Views/Assets/heart_fill.png" />
-                                            </Setter.Value>
-                                        </Setter>
-                                    </DataTrigger>
-
-                                    <!-- On not saved -->
-                                    <DataTrigger Binding="{Binding PodModel.IsSaved}"
-                                                 Value="False">
-                                        <Setter Property="Content">
-                                            <Setter.Value>
-                                                <Image RenderOptions.BitmapScalingMode="Fant"
-                                                       Source="/PresentationLayer/Views/Assets/heart_no_fill.png" />
-                                            </Setter.Value>
-                                        </Setter>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                    </Button>
-
+                               Text="{Binding Title}" />
                 </Grid>
 
                 <!-- Description -->
@@ -213,7 +178,7 @@
                            d:Text="In this episode Joe Rogan takes shrooms and trip while the MMA fighter Islam Makhachev talks about how to do a safe-guard."
                            Grid.Row="1"
                            Style="{StaticResource TextStyle}"
-                           Text="{Binding PodModel.Description}" />
+                           Text="{Binding Description}" />
 
                 <!-- Metadata and links -->
                 <Grid Grid.Row="2"
@@ -234,7 +199,7 @@
                                Foreground="White"
                                Grid.Column="0"
                                VerticalAlignment="Center"
-                               Text="{Binding PodModel.ReleaseDate, StringFormat={}{0:d MMM yyyy}}" />
+                               Text="{Binding ReleaseDate, StringFormat={}{0:d MMM yyyy}}" />
                     <!-- Duration -->
                     <TextBlock d:Text="2hrs 20min"
                                FontSize="12"
@@ -242,13 +207,34 @@
                                Foreground="White"
                                Grid.Column="1"
                                VerticalAlignment="Center"
-                               Text="{Binding PodModel.Duration}" />
+                               Text="{Binding Duration}" />
                     <!-- Link -->
                     <Button Click="OnOpenLinkClicked"
                             Grid.Column="2"
                             Style="{StaticResource IconButtonStyle}">
                         <Image RenderOptions.BitmapScalingMode="Fant"
-                               Source="/PresentationLayer/Views/Assets/share.png" />
+                               Source="/PresentationLayer/Views/Assets/share.png">
+                           
+                            <!-- Only show link image if url exist -->
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Visibility"
+                                            Value="Visible" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding URL}"
+                                                     Value="">
+                                            <Setter Property="Visibility"
+                                                    Value="Collapsed" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding URL}"
+                                                     Value="{x:Null}">
+                                            <Setter Property="Visibility"
+                                                    Value="Collapsed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
                     </Button>
                 </Grid>
             </Grid>

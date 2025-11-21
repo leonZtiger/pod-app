@@ -30,7 +30,7 @@ namespace pod_app.DataLayer
 
         }
 
-        public void PushFeed(PodFlow feed)
+        public void PushFeed(Podcast feed)
         {
             feedCollection.InsertOne(feed);
         }
@@ -38,53 +38,36 @@ namespace pod_app.DataLayer
 
         public void DeleteFeed(PodFlow feed)
         {
-            FilterDefinition<PodFlow> filter = new ObjectFilterDefinition<PodFlow>(feed);
+            FilterDefinition<Podcast> filter = new ObjectFilterDefinition<Podcast>(feed);
 
             feedCollection.DeleteOne(filter);
         }
 
-        public void DeletePod(PodModel pod)
+        public void DeletePod(Episode pod)
         {
-            FilterDefinition<PodModel> filter = new ObjectFilterDefinition<PodModel>(pod);
+            FilterDefinition<Episode> filter = new ObjectFilterDefinition<Episode>(pod);
 
             podcastCollection.DeleteOne(filter);
         }
 
-        public List<PodFlow> GetAllFeeds()
+        public List<Podcast> GetAllFeeds()
         {
-            return feedCollection.Find(Builders<PodFlow>.Filter.Empty).ToList();
+            return feedCollection.Find(Builders<Podcast>.Filter.Empty).ToList();
         }
 
-        public void PushPod(PodModel pod)
+        public void PushPod(Episode pod)
         {
             podcastCollection.InsertOne(pod);
         }
 
-        public PodFlow? GetFeed(string id)
+        public Podcast? GetFeed(string id)
         {
             return feedCollection.Find(f => f.Id == id).FirstOrDefault();
         }
 
-        public PodModel? GetPodcast(string id)
-        {
-            return podcastCollection.Find(f => f.Id == id).FirstOrDefault();
+      
 
-        }
-
-        public void UpdateModel(PodModel model)
-        {
-            FilterDefinition<PodModel> filter = Builders<PodModel>.Filter.Eq("_id", ObjectId.Parse(model.Id));
-
-            ReplaceOneResult res =  podcastCollection.ReplaceOne(filter, model);
-
-            // No docs found throw key not found
-            if(res.MatchedCount == 0)
-            {
-                throw new KeyNotFoundException("Could not find MongoDb document with Specified key.");
-            }
-        }
-
-        public List<PodModel> GetPodcasts(PodFlow feed)
+        public List<Episode> GetPodcasts(Podcast feed)
         {
             throw new NotImplementedException();
         }
