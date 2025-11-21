@@ -17,6 +17,8 @@ namespace pod_app.DataLayer
 
         Task PushFeedAsync(PodFlow feed);
 
+        Task UpdateFeedAsync(PodFlow feed);
+
         Task DeleteFeedAsync(PodFlow feed);
 
         

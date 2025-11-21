@@ -44,16 +44,21 @@ namespace pod_app.DataLayer
 
         public async Task<PodFlow?> GetFeedAsync(string id)
         {
+            var filter = Builders<PodFlow>.Filter.Eq(f => f.Id, id);
+            return await feedCollection.Find(filter).FirstOrDefaultAsync();
+        }
+
+        public async Task UpdateFeedAsync(PodFlow feed)
+        {
             using var session = await client.StartSessionAsync();
             session.StartTransaction();
 
             try
             {
-                var filter = Builders<PodFlow>.Filter.Eq(f => f.Id, id);
-                var feed = await feedCollection.Find(filter).FirstOrDefaultAsync();
+                var filter = Builders<PodFlow>.Filter.Eq(f => f.Id, feed.Id);
+                await feedCollection.ReplaceOneAsync(session, filter, feed);
 
                 await session.CommitTransactionAsync();
-                return feed;
             }
             catch
             {
@@ -61,6 +66,7 @@ namespace pod_app.DataLayer
                 throw;
             }
         }
+
 
 
         public async Task DeleteFeedAsync(PodFlow feed)
@@ -86,6 +92,7 @@ namespace pod_app.DataLayer
             catch
             {
                 await session.AbortTransactionAsync();
+                throw;
 
 
             }
@@ -93,24 +100,11 @@ namespace pod_app.DataLayer
 
         public async Task<List<PodFlow>> GetAllFeedsAsync()
         {
-            using var session = await client.StartSessionAsync();
-            session.StartTransaction();
-
-            try
-            {
-                var feeds = await feedCollection
-                    .Find(Builders<PodFlow>.Filter.Empty)
-                    .ToListAsync();
-
-                await session.CommitTransactionAsync();
-                return feeds;
-            }
-            catch
-            {
-                await session.AbortTransactionAsync();
-                throw;
-            }
+            return await feedCollection
+                .Find(Builders<PodFlow>.Filter.Empty)
+                .ToListAsync();
         }
+
 
 
         public Task<List<PodModel>> GetPodcastsAsync(PodFlow feed)

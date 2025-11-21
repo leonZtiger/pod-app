@@ -35,29 +35,13 @@ namespace pod_app.BusinessLogicLayer
         public async Task PushFeedAsync(PodFlow feed)
         {
             var feeds = await podcastRepo.GetAllFeedsAsync();
-           
+
             if (!feeds.Any(f => f.Id == feed.Id))
             {
                 await podcastRepo.PushFeedAsync(feed);
             }
-           
+
         }
-
-        public async Task MoveFeedAsync(PodFlow fromFeed, PodFlow toFeed)
-        {
-            if (fromFeed is null) throw new ArgumentNullException(nameof(fromFeed));
-            if (toFeed is null) throw new ArgumentNullException(nameof(toFeed));
-
-            await PushFeedAsync(toFeed);
-
-            var prev = await podcastRepo.GetFeedAsync(fromFeed.Id);
-
-            if (prev != null)
-            {
-                await podcastRepo.DeleteFeedAsync(prev);
-            }
-        }
-
 
         public async Task DeleteFeedAsync(PodFlow feed)
         {
