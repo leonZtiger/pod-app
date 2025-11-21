@@ -20,46 +20,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
 
-/*
- 
-  <!-- Like button-->
-                    <Button Grid.Column="1"
-                            Click="OnLikeClicked">
-                        <!-- Change image based on the state of IsSaved -->
-                        <Button.Style>
-                            <Style TargetType="Button"
-                                   BasedOn="{StaticResource IconButtonStyle}">
-                                <Style.Triggers>
-                                    <!-- On saved -->
-                                    <DataTrigger Binding="{Binding PodModel.IsSaved}"
-                                                 Value="True">
-                                        <Se
-                                            tter Property="Content">
-                                            <Se.Value>
-                                                <Image RenderOptions.BitmapScalingMode="Fant"
-                                                       Source="/PresentationLayer/Views/Assets/heart_fill.png" />
-                                            </Se.Value>
-                                        </Se>
-                                    </DataTrigger>
-
-                                    <!-- On not saved -->
-                                    <DataTrigger Binding="{Binding PodModel.IsSaved}"
-                                                 Value="False">
-                                        <Setter Property="Content">
-                                            <Setter.Value>
-                                                <Image RenderOptions.BitmapScalingMode="Fant"
-                                                       Source="/PresentationLayer/Views/Assets/heart_no_fill.png" />
-                                            </Setter.Value>
-                                        </Setter>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                    </Button>
-
- 
- */
-
 namespace pod_app.PresentationLayer.Pages
 {
     /// <summary>
