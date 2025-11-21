@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:pod_app"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Icon="/PresentationLayer/Views/Assets/appIcon.ico"
+        Title="Smultron AB" Height="450" Width="800">
 
     <Grid Background="Black">
         <Frame NavigationUIVisibility="Hidden" Name="mainFrame" Content="" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>

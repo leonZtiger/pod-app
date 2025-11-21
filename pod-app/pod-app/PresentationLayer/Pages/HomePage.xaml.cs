@@ -30,9 +30,11 @@ namespace pod_app.PresentationLayer.Pages
         private Frame parentFrame;
         public ObservableString PodcastImageUrl { get; set; }
         public ObservableString PodcastTitle { get; set; }
+        public ObservableString PodcastGenre { get; set; }
+        public ObservableString PodcastDescription { get; set; }
 
         private Podcast? currentPodcastFeed;
-        public BindingList<Episode> ResultsList { get; set; }   
+        public ObservableCollection<Episode> ResultsList { get; set; }
         private bool isLoadingMore = false;
         private bool IsSearching { get; set; } = false;
         public HomePage()
@@ -41,6 +43,8 @@ namespace pod_app.PresentationLayer.Pages
             ResultsList = new();
             PodcastImageUrl = new();
             PodcastTitle = new();
+            PodcastGenre = new();
+            PodcastDescription = new();
             this.DataContext = this;
         }
 
@@ -69,6 +73,8 @@ namespace pod_app.PresentationLayer.Pages
             ResultsList.Clear();
             PodcastImageUrl.Value = "";
             PodcastTitle.Value = "";
+            PodcastDescription.Value = "";
+            PodcastGenre.Value = "";
             currentPodcastFeed = null;
             IsSearching = true;
             try
@@ -81,7 +87,8 @@ namespace pod_app.PresentationLayer.Pages
                 PodcastImageUrl.Value = feed.ImageUrl;
                 PodcastTitle.Value = feed.Category;
                 currentPodcastFeed = feed;
-
+                PodcastDescription.Value = feed.About;
+                PodcastGenre.Value = feed.Genre;
                 LoadNextPage();
             }
             catch (Exception ex)
