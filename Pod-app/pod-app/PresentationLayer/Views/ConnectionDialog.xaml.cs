@@ -40,7 +40,7 @@ namespace pod_app.PresentationLayer.Views
             {
                 MainWindow.podcastManager = new(new PodcastServiceMongoDb(Input));
                 // Test if connection is alive
-                MainWindow.podcastManager.GetAllFeeds();
+                MainWindow.podcastManager.GetAllFeedsAsync();
                 Close();
             }
             catch (Exception ex)

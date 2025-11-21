@@ -15,7 +15,7 @@ namespace pod_app.Models
     /// release date, url for the actual podcast site,
     /// category and a per-user defined isSaved field.
     /// </summary>
-    public class PodModel 
+    public class Episode 
     {
         public string PodcastFeedId { get; set; } = default!;
         public string Title { get; set; } = default!;
@@ -25,7 +25,6 @@ namespace pod_app.Models
         public string Duration { get; set; } = default!;
         public string URL { get; set; } = default!;
         public string Category { get; set; } = default!;
-        public bool IsSaved { get; set; } = default!;
-        public int Episode { get; set; } = default;
+        public int EpisodeNum { get; set; } = default;
     }
 }

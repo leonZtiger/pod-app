@@ -59,14 +59,14 @@ public class RssUtilHelperTest
 </root>";
 
         // Act
-        PodFlow result = RssUtilHelpers.GetPodFeedFromXML(xml);
+        Podcast result = RssUtilHelpers.GetPodFeedFromXML(xml);
 
         // Assert
         Assert.NotNull(result);
-        Assert.NotNull(result.Podcasts);
-        Assert.Equal(2, result.Podcasts.Count);
+        Assert.NotNull(result.Episodes);
+        Assert.Equal(2, result.Episodes.Count);
 
-        var first = result.Podcasts[0];
+        var first = result.Episodes[0];
         Assert.Equal("Episode 1", first.Title);
         Assert.Equal("First ep desc", first.Description);
         Assert.Equal("https://example.com/img1.jpg", first.ImageUrl);
@@ -76,7 +76,7 @@ public class RssUtilHelperTest
         Assert.Equal("https://example.com/ep1", first.URL);
         Assert.False(first.IsSaved);
 
-        var second = result.Podcasts[1];
+        var second = result.Episodes[1];
         Assert.Equal("Episode 2", second.Title);
         Assert.Equal("Second ep desc", second.Description);
         Assert.Equal("https://example.com/img2.jpg", second.ImageUrl);
@@ -99,11 +99,11 @@ public class RssUtilHelperTest
 </root>";
 
         // Act
-        PodFlow result = RssUtilHelpers.GetPodFeedFromXML(xml);
+        Podcast result = RssUtilHelpers.GetPodFeedFromXML(xml);
 
         // Assert
-        Assert.Single(result.Podcasts);
-        var pod = result.Podcasts[0];
+        Assert.Single(result.Episodes);
+        var pod = result.Episodes[0];
 
         Assert.Equal("Only title", pod.Title);
         Assert.Equal("No description", pod.Description);

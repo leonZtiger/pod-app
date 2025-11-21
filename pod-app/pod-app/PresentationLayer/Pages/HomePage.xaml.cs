@@ -4,6 +4,7 @@ using pod_app.PresentationLayer.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -67,21 +68,17 @@ namespace pod_app.PresentationLayer.Pages
     public partial class HomePage : Page
     {
         private Frame parentFrame;
-        private ObservableCollection<PodView> resultsList;
         public ObservableString PodcastImageUrl { get; set; }
         public ObservableString PodcastTitle { get; set; }
 
-        private PodFlow? currentPodcastFeed;
-        public ObservableCollection<PodView> ResultsList
-        {
-            get { return resultsList; }
-            set { resultsList = value; }
-        }
-
+        private Podcast? currentPodcastFeed;
+        public BindingList<Episode> ResultsList { get; set; }   
+        private bool isLoadingMore = false;
+        private bool IsSearching { get; set; } = false;
         public HomePage()
         {
             InitializeComponent();
-            resultsList = new ObservableCollection<PodView>();
+            ResultsList = new();
             PodcastImageUrl = new();
             PodcastTitle = new();
             this.DataContext = this;
@@ -109,46 +106,39 @@ namespace pod_app.PresentationLayer.Pages
             }
 
             // Clear previus results
-            resultsList.Clear();
+            ResultsList.Clear();
             PodcastImageUrl.Value = "";
             PodcastTitle.Value = "";
+            currentPodcastFeed = null;
+            IsSearching = true;
             try
             {
                 // Start search
                 var xmlStr = await RssUtilHelpers.GetRssXMLFile(query);
-
-                // Parse on background thread
+                // Get podcast
                 var feed = await Task.Run(() => RssUtilHelpers.GetPodFeedFromXML(xmlStr));
 
                 PodcastImageUrl.Value = feed.ImageUrl;
                 PodcastTitle.Value = feed.Category;
+                currentPodcastFeed = feed;
 
-                if (feed.Podcasts.Count == 0)
-                {
-                    // 
-                    return;
-                }
-
-                // Create all episode views
-                foreach (var item in feed.Podcasts)
-                {
-                    ResultsList.Add(new PodView(item));
-                }
-
+                LoadNextPage();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+            IsSearching = false;
         }
+
 
         private void PodcastFeed_LikeClicked(object sender, EventArgs e)
         {
-            var p = sender as PodView;
+            var p = sender as EpisodeView;
 
             if (p is not null && MainWindow.podcastManager is not null && currentPodcastFeed is not null)
             {
-                MainWindow.podcastManager.PushPod(p.PodModel, currentPodcastFeed);
+                MainWindow.podcastManager.PushPodcast(currentPodcastFeed);
             }
             else if (MainWindow.podcastManager is null)
             {
@@ -159,6 +149,39 @@ namespace pod_app.PresentationLayer.Pages
         private void FilterButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void ScrollContainer_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            var sv = sender as ScrollViewer;
+
+            // only react when scrolling down
+            if (e.VerticalChange <= 0) return;
+
+            if (isLoadingMore) return;
+
+            // if 150px near bottom preload next page
+            if (sv.VerticalOffset + sv.ViewportHeight >= sv.ExtentHeight - 150)
+            {
+                isLoadingMore = true;
+
+                LoadNextPage();
+
+                isLoadingMore = false;
+            }
+        }
+
+        private void LoadNextPage()
+        {
+            if (currentPodcastFeed is null || currentPodcastFeed.Episodes is null || currentPodcastFeed.Episodes.Count == 0) return;
+
+            int alreadyLoaded = ResultsList.Count;
+            int toTake = Math.Min(20, currentPodcastFeed.Episodes.Count - alreadyLoaded);
+
+            for (int i = 0; i < toTake; i++)
+            {
+                ResultsList.Add(currentPodcastFeed.Episodes[alreadyLoaded + i]);
+            }
         }
     }
 }

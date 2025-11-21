@@ -11,14 +11,14 @@ namespace pod_app.Models
     /// <summary>
     /// 
     /// </summary>
-    public class PodFlow
+    public class Podcast
     {    
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }   
 
         [BsonIgnore]
-        public List<PodModel> Podcasts { get; set; } // Filled by separated logic.
+        public List<Episode> Episodes { get; set; } // Filled by separated logic.
 
         [BsonElement("url")]
         public string Url { get; set; }

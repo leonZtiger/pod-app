@@ -21,38 +21,28 @@ namespace pod_app.PresentationLayer.Views
     /// <summary>
     /// Interaction logic for PodView.xaml
     /// </summary>
-    public partial class PodView : UserControl
+    public partial class EpisodeView : UserControl
     {
-        private PodModel podModel;
-        public PodModel PodModel { get; set; }
-
-        private event EventHandler LikeClicked;
-        public event PropertyChangedEventHandler? PropertyChanged;
-
+     
         /// <summary>
         /// Only used to initialize for tests. For actual use, please use <code> PodView(EventHandler LikeClicked, PodModel podModel)</code>.
         /// </summary>
-        public PodView()
+        public EpisodeView()
         {
             InitializeComponent();
         }
 
-        public PodView(PodModel podModel)
-        {
-            InitializeComponent();
-            this.podModel = podModel;
-            DataContext = this;
-        }
 
         private void OnOpenLinkClicked(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(podModel.URL))
+            if (string.IsNullOrEmpty((this.DataContext as Episode).URL))
             {
                 return;
             }
+
             Process.Start(new ProcessStartInfo
             {
-                FileName = podModel.URL,
+                FileName = (DataContext as Episode).URL,
                 UseShellExecute = true
             });
         }
