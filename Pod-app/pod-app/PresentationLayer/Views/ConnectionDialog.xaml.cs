@@ -12,7 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MongoDB.Driver;
-using pod_app.Service;
+using pod_app.DataLayer;
+
 
 namespace pod_app.PresentationLayer.Views
 {
@@ -38,7 +39,7 @@ namespace pod_app.PresentationLayer.Views
             // Try to create new manager
             try
             {
-                MainWindow.podcastManager = new(new PodcastServiceMongoDb(Input));
+                MainWindow.podcastManager = new(new MongoDbRepository(Input));
                 // Test if connection is alive
                 MainWindow.podcastManager.GetAllFeedsAsync();
                 Close();

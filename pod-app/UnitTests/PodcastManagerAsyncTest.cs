@@ -24,18 +24,18 @@ namespace UnitTests
         public async Task GetAllFeedsAsync_ReturnsAllFeeds()
         {
             
-            var feed1 = new PodFlow
+            var feed1 = new Podcast
             {
                 Id = Guid.NewGuid().ToString(),
                 Category = "Tech",
-                Podcasts = new List<PodModel>()
+                Episodes = new List<Episode>()
             };
 
-            var feed2 = new PodFlow
+            var feed2 = new Podcast
             {
                 Id = Guid.NewGuid().ToString(),
                 Category = "News",
-                Podcasts = new List<PodModel>()
+                Episodes = new List<Episode>()
             };
 
             await repo.PushFeedAsync(feed1);
@@ -58,11 +58,11 @@ namespace UnitTests
             var startFeeds = await manager.GetAllFeedsAsync();
             int baseCount = startFeeds.Count;
 
-            var feed = new PodFlow
+            var feed = new Podcast
             {
                 Id = Guid.NewGuid().ToString(),
                 Category = "NewCategory",
-                Podcasts = new List<PodModel>()
+                Episodes = new List<Episode>()
             };
 
            
@@ -80,11 +80,11 @@ namespace UnitTests
             
             var feedId = Guid.NewGuid().ToString();
 
-            var feed = new PodFlow
+            var feed = new Podcast
             {
                 Id = feedId,
                 Category = "DuplicateTest",
-                Podcasts = new List<PodModel>()
+                Episodes = new List<Episode>()
             };
 
             await manager.PushFeedAsync(feed);
@@ -103,11 +103,11 @@ namespace UnitTests
         public async Task DeleteFeedAsync_RemovesFeed()
         {
            
-            var feed = new PodFlow
+            var feed = new Podcast
             {
                 Id = Guid.NewGuid().ToString(),
                 Category = "DeleteCategory",
-                Podcasts = new List<PodModel>()
+                Episodes = new List<Episode>()
             };
 
             await manager.PushFeedAsync(feed);

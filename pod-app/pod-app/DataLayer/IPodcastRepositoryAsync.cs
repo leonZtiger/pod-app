@@ -9,17 +9,15 @@ namespace pod_app.DataLayer
 {
     public interface IPodcastRepositoryAsync
     {
-        Task<List<PodFlow>> GetAllFeedsAsync();
+        Task<List<Podcast>> GetAllFeedsAsync();
 
-        Task<PodFlow?> GetFeedAsync(string id);
-        
-        Task<List<PodModel>> GetPodcastsAsync(PodFlow feed);
+        Task<Podcast?> GetFeedAsync(string id);
+       
+        Task PushFeedAsync(Podcast feed);
 
-        Task PushFeedAsync(PodFlow feed);
+        Task UpdateFeedAsync(Podcast feed);
 
-        Task UpdateFeedAsync(PodFlow feed);
-
-        Task DeleteFeedAsync(PodFlow feed);
+        Task DeleteFeedAsync(Podcast feed);
 
         
 

@@ -8,39 +8,39 @@ namespace pod_app.DataLayer
 {
     public class PodcastRepositoryInMemoryAsync : IPodcastRepositoryAsync
     {
-        private readonly List<PodFlow> feedCollection = new();
-        private readonly List<PodModel> podcastCollection = new();
+        private readonly List<Podcast> feedCollection = new();
+        private readonly List<Episode> podcastCollection = new();
 
-        
 
-        public Task<List<PodFlow>> GetAllFeedsAsync()
+
+        public Task<List<Podcast>> GetAllFeedsAsync()
         {
-           
+
             foreach (var feed in feedCollection)
             {
-                feed.Podcasts = podcastCollection
+                feed.Episodes = podcastCollection
                     .Where(p => p.PodcastFeedId == feed.Id)
                     .ToList();
             }
 
-            
+
             return Task.FromResult(feedCollection.ToList());
         }
 
-        public Task<PodFlow?> GetFeedAsync(string id)
+        public Task<Podcast?> GetFeedAsync(string id)
         {
             var feed = feedCollection.FirstOrDefault(f => f.Id == id);
             if (feed == null)
-                return Task.FromResult<PodFlow?>(null);
+                return Task.FromResult<Podcast?>(null);
 
-            feed.Podcasts = podcastCollection
+            feed.Episodes = podcastCollection
                 .Where(p => p.PodcastFeedId == feed.Id)
                 .ToList();
 
-            return Task.FromResult<PodFlow?>(feed);
+            return Task.FromResult<Podcast?>(feed);
         }
 
-        public Task<List<PodModel>> GetPodcastsAsync(PodFlow feed)
+        public Task<List<Episode>> GetPodcastsAsync(Podcast feed)
         {
             var pods = podcastCollection
                 .Where(p => p.PodcastFeedId == feed.Id)
@@ -49,7 +49,7 @@ namespace pod_app.DataLayer
             return Task.FromResult(pods);
         }
 
-        public Task PushFeedAsync(PodFlow feed)
+        public Task PushFeedAsync(Podcast feed)
         {
             if (feed == null)
                 throw new ArgumentNullException(nameof(feed));
@@ -57,9 +57,9 @@ namespace pod_app.DataLayer
             if (string.IsNullOrWhiteSpace(feed.Id))
                 feed.Id = Guid.NewGuid().ToString();
 
-            feed.Podcasts ??= new List<PodModel>();
+            feed.Episodes ??= new List<Episode>();
 
-            
+
             if (!feedCollection.Any(f => f.Id == feed.Id))
             {
                 feedCollection.Add(feed);
@@ -68,7 +68,7 @@ namespace pod_app.DataLayer
             return Task.CompletedTask;
         }
 
-        public Task UpdateFeedAsync(PodFlow feed)
+        public Task UpdateFeedAsync(Podcast feed)
         {
             if (feed == null)
                 throw new ArgumentNullException(nameof(feed));
@@ -80,18 +80,18 @@ namespace pod_app.DataLayer
                 throw new KeyNotFoundException("Could not find feed with specified id.");
             }
 
-         
+
             feedCollection[index] = feed;
 
             return Task.CompletedTask;
         }
 
-        public Task DeleteFeedAsync(PodFlow feed)
+        public Task DeleteFeedAsync(Podcast feed)
         {
             if (feed == null)
                 throw new ArgumentNullException(nameof(feed));
 
-            
+
             podcastCollection.RemoveAll(p => p.PodcastFeedId == feed.Id);
 
             feedCollection.RemoveAll(f => f.Id == feed.Id);
@@ -99,27 +99,5 @@ namespace pod_app.DataLayer
             return Task.CompletedTask;
         }
 
-        
-        public Task PushPodAsync(PodModel pod)
-        {
-            if (pod == null)
-                throw new ArgumentNullException(nameof(pod));
-            if (string.IsNullOrWhiteSpace(pod.PodcastFeedId))
-                throw new InvalidOperationException("PodcastFeedId must be set.");
-
-            if (string.IsNullOrWhiteSpace(pod.Id))
-                pod.Id = Guid.NewGuid().ToString();
-
-            podcastCollection.Add(pod);
-
-            var feed = feedCollection.FirstOrDefault(f => f.Id == pod.PodcastFeedId);
-            if (feed != null)
-            {
-                feed.Podcasts ??= new List<PodModel>();
-                feed.Podcasts.Add(pod);
-            }
-
-            return Task.CompletedTask;
-        }
     }
 }

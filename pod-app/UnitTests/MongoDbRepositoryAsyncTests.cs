@@ -25,16 +25,16 @@ namespace UnitTests
             int base_count = before.Count;
 
            
-            var feed1 = new PodFlow
+            var feed1 = new Podcast
             {
                 Category = "Tech",
-                Podcasts = new List<PodModel>()
+                Episodes = new List<Episode>()
             };
 
-            var feed2 = new PodFlow
+            var feed2 = new Podcast
             {
                 Category = "News",
-                Podcasts = new List<PodModel>()
+                Episodes = new List<Episode>()
             };
 
             await service.PushFeedAsync(feed1);
@@ -58,10 +58,10 @@ namespace UnitTests
         public async Task TestGetFeedAsync()
         {
             
-            var feed = new PodFlow
+            var feed = new Podcast
             {
                 Category = "Music",
-                Podcasts = new List<PodModel>()
+                Episodes = new List<Episode>()
             };
 
             await service.PushFeedAsync(feed);
@@ -85,10 +85,10 @@ namespace UnitTests
         public async Task TestPushFeedAsync()
         {
          
-            var feed = new PodFlow
+            var feed = new Podcast
             {
                 Category = "Comedy",
-                Podcasts = new List<PodModel>()
+                Episodes = new List<Episode>()
             };
 
             await service.PushFeedAsync(feed);
@@ -106,10 +106,10 @@ namespace UnitTests
         public async Task TestDeleteFeedAsync()
         {
             
-            var feed = new PodFlow
+            var feed = new Podcast
             {
                 Category = "DeleteMe",
-                Podcasts = new List<PodModel>()
+                Episodes = new List<Episode>()
             };
 
             await service.PushFeedAsync(feed);

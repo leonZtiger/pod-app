@@ -13,8 +13,8 @@ namespace pod_app.DataLayer
     public class MongoDbRepository : IPodcastRepository
     {
         
-        private readonly IMongoCollection<PodFlow> feedCollection;
-        private readonly IMongoCollection<PodModel> podcastCollection;
+        private readonly IMongoCollection<Podcast> feedCollection;
+        private readonly IMongoCollection<Episode> podcastCollection;
 
         public MongoDbRepository(string connection_str)
         {
@@ -25,8 +25,8 @@ namespace pod_app.DataLayer
 
             var client = new MongoClient(settings);
      
-            feedCollection = client.GetDatabase("Smultron-storage").GetCollection<PodFlow>("Podcasts");
-            podcastCollection = client.GetDatabase("Smultron-storage").GetCollection<PodModel>("Episodes");
+            feedCollection = client.GetDatabase("Smultron-storage").GetCollection<Podcast>("Podcasts");
+            podcastCollection = client.GetDatabase("Smultron-storage").GetCollection<Episode>("Episodes");
 
         }
 
@@ -36,7 +36,7 @@ namespace pod_app.DataLayer
         }
 
 
-        public void DeleteFeed(PodFlow feed)
+        public void DeleteFeed(Podcast feed)
         {
             FilterDefinition<Podcast> filter = new ObjectFilterDefinition<Podcast>(feed);
 

@@ -20,19 +20,22 @@ namespace pod_app.BusinessLogicLayer
             this.podcastRepo = podcastRepo ?? throw new ArgumentNullException(nameof(podcastRepo)); ;
         }
 
-        public async Task<List<PodFlow>> GetAllFeedsAsync()
+        public async Task<List<Podcast>> GetAllFeedsAsync()
         {
-            var feeds = await podcastRepo.GetAllFeedsAsync();
+            var feeds = await podcastRepo.GetAllFeedsAsync(); 
 
-            foreach (var feed in feeds)
+            foreach (var i in feeds)
             {
-                feed.Podcasts = await podcastRepo.GetPodcastsAsync(feed);
+                i.Episodes = RssUtilHelpers.GetPodFeedFromXML(
+                    await RssUtilHelpers.GetRssXMLFile(i.Url)
+                ).Episodes;
             }
 
             return feeds;
         }
 
-        public async Task PushFeedAsync(PodFlow feed)
+
+        public async Task PushFeedAsync(Podcast feed)
         {
             var feeds = await podcastRepo.GetAllFeedsAsync();
 
@@ -43,10 +46,10 @@ namespace pod_app.BusinessLogicLayer
 
         }
 
-        public async Task DeleteFeedAsync(PodFlow feed)
+        public async Task DeleteFeedAsync(Podcast feed)
         {
            
-            feed.Podcasts.Clear();
+            feed.Episodes.Clear();
 
           
             await podcastRepo.DeleteFeedAsync(feed);

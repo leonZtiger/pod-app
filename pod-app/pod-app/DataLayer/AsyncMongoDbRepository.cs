@@ -10,8 +10,8 @@ namespace pod_app.DataLayer
     public class MongoDbRepositoryAsync : IPodcastRepositoryAsync
     {
         private readonly MongoClient client;
-        private readonly IMongoCollection<PodFlow> feedCollection;
-        private readonly IMongoCollection<PodModel> podcastCollection;
+        private readonly IMongoCollection<Podcast> feedCollection;
+        private readonly IMongoCollection<Episode> podcastCollection;
 
         public MongoDbRepositoryAsync(string connection_str)
         {
@@ -21,11 +21,11 @@ namespace pod_app.DataLayer
             client = new MongoClient(settings);
 
             var database = client.GetDatabase("Smultron-storage");
-            feedCollection = database.GetCollection<PodFlow>("Podcasts");
-            podcastCollection = database.GetCollection<PodModel>("Episodes");
+            feedCollection = database.GetCollection<Podcast>("Podcasts");
+            podcastCollection = database.GetCollection<Episode>("Episodes");
         }
 
-        public async Task PushFeedAsync(PodFlow feed)
+        public async Task PushFeedAsync(Podcast feed)
         {
             using var session = await client.StartSessionAsync();
             session.StartTransaction();
@@ -42,20 +42,20 @@ namespace pod_app.DataLayer
             }
         }
 
-        public async Task<PodFlow?> GetFeedAsync(string id)
+        public async Task<Podcast?> GetFeedAsync(string id)
         {
-            var filter = Builders<PodFlow>.Filter.Eq(f => f.Id, id);
+            var filter = Builders<Podcast>.Filter.Eq(f => f.Id, id);
             return await feedCollection.Find(filter).FirstOrDefaultAsync();
         }
 
-        public async Task UpdateFeedAsync(PodFlow feed)
+        public async Task UpdateFeedAsync(Podcast feed)
         {
             using var session = await client.StartSessionAsync();
             session.StartTransaction();
 
             try
             {
-                var filter = Builders<PodFlow>.Filter.Eq(f => f.Id, feed.Id);
+                var filter = Builders<Podcast>.Filter.Eq(f => f.Id, feed.Id);
                 await feedCollection.ReplaceOneAsync(session, filter, feed);
 
                 await session.CommitTransactionAsync();
@@ -69,14 +69,14 @@ namespace pod_app.DataLayer
 
 
 
-        public async Task DeleteFeedAsync(PodFlow feed)
+        public async Task DeleteFeedAsync(Podcast feed)
         {
             using var session = await client.StartSessionAsync();
             session.StartTransaction();
 
             try
             {
-                var filter = Builders<PodFlow>.Filter.Eq(f => f.Id, feed.Id);
+                var filter = Builders<Podcast>.Filter.Eq(f => f.Id, feed.Id);
                 var result = await feedCollection.DeleteOneAsync(session, filter);
 
 
@@ -98,18 +98,20 @@ namespace pod_app.DataLayer
             }
         }
 
-        public async Task<List<PodFlow>> GetAllFeedsAsync()
+        public async Task<List<Podcast>> GetAllFeedsAsync()
         {
             return await feedCollection
-                .Find(Builders<PodFlow>.Filter.Empty)
+                .Find(Builders<Podcast>.Filter.Empty)
                 .ToListAsync();
         }
 
 
 
-        public Task<List<PodModel>> GetPodcastsAsync(PodFlow feed)
+        public Task<List<Episode>> GetPodcastsAsync(Podcast feed)
         {
             throw new NotImplementedException();
         }
+
+        
     }
 }

@@ -30,7 +30,7 @@ namespace pod_app.DataLayer
         /// <exception cref="ArgumentNullException">If feed is null.</exception>
         /// <exception cref="InvalidOperationException">If a feed with the same Id already exists.</exception>
         /// <exception cref="TimeoutException">If writing to storage fails.</exception>
-        void PushFeed (PodFlow feed);
+        void PushFeed (Podcast feed);
 
         /// <summary>
         /// Deletes the specified feed.
