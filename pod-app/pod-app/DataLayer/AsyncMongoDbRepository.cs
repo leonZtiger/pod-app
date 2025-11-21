@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace pod_app.DataLayer
 {
-    public class MongoDbRepositoryAsync
+    public class MongoDbRepositoryAsync : IPodcastRepositoryAsync
     {
         private readonly MongoClient client;
         private readonly IMongoCollection<PodFlow> feedCollection;
@@ -25,7 +25,7 @@ namespace pod_app.DataLayer
             podcastCollection = database.GetCollection<PodModel>("Episodes");
         }
 
-        public async Task AddFeedAsync(PodFlow feed)
+        public async Task PushFeedAsync(PodFlow feed)
         {
             using var session = await client.StartSessionAsync();
             session.StartTransaction();
@@ -41,6 +41,27 @@ namespace pod_app.DataLayer
                 throw;
             }
         }
+
+        public async Task<PodFlow?> GetFeedAsync(string id)
+        {
+            using var session = await client.StartSessionAsync();
+            session.StartTransaction();
+
+            try
+            {
+                var filter = Builders<PodFlow>.Filter.Eq(f => f.Id, id);
+                var feed = await feedCollection.Find(filter).FirstOrDefaultAsync();
+
+                await session.CommitTransactionAsync();
+                return feed;
+            }
+            catch
+            {
+                await session.AbortTransactionAsync();
+                throw;
+            }
+        }
+
 
         public async Task DeleteFeedAsync(PodFlow feed)
         {
@@ -70,42 +91,19 @@ namespace pod_app.DataLayer
             }
         }
 
-            
-        public async Task AddPodAsync(PodModel pod)
+        public async Task<List<PodFlow>> GetAllFeedsAsync()
         {
             using var session = await client.StartSessionAsync();
             session.StartTransaction();
 
             try
             {
-                await podcastCollection.InsertOneAsync(session, pod);
-                await session.CommitTransactionAsync();
-            }
-
-            catch
-            {
-                await session.AbortTransactionAsync();
-                throw;
-            }
-        }
-
-        public async Task DeletePodAsync(PodModel pod)
-        {
-            using var session = await client.StartSessionAsync();
-            session.StartTransaction();
-
-            try
-            {
-                var filter = Builders<PodModel>.Filter.Eq(p => p.Id, pod.Id);
-                var result = await podcastCollection.DeleteOneAsync(session, filter);
-
-                if (result.DeletedCount == 0)
-                {
-                    await session.AbortTransactionAsync();
-                    throw new KeyNotFoundException("No pod found with specified Id.");
-                }
+                var feeds = await feedCollection
+                    .Find(Builders<PodFlow>.Filter.Empty)
+                    .ToListAsync();
 
                 await session.CommitTransactionAsync();
+                return feeds;
             }
             catch
             {
@@ -115,35 +113,9 @@ namespace pod_app.DataLayer
         }
 
 
-        public async Task UpdateModelAsync(PodModel model)
+        public Task<List<PodModel>> GetPodcastsAsync(PodFlow feed)
         {
-            using var session = await client.StartSessionAsync();
-            session.StartTransaction();
-
-            try
-            {
-                var filter = Builders<PodModel>.Filter.Eq("_id", ObjectId.Parse(model.Id));
-
-                var res = await podcastCollection.ReplaceOneAsync(session, filter, model);
-
-                if (res.MatchedCount == 0)
-                {
-                    await session.AbortTransactionAsync();
-                    throw new KeyNotFoundException("Could not find MongoDB document with specified key.");
-                }
-
-                await session.CommitTransactionAsync();
-            }
-            catch
-            {
-                await session.AbortTransactionAsync();
-                throw;
-            }
+            throw new NotImplementedException();
         }
-
-
-        
-
-       
     }
 }
