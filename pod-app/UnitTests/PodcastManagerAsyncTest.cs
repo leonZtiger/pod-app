@@ -1,126 +1,141 @@
-﻿using pod_app.BusinessLogicLayer;
+﻿using Microsoft.VisualStudio.TestPlatform.Utilities;
+using pod_app.BusinessLogicLayer;
 using pod_app.DataLayer;
 using pod_app.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace UnitTests
 {
+
+
+    using Xunit;
+    using Xunit.Abstractions;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     public class PodcastManagerAsyncTests
     {
+        private readonly ITestOutputHelper output;
         private readonly PodcastRepositoryInMemoryAsync repo;
         private readonly PodcastManagerAsync manager;
 
-        public PodcastManagerAsyncTests()
+        public PodcastManagerAsyncTests(ITestOutputHelper output)
         {
-            
+            this.output = output;
+
             repo = new PodcastRepositoryInMemoryAsync();
             manager = new PodcastManagerAsync(repo);
+
+            repo.Seed(
+                new Podcast { Id = "1", Category = "Tech" },
+                new Podcast { Id = "2", Category = "News" },
+                new Podcast { Id = "3", Category = "Tech" },
+                new Podcast { Id = "4", Category = "  Sport  " },
+                new Podcast { Id = "5", Category = "" }
+            );
         }
 
         [Fact]
-        public async Task GetAllFeedsAsync_ReturnsAllFeeds()
+        public async Task GetAllCategoriesAsync_ReturnsDistinctSortedList()
         {
+            // Act
+            var categories = await manager.GetAllCategoriesAsync();
+
+            // Debug-utskrift
             
-            var feed1 = new Podcast
-            {
-                Id = Guid.NewGuid().ToString(),
-                Category = "Tech",
-                Episodes = new List<Episode>()
-            };
+            foreach (var c in categories)
+                output.WriteLine($"- {c}");
 
-            var feed2 = new Podcast
-            {
-                Id = Guid.NewGuid().ToString(),
-                Category = "News",
-                Episodes = new List<Episode>()
-            };
-
-            await repo.PushFeedAsync(feed1);
-            await repo.PushFeedAsync(feed2);
-
-         
-            var feeds = await manager.GetAllFeedsAsync();
-
-            
-            Assert.NotNull(feeds);
-            Assert.Equal(2, feeds.Count);
-            Assert.Contains(feeds, f => f.Category == "Tech");
-            Assert.Contains(feeds, f => f.Category == "News");
+            // Assert
+            Assert.NotNull(categories);
+            Assert.Equal(3, categories.Count);
+            Assert.Equal(new List<string> { "News", "Sport", "Tech" }, categories);
         }
 
         [Fact]
-        public async Task PushFeedAsync_AddsNewFeed_WhenItDoesNotExist()
+        public async Task AddCategoryToPodcastAsync_UpdatesCategory_WhenPodcastExists()
         {
-          
-            var startFeeds = await manager.GetAllFeedsAsync();
-            int baseCount = startFeeds.Count;
+            // Arrange
+            repo.Seed(
+                new Podcast { Id = "10", Category = "OldCategory" }
+            );
 
-            var feed = new Podcast
-            {
-                Id = Guid.NewGuid().ToString(),
-                Category = "NewCategory",
-                Episodes = new List<Episode>()
-            };
+            // Act
+            await manager.AddCategoryToPodcastAsync("10", "  Skräck  ");
 
-           
-            await manager.PushFeedAsync(feed);
+            var updated = await repo.GetFeedAsync("10");
 
-           
-            var feeds = await manager.GetAllFeedsAsync();
-            Assert.Equal(baseCount + 1, feeds.Count);
-            Assert.Contains(feeds, f => f.Id == feed.Id && f.Category == "NewCategory");
+            // Debug-utskrift
+            output.WriteLine($"Podcast ID: {updated?.Id}");
+            output.WriteLine($"Kategori efter uppdatering: '{updated?.Category}'");
+
+            // Assert
+            Assert.NotNull(updated);
+            Assert.Equal("Skräck", updated!.Category);
+
         }
 
         [Fact]
-        public async Task PushFeedAsync_DoesNotDuplicateExistingFeed()
+        public async Task RenameCategoryAsync_UpdatesAllMatchingCategories()
         {
+            // Arrange — seed
+            repo.Seed(
+                new Podcast { Id = "1", Category = "Tech" },
+                new Podcast { Id = "2", Category = "News" },
+                new Podcast { Id = "3", Category = "Tech" }
+            );
+
+            // Act
+            await manager.RenameCategoryAsync("Tech", "Technology");
+
+            // Assert + utskrift
+            var p1 = await repo.GetFeedAsync("1");
+            var p2 = await repo.GetFeedAsync("2");
+            var p3 = await repo.GetFeedAsync("3");
+
             
-            var feedId = Guid.NewGuid().ToString();
+            output.WriteLine($"Podcast 1 kategori: {p1?.Category}");
+            output.WriteLine($"Podcast 2 kategori: {p2?.Category}");
+            output.WriteLine($"Podcast 3 kategori: {p3?.Category}");
 
-            var feed = new Podcast
-            {
-                Id = feedId,
-                Category = "DuplicateTest",
-                Episodes = new List<Episode>()
-            };
-
-            await manager.PushFeedAsync(feed);
-
-           
-            await manager.PushFeedAsync(feed);
-
-            
-            var feeds = await manager.GetAllFeedsAsync();
-            var matches = feeds.FindAll(f => f.Id == feedId);
-
-            Assert.Single(matches);
+            Assert.Equal("Technology", p1!.Category);
+            Assert.Equal("News", p2!.Category);              
+            Assert.Equal("Technology", p3!.Category);
         }
-
         [Fact]
-        public async Task DeleteFeedAsync_RemovesFeed()
+        public async Task DeleteCategoryAsync_RemovesCategoryFromAllMatchingPodcasts()
         {
-           
-            var feed = new Podcast
-            {
-                Id = Guid.NewGuid().ToString(),
-                Category = "DeleteCategory",
-                Episodes = new List<Episode>()
-            };
+            // Arrange
+            repo.Seed(
+                new Podcast { Id = "1", Category = "Tech" },
+                new Podcast { Id = "2", Category = "News" },
+                new Podcast { Id = "3", Category = "Tech" }
+            );
 
-            await manager.PushFeedAsync(feed);
-            var before = await manager.GetAllFeedsAsync();
-            Assert.Contains(before, f => f.Id == feed.Id);
+            // Act
+            await manager.DeleteCategoryAsync("Tech");
 
-         
-            await manager.DeleteFeedAsync(feed);
+            var p1 = await repo.GetFeedAsync("1");
+            var p2 = await repo.GetFeedAsync("2");
+            var p3 = await repo.GetFeedAsync("3");
 
+            // Debug-output
             
-            var after = await manager.GetAllFeedsAsync();
-            Assert.DoesNotContain(after, f => f.Id == feed.Id);
+            output.WriteLine($"Podcast 1 kategori: {(p1?.Category == null ? "null" : p1.Category)}");
+            output.WriteLine($"Podcast 2 kategori: {(p2?.Category == null ? "null" : p2.Category)}");
+            output.WriteLine($"Podcast 3 kategori: {(p3?.Category == null ? "null" : p3.Category)}");
+
+            Assert.Null(p1!.Category);
+            Assert.Equal("News", p2!.Category);
+            Assert.Null(p3!.Category);
+
         }
+
+
     }
 }
 

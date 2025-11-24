@@ -99,5 +99,12 @@ namespace pod_app.DataLayer
             return Task.CompletedTask;
         }
 
+        public void Seed(params Podcast[] items)
+        {
+            feedCollection.Clear();
+            feedCollection.AddRange(items);
+        }
     }
+
 }
+
