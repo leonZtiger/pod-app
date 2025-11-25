@@ -2,7 +2,6 @@
 using pod_app.DataLayer;
 using pod_app.Models;
 using pod_app.PresentationLayer.Views;
-using pod_app.Service;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -40,11 +39,11 @@ namespace pod_app.PresentationLayer.Pages
 
 
 
-        private void LoadPodFlows()
+        private async void LoadPodFlows()
         {
             try
             {
-                var feeds = _manager.GetAllFeeds();  // HÄR HÄMTAR VI FRÅN DATABASEN
+                var feeds = await _manager.GetAllFeedsAsync();  // HÄR HÄMTAR VI FRÅN DATABASEN
                 PodListControl.ItemsSource = feeds;
             }
             catch (Exception ex)
@@ -60,7 +59,7 @@ namespace pod_app.PresentationLayer.Pages
 
         private void OnFeedClicked(object sender, MouseButtonEventArgs e)
         {
-            var feed = (sender as FrameworkElement)?.DataContext as PodFlow;
+            var feed = (sender as FrameworkElement)?.DataContext as Podcast;
             if (feed == null) return;
 
             feed.IsExpanded = !feed.IsExpanded;

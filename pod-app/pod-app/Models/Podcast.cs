@@ -23,6 +23,10 @@ namespace pod_app.Models
         public string? Description { get; set; }
         public string? Category { get; set; }
 
+        [BsonIgnore]
+        public bool IsExpanded { get; set; } = false;
+
+
 
 
         [BsonIgnore]
