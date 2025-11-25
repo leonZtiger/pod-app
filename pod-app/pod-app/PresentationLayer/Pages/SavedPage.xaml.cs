@@ -1,11 +1,14 @@
-﻿using pod_app.DataLayer;
+﻿using pod_app.BusinessLogicLayer;
+using pod_app.DataLayer;
+using pod_app.Models;
 using pod_app.PresentationLayer.Views;
 using pod_app.Service;
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Navigation;
-using pod_app.Models;
+
 
 
 namespace pod_app.PresentationLayer.Pages
@@ -15,54 +18,53 @@ namespace pod_app.PresentationLayer.Pages
     /// </summary>
     public partial class SavedPage : Page
     {
-        private  IPodcastDataService? _service;
+        private readonly PodcastManager _manager;
+        private readonly Frame? parentFrame;
 
-        private Frame? parentFrame;
 
-
-        public SavedPage()
+        public SavedPage(PodcastManager manager)
 
         {
             InitializeComponent();
-            /// _service = new PodcastServiceMongoDb("mongodb+srv://<YOUR-CONNECTION-STRING>");
-            _service = null;
+            _manager = manager;
             LoadPodFlows();
 
         }
 
 
-        public SavedPage(Frame parentFrame) : this()
+        public SavedPage( PodcastManager manager, Frame parentFrame) : this(manager)
         {
             this.parentFrame = parentFrame;
         }
+
+
 
 
         private void LoadPodFlows()
         {
             try
             {
-                if (_service == null)
-                {
-                    PodListControl.ItemsSource = Array.Empty<PodModel>();
-                    return;
-                }
-
-                List<PodFlow> feeds = _service.GetAllFeeds();
-                List<PodModel> allEpisodes = new();
-
-                foreach (var feed in feeds)
-                {
-                    List<PodModel> episodes = _service.GetPodcasts(feed);
-                    if (episodes != null)
-                        allEpisodes.AddRange(episodes);
-                }
-
-                PodListControl.ItemsSource = allEpisodes;
+                var feeds = _manager.GetAllFeeds();  // HÄR HÄMTAR VI FRÅN DATABASEN
+                PodListControl.ItemsSource = feeds;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Kunde inte hämta poddar: {ex.Message}");
+                MessageBox.Show("Kunde inte hämta sparade poddar: " + ex.Message);
             }
+        }
+
+
+
+
+
+
+        private void OnFeedClicked(object sender, MouseButtonEventArgs e)
+        {
+            var feed = (sender as FrameworkElement)?.DataContext as PodFlow;
+            if (feed == null) return;
+
+            feed.IsExpanded = !feed.IsExpanded;
+            PodListControl.Items.Refresh();
         }
 
 

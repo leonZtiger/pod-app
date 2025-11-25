@@ -15,13 +15,22 @@ namespace pod_app.Models
     {    
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }   
+        public string? Id { get; set; }
+
+        public string? Title { get; set; }
+        public string? ImageUrl { get; set; }
+        public string? Description { get; set; }
+        public string? Category { get; set; }
+
+
 
         [BsonIgnore]
         public List<PodModel> Podcasts { get; set; }
 
-        [BsonElement("category")]
-        public string Category { get; set; }
-    
+
+
+        public bool IsExpanded { get; set; } = false;
+
+
     }
 }
