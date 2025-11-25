@@ -34,14 +34,14 @@ namespace pod_app.PresentationLayer.Views
             this.DataContext = this;
         }
 
-        private void Connect_Click(object sender, RoutedEventArgs e)
+        private async void  Connect_Click(object sender, RoutedEventArgs e)
         {
             // Try to create new manager
             try
             {
-                MainWindow.podcastManager = new(new MongoDbRepository(Input));
+                MainWindow.podcastManager = new(new MongoDbRepositoryAsync(Input));
                 // Test if connection is alive
-                MainWindow.podcastManager.GetAllFeedsAsync();
+                await MainWindow.podcastManager.GetAllFeedsAsync();
                 Close();
             }
             catch (Exception ex)
@@ -67,7 +67,7 @@ namespace pod_app.PresentationLayer.Views
 
         private void Continue_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.podcastManager = new(new PodcastServiceInMemory());
+            MainWindow.podcastManager = new(new PodcastRepositoryInMemoryAsync());
             Close();
         }
     }

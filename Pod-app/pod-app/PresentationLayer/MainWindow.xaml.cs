@@ -22,7 +22,7 @@ namespace pod_app
     {
         public static HomePage? homePage = null;
         public static SavedPage? savedPage = null;
-        public static PodcastManager? podcastManager;
+        public static PodcastManagerAsync? podcastManager;
         public MainWindow()
         {
             InitializeComponent();
