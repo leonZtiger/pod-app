@@ -20,24 +20,24 @@ namespace pod_app.Models
         public string Id { get; set; }   
 
         [BsonIgnore]
-        public List<Episode> Episodes { get; set; } // Filled by separated logic.
+        public List<Episode> Episodes { get; set; } // Filled by RssUtilHelpers.GetPodFeedFromXML
 
         [BsonElement("url")]
         public string Url { get; set; }
 
         [BsonIgnore]
-        public string ImageUrl { get; set; }
+        public string ImageUrl { get; set; } // Filled by RssUtilHelpers.GetPodFeedFromXML
 
         [BsonElement("category")]
         public string Category { get; set; }
 
         [BsonIgnore]
-        public string About { get; set; }
+        public string About { get; set; } // Filled by RssUtilHelpers.GetPodFeedFromXML
 
         [BsonElement("title")]
         public string Title { get; set; }
         
         [BsonIgnore]
-        public string Genre { get; set; }
+        public string Genre { get; set; } // Filled by RssUtilHelpers.GetPodFeedFromXML
     }
 }

@@ -15,7 +15,7 @@
 
     <Page.Resources>
         <DropShadowEffect x:Key="ShadowEffect"
-                          Color="#5f0f0f"
+                          Color="#0f0f0f"
                           BlurRadius="15"
                           ShadowDepth="0"
                           Opacity="1" />

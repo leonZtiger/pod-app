@@ -60,7 +60,8 @@ namespace pod_app.BusinessLogicLayer
                                     .Element("image")?
                                     .Element("url")?
                                     .Value ?? "PresentationLayer\\Views\\Assets\\NoImage.png";
-
+                
+                podFeed.Genre = channel?.Element(itunes + "category")?.Attribute("text")?.Value ?? "";
 
                 // Create a podcast model per item and push to podFeed
                 foreach (var item in xmlReader.Descendants("item"))

@@ -33,7 +33,7 @@ namespace pod_app.PresentationLayer.Pages
         public ObservableString PodcastCategory { get; set; }
         public ObservableString PodcastDescription { get; set; }
 
-        private readonly int ItemsPerPage = 10;
+        private readonly int ItemsPerPage = 7;
 
         private Podcast? currentPodcastFeed;
         public ObservableCollection<Episode> ResultsList { get; set; }
@@ -155,7 +155,12 @@ namespace pod_app.PresentationLayer.Pages
 
         private void OnPodcastLike_Click(object sender, RoutedEventArgs e)
         {
+            if (MainWindow.podcastManager is null)
+                MainWindow.InitDbManager();
 
+            if (currentPodcastFeed is not null && MainWindow.podcastManager is not null)
+                MainWindow.podcastManager.PushPodcast(currentPodcastFeed);
+            
         }
     }
 }
