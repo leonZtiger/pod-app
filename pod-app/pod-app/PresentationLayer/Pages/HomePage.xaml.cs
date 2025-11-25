@@ -150,5 +150,10 @@ namespace pod_app.PresentationLayer.Pages
                 ResultsList.Add(currentPodcastFeed.Episodes[alreadyLoaded + i]);
             }
         }
+
+        private void OnPodcastLike_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

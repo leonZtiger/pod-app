@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Channels;
 using System.Xml;
 using System.Xml.Linq;
@@ -105,10 +106,12 @@ namespace pod_app.BusinessLogicLayer
 
             bool validEpisode = int.TryParse(episode, out var episodeId);
 
+            string desc_formated = Regex.Replace(desc ?? "No description", @"<[^>]*>", String.Empty);
+
             Episode pod = new Episode()
             {
                 Title = title ?? "Unknown",
-                Description = desc ?? "No description",
+                Description = desc_formated,
                 ImageUrl = image ?? "",
                 ReleaseDate = release != null ? DateTime.Parse(release) : DateTime.MinValue,
                 Duration = duration ?? "Unknown",
