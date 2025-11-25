@@ -15,7 +15,7 @@
 
     <Page.Resources>
         <DropShadowEffect x:Key="ShadowEffect"
-                          Color="Black"
+                          Color="#0f0f0f"
                           BlurRadius="15"
                           ShadowDepth="0"
                           Opacity="1" />
@@ -257,19 +257,19 @@
                     <!-- Only show on results -->
                     <Border.Style>
                         <Style TargetType="Border">
-                            <Setter Property="Visibility" Value="Visible"/>
-                            <Style.Triggers >
+                            <Setter Property="Visibility"
+                                    Value="Visible" />
+                            <Style.Triggers>
                                 <DataTrigger Binding="{Binding ResultsList.Count}"
                                              Value="0">
                                     <Setter Property="Visibility"
                                             Value="Hidden" />
                                 </DataTrigger>
-                               
+
                             </Style.Triggers>
                         </Style>
                     </Border.Style>
-                    
-                    
+
                     <Grid HorizontalAlignment="Stretch">
 
                         <Grid.ColumnDefinitions>
@@ -285,7 +285,6 @@
                                 Margin="10"
                                 Padding="10"
                                 Width="90"
-                                
                                 CornerRadius="10">
                             <Border.Background>
                                 <ImageBrush ImageSource="{Binding PodcastImageUrl.Value}"
@@ -295,20 +294,70 @@
                         </Border>
 
                         <!-- Podcast overview -->
-                        <Grid Grid.Column="1">
+                        <Grid Grid.Column="1" Margin="0 10">
 
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="1*" />
                                 <RowDefinition Height="2*" />
                                 <RowDefinition Height="1*" />
-
                             </Grid.RowDefinitions>
 
-                            <TextBlock d:Text="Test title about podcat"
-                                       Foreground="White"
-                                       FontSize="20"
-                                       Grid.Row="0"
-                                       Text="{Binding PodcastTitle.Value}" />
+                            <!-- Title and like button container -->
+                            <Grid Grid.Row="0"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <!-- Title column -->
+                                    <ColumnDefinition Width="7*" />
+                                    <!-- Like column -->
+                                    <ColumnDefinition Width="3*" />
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Title -->
+                                <TextBlock d:Text="Podcast test title"
+                                           Foreground="White"
+                                           FontSize="15"
+                                           Grid.Column="0"
+                                           Text="{Binding PodcastTitle.Value}" />
+
+                                <!-- Like button -->
+                                <Button Grid.Column="1"
+                                        Width="30"
+                                        HorizontalAlignment="Right"
+                                        Margin="0 0 10 0"
+                                        BorderBrush="Transparent"
+                                        Background="Transparent"
+                                        Click="OnPodcastLike_Click">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Image x:Name="img"
+                                                   Source="/PresentationLayer/Views/Assets/heart_fill.png"
+                                                   RenderOptions.BitmapScalingMode="Fant" />
+
+                                            <ControlTemplate.Triggers>
+
+                                                <!-- On hover -->
+                                                <Trigger Property="IsMouseOver"
+                                                         Value="True">
+                                                    <Setter TargetName="img"
+                                                            Property="Opacity"
+                                                            Value="0.7" />
+                                                </Trigger>
+
+                                                <!-- On click -->
+                                                <Trigger Property="IsPressed"
+                                                         Value="True">
+                                                    <Setter TargetName="img"
+                                                            Property="Opacity"
+                                                            Value="0.5" />
+                                                </Trigger>
+
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+
+                            </Grid>
 
                             <TextBlock d:Text="Test title about podcat"
                                        Foreground="Gray"
@@ -331,12 +380,12 @@
                                             <Setter Property="Visibility"
                                                     Value="Visible" />
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding PodcastGenre.Value}"
+                                                <DataTrigger Binding="{Binding PodcastCategory.Value}"
                                                              Value="">
                                                     <Setter Property="Visibility"
                                                             Value="Hidden" />
                                                 </DataTrigger>
-                                                <DataTrigger Binding="{Binding PodcastGenre.Value}"
+                                                <DataTrigger Binding="{Binding PodcastCategory.Value}"
                                                              Value="{x:Null}">
                                                     <Setter Property="Visibility"
                                                             Value="Hidden" />
@@ -349,7 +398,7 @@
                                            Grid.Row="2"
                                            FontSize="15"
                                            d:Text="Krim, Humor"
-                                           Text="{Binding PodcastGenre.Value}" />
+                                           Text="{Binding PodcastCategory.Value}" />
 
 
                             </StackPanel>

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:pod_app"
         mc:Ignorable="d"
         Icon="/PresentationLayer/Views/Assets/appIcon.ico"
-        Title="Smultron AB" Height="450" Width="800">
+        Title="Smultron Appen" Height="450" Width="800">
 
     <Grid Background="Black">
         <Frame NavigationUIVisibility="Hidden" Name="mainFrame" Content="" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
