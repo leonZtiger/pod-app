@@ -1,10 +1,12 @@
-﻿using System.Net;
+﻿using pod_app.Models;
+using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Channels;
 using System.Xml;
 using System.Xml.Linq;
-using pod_app.Models;
 
 namespace pod_app.BusinessLogicLayer
 {
@@ -34,26 +36,45 @@ namespace pod_app.BusinessLogicLayer
         /// </summary>
         /// <param name="XML_str">The complete XML document in raw format.</param>
         /// <returns>The parsed Xml items to a single podcast feed.</returns>
-        public static PodFlow GetPodFeedFromXML(string XML_str)
+        public static Podcast GetPodFeedFromXML(string XML_str)
         {
             XDocument xmlReader = XDocument.Parse(XML_str);
-            PodFlow podFeed = new PodFlow();
-            podFeed.Podcasts = new();
+
+            Podcast podFeed = new Podcast();
+            podFeed.Episodes = new();
             // Read all items
             if (xmlReader.Root != null)
+            {
+                // Used for itunes custom xml tags
+                XNamespace itunes = "http://www.itunes.com/dtds/podcast-1.0.dtd";
+
+                var channel = xmlReader.Root?.Element("channel");
+                // Get show title
+                podFeed.Category = channel?.Element("title")?.Value ?? "Unknown";
+                podFeed.About = channel?.Element("description")?.Value ?? "No description found.";
+                podFeed.Genre = channel?.Element(itunes + "category")?.Attribute("text")?.Value ?? "";
+                // Get show image
+                podFeed.ImageUrl = channel?
+                                    .Element("image")?
+                                    .Element("url")?
+                                    .Value ?? "PresentationLayer\\Views\\Assets\\NoImage.png";
+
+
                 // Create a podcast model per item and push to podFeed
-                foreach (var item in xmlReader.Root.Elements("item"))
+                foreach (var item in xmlReader.Descendants("item"))
                 {
                     string? title = item.Element("title")?.Value;
                     string? desc = item.Element("description")?.Value;
-                    string? image = item.Element("image")?.Value;
+                    string? image = item.Element(itunes + "image")?.Attribute("href")?.Value ?? "PresentationLayer\\Views\\Assets\\NoImage.png";
                     string? release = item.Element("pubDate")?.Value;
-                    string? duration = item.Element("duration")?.Value;
+                    string? duration = item.Element(itunes + "duration")?.Value;
                     string? url = item.Element("link")?.Value;
                     string? category = item.Element("category")?.Value;
+                    string? episode = item.Element(itunes + "episode")?.Value;
 
-                    podFeed.Podcasts.Add(MapStrings(title, desc, image, release, duration, url, category));
+                    podFeed.Episodes.Add(MapStrings(title, desc, image, release, duration, url, category, episode));
                 }
+            }
 
             return podFeed;
         }
@@ -70,12 +91,22 @@ namespace pod_app.BusinessLogicLayer
         /// <param name="url"></param>
         /// <param name="category"></param>
         /// <returns>The created podcast model object</returns>
-        public static PodModel MapStrings(string? title, string? desc, string? image, string? release, string? duration, string? url, string? category)
+        public static Episode MapStrings(string? title, string? desc, string? image, string? release, string? duration, string? url, string? category, string? episode)
         {
-
-            PodModel pod = new PodModel()
+            // Parse duration from seconds as string to string of hour:minute
+            if (int.TryParse(duration, out var duration_int))
             {
-                Id = GeneratePodId(title, desc, image, release, duration, url, category),
+                if (duration_int < TimeSpan.MaxValue.TotalSeconds)
+                {
+                    TimeSpan time = TimeSpan.FromSeconds(duration_int);
+                    duration = time.ToString(@"hh\:mm");
+                }
+            }
+
+            bool validEpisode = int.TryParse(episode, out var episodeId);
+
+            Episode pod = new Episode()
+            {
                 Title = title ?? "Unknown",
                 Description = desc ?? "No description",
                 ImageUrl = image ?? "",
@@ -83,7 +114,7 @@ namespace pod_app.BusinessLogicLayer
                 Duration = duration ?? "Unknown",
                 Category = category ?? "Unknown",
                 URL = url ?? "",
-                IsSaved = false
+                EpisodeNum = validEpisode ? episodeId : 1
             };
             return pod;
         }
@@ -119,7 +150,33 @@ namespace pod_app.BusinessLogicLayer
             }
             // TODO: MD5 returns a 128 bit hash, but we cast it for now since c# dont support long longs.
             // This highers the risk of collisions but for now is fixed to 64 bits.
-            return string.Format("{0:X}",BitConverter.ToUInt64(MD5.Create().ComputeHash(Encoding.ASCII.GetBytes(hash_src))));
+            return string.Format("{0:X}", BitConverter.ToUInt64(MD5.Create().ComputeHash(Encoding.ASCII.GetBytes(hash_src))));
+        }
+
+        /// <summary>
+        /// Check whether the format of the URL matches that of a valid xml file.
+        /// </summary>
+        /// <param name="url">The URL to validate.</param>
+        /// <returns>True if valid url, false otherwise.</returns>
+        public static bool IsvalidXmlUrl(string? url)
+        {
+            if (string.IsNullOrWhiteSpace(url))
+                return false;
+
+            // Try to parse as an absolute URI
+            if (!Uri.TryCreate(url, UriKind.Absolute, out var uri))
+                return false;
+
+            // Only allow
+            if (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps)
+                return false;
+
+            // Check that the path ends with .xml
+            /*  var ext = Path.GetExtension(uri.AbsolutePath);
+              if (!ext.Equals(".xml", StringComparison.OrdinalIgnoreCase))
+                  return false;
+            */
+            return true;
         }
     }
 }

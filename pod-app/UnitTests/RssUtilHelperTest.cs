@@ -59,14 +59,14 @@ public class RssUtilHelperTest
 </root>";
 
         // Act
-        PodFlow result = RssUtilHelpers.GetPodFeedFromXML(xml);
+        Podcast result = RssUtilHelpers.GetPodFeedFromXML(xml);
 
         // Assert
         Assert.NotNull(result);
-        Assert.NotNull(result.Podcasts);
-        Assert.Equal(2, result.Podcasts.Count);
+        Assert.NotNull(result.Episodes);
+        Assert.Equal(2, result.Episodes.Count);
 
-        var first = result.Podcasts[0];
+        var first = result.Episodes[0];
         Assert.Equal("Episode 1", first.Title);
         Assert.Equal("First ep desc", first.Description);
         Assert.Equal("https://example.com/img1.jpg", first.ImageUrl);
@@ -74,9 +74,9 @@ public class RssUtilHelperTest
         Assert.Equal("1h 00m", first.Duration);
         Assert.Equal("Tech", first.Category);
         Assert.Equal("https://example.com/ep1", first.URL);
-        Assert.False(first.IsSaved);
+        
 
-        var second = result.Podcasts[1];
+        var second = result.Episodes[1];
         Assert.Equal("Episode 2", second.Title);
         Assert.Equal("Second ep desc", second.Description);
         Assert.Equal("https://example.com/img2.jpg", second.ImageUrl);
@@ -84,7 +84,6 @@ public class RssUtilHelperTest
         Assert.Equal("2h 15m", second.Duration);
         Assert.Equal("News", second.Category);
         Assert.Equal("https://example.com/ep2", second.URL);
-        Assert.False(second.IsSaved);
     }
 
     [Fact]
@@ -99,11 +98,11 @@ public class RssUtilHelperTest
 </root>";
 
         // Act
-        PodFlow result = RssUtilHelpers.GetPodFeedFromXML(xml);
+        Podcast result = RssUtilHelpers.GetPodFeedFromXML(xml);
 
         // Assert
-        Assert.Single(result.Podcasts);
-        var pod = result.Podcasts[0];
+        Assert.Single(result.Episodes);
+        var pod = result.Episodes[0];
 
         Assert.Equal("Only title", pod.Title);
         Assert.Equal("No description", pod.Description);
@@ -112,7 +111,7 @@ public class RssUtilHelperTest
         Assert.Equal("Unknown", pod.Duration);
         Assert.Equal("Unknown", pod.Category);
         Assert.Equal("", pod.URL);
-        Assert.False(pod.IsSaved);
+        
     }
 
     [Fact]
@@ -126,7 +125,8 @@ public class RssUtilHelperTest
             release: null,
             duration: null,
             url: null,
-            category: null
+            category: null,
+            episode: null
         );
 
         // Assert
@@ -137,7 +137,7 @@ public class RssUtilHelperTest
         Assert.Equal("Unknown", result.Duration);
         Assert.Equal("Unknown", result.Category);
         Assert.Equal("", result.URL);
-        Assert.False(result.IsSaved);
+       
     }
 
     [Fact]
@@ -154,7 +154,8 @@ public class RssUtilHelperTest
             release: releaseString,
             duration: "1h 30m",
             url: "https://example.com",
-            category: "Tech"
+            category: "Tech",
+            episode: "1"
         );
 
         // Assert

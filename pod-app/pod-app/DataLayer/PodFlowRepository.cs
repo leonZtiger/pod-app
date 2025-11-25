@@ -11,7 +11,7 @@ namespace pod_app.DataLayer
     public class PodFlowRepository // Implementera IPodRepository
     {
      
-        private readonly IMongoCollection<PodFlow> podCollection;
+        private readonly IMongoCollection<Podcast> podCollection;
         private readonly IMongoClient client;
 
     public PodFlowRepository()
@@ -23,7 +23,7 @@ namespace pod_app.DataLayer
          var database = client.GetDatabase("OruMongoDB");
 
       
-         podCollection = database.GetCollection<PodFlow>("PodProjekt");
+         podCollection = database.GetCollection<Podcast>("PodProjekt");
     }
         
 

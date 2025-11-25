@@ -1,27 +1,34 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <RootNamespace>pod_app</RootNamespace>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UseWPF>true</UseWPF>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<RootNamespace>pod_app</RootNamespace>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+	</PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MongoDB.Driver" Version="2.21.0" />
+    <Compile Remove="Services\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <None Remove="Services\**" />
+    <Page Remove="Services\**" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="PresentationLayer\Views\Assets\Fonts\Inter.ttc" />
-    <Resource Include="PresentationLayer\Views\Assets\heart_fill.png" />
-    <Resource Include="PresentationLayer\Views\Assets\heart_no_fill.png" />
-    <Resource Include="PresentationLayer\Views\Assets\share.png" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="MongoDB.Driver" Version="2.21.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Resource Include="PresentationLayer\Views\Assets\appIcon.ico">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="PresentationLayer\Views\Assets\Fonts\Inter.ttc" />
+		<Resource Include="PresentationLayer\Views\Assets\heart_fill.png" />
+		<Resource Include="PresentationLayer\Views\Assets\heart_no_fill.png" />
+		<Resource Include="PresentationLayer\Views\Assets\share.png" />
+		<Resource Include="PresentationLayer\Views\Assets\NoImage.png" />
+	</ItemGroup>
 
 </Project>
