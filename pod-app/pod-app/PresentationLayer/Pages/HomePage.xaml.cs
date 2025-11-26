@@ -84,7 +84,7 @@ namespace pod_app.PresentationLayer.Pages
                 // Start search
                 var xmlStr = await RssUtilHelpers.GetRssXMLFile(query);
                 // Get podcast
-                var feed = await Task.Run(() => RssUtilHelpers.GetPodFeedFromXML(xmlStr));
+                var feed = await Task.Run(() => RssUtilHelpers.GetPodFeedFromXML(xmlStr,query));
 
                 PodcastImageUrl.Value = feed.ImageUrl;
                 PodcastTitle.Value = feed.Category;
@@ -144,8 +144,9 @@ namespace pod_app.PresentationLayer.Pages
                 MainWindow.InitDbManager();
 
             if (currentPodcastFeed is not null && MainWindow.podcastManager is not null)
+            {
                 MainWindow.podcastManager.PushFeedAsync(currentPodcastFeed);
-            
+            }
         }
     }
 }
