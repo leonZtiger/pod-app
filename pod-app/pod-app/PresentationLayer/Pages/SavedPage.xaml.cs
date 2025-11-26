@@ -1,49 +1,52 @@
-﻿using pod_app.PresentationLayer.Views;
+﻿using pod_app.BusinessLogicLayer;
+using pod_app.Models;
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Navigation;
+using System.Windows.Input;
 
 namespace pod_app.PresentationLayer.Pages
 {
-    /// <summary>
-    /// Interaction logic for SavedPage.xaml
-    /// </summary>
     public partial class SavedPage : Page
     {
-        private Frame parentFrame;
+        private readonly PodcastManagerAsync _manager;
+        private readonly Frame? _parentFrame;
 
-      
-        public SavedPage()
+        public SavedPage(PodcastManagerAsync manager, Frame parentFrame)
         {
             InitializeComponent();
+            _manager = manager;
+            _parentFrame = parentFrame;
+
+            LoadPodFlows();
         }
 
-       
-        public SavedPage(Frame parentFrame) : this()
+        private async void LoadPodFlows()
         {
-            this.parentFrame = parentFrame;
+            try
+            {
+                var feeds = await _manager.GetAllFeedsAsync();
+                PodListControl.ItemsSource = feeds;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Kunde inte hämta sparade poddar: " + ex.Message);
+            }
         }
 
-        private void BtnFilter_Click(object sender, RoutedEventArgs e)
+        private void OnFeedClicked(object sender, MouseButtonEventArgs e)
         {
-            BtnFilter.ContextMenu.IsOpen = true;
-        }
+            var feed = (sender as FrameworkElement)?.DataContext as Podcast;
+            if (feed == null) return;
 
-        private void FilterItem_Click(object sender, RoutedEventArgs e)
-        {
-            // Filtreringslogik
+            feed.IsExpanded = !feed.IsExpanded;
+            PodListControl.Items.Refresh();
         }
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
-            parentFrame.Navigate(MainWindow.homePage);
-        }
-
-        private void podViewControl_Loaded(object sender, RoutedEventArgs e)
-        {
-
+            _parentFrame?.Navigate(MainWindow.homePage);
         }
     }
 }
-

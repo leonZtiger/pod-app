@@ -39,5 +39,8 @@ namespace pod_app.Models
         
         [BsonIgnore]
         public string Genre { get; set; } // Filled by RssUtilHelpers.GetPodFeedFromXML
+
+        [BsonIgnore]
+        public bool IsExpanded { get; set; } = false;
     }
 }
