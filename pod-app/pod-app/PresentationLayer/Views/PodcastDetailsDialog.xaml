@@ -114,6 +114,13 @@
 
         </StackPanel>
 
+        <TextBlock Foreground="Red"
+           FontSize="12"
+           FontWeight="Bold"
+           Margin="0,5,0,5"
+           Text="{Binding ErrorMsg.Value}" />
+
+
     </Grid>
 </Window>
 

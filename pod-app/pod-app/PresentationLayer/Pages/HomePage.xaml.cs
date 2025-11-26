@@ -146,13 +146,16 @@ namespace pod_app.PresentationLayer.Pages
 
         private void OnPodcastLike_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.podcastManager is null)
-                MainWindow.InitDbManager();
+            if (currentPodcastFeed is null)
+                return; 
 
-            if (currentPodcastFeed is not null && MainWindow.podcastManager is not null)
-            {
-                MainWindow.podcastManager.PushFeedAsync(currentPodcastFeed);
-            }
+            
+            var dialog = new PodcastDetailsDialog(currentPodcastFeed);
+
+            bool? result = dialog.ShowDialog();
+
+           
         }
+
     }
 }
