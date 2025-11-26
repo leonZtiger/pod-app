@@ -35,13 +35,17 @@ namespace pod_app.PresentationLayer.Views
             this.DataContext = this;
         }
 
-        private async void  Connect_Click(object sender, RoutedEventArgs e)
+        private async void Connect_Click(object sender, RoutedEventArgs e)
         {
             // Try to create new manager
             try
             {
                 MainWindow.podcastManager = new(new MongoDbRepositoryAsync(Input));
                 await MainWindow.podcastManager.GetAllFeedsAsync();
+                // Store new connection string
+                Properties.Settings.Default.ConnectionString = Input;
+                Properties.Settings.Default.Save();
+
                 Close();
             }
             catch (Exception ex)
@@ -59,7 +63,7 @@ namespace pod_app.PresentationLayer.Views
                     ErrorMsg.Value = "Felaktig sträng";
                 }
                 // Failed to get feed, ignored can fail. Means that the user was authenticated still.
-                else if(ex is XmlException)
+                else if (ex is XmlException)
                 {
                     Close();
                 }
