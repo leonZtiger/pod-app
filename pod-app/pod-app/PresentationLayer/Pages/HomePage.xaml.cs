@@ -60,6 +60,12 @@ namespace pod_app.PresentationLayer.Pages
             parentFrame.Navigate(MainWindow.savedPage);
         }
 
+        private void ConnectButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.podcastManager is null)
+                MainWindow.InitDbManager();
+        }
+
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             // Validate text input first
