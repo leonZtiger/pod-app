@@ -59,7 +59,7 @@ public class RssUtilHelperTest
 </root>";
 
         // Act
-        Podcast result = RssUtilHelpers.GetPodFeedFromXML(xml);
+        Podcast result = RssUtilHelpers.GetPodFeedFromXML(xml, "https://example.com/ep2");
 
         // Assert
         Assert.NotNull(result);
@@ -98,7 +98,7 @@ public class RssUtilHelperTest
 </root>";
 
         // Act
-        Podcast result = RssUtilHelpers.GetPodFeedFromXML(xml);
+        Podcast result = RssUtilHelpers.GetPodFeedFromXML(xml,"");
 
         // Assert
         Assert.Single(result.Episodes);

@@ -13,22 +13,40 @@ namespace pod_app.BusinessLogicLayer
     public class PodcastManagerAsync
     {
         private readonly IPodcastRepositoryAsync podcastRepo;
-    
+
         public PodcastManagerAsync(IPodcastRepositoryAsync podcastRepo)
         {
-            
-            this.podcastRepo = podcastRepo ?? throw new ArgumentNullException(nameof(podcastRepo)); 
+
+            this.podcastRepo = podcastRepo ?? throw new ArgumentNullException(nameof(podcastRepo));
         }
 
         public async Task<List<Podcast>> GetAllFeedsAsync()
         {
-            var feeds = await podcastRepo.GetAllFeedsAsync(); 
+            var feeds = await podcastRepo.GetAllFeedsAsync();
 
             foreach (var i in feeds)
             {
-                i.Episodes = RssUtilHelpers.GetPodFeedFromXML(
-                    await RssUtilHelpers.GetRssXMLFile(i.Url)
-                ).Episodes;
+                if (string.IsNullOrWhiteSpace(i.Url))
+                {
+                    i.Episodes = new();
+                    continue;
+                }
+                string xmlFile = await RssUtilHelpers.GetRssXMLFile(i.Url);
+
+                if (string.IsNullOrEmpty(xmlFile))
+                {
+                    i.Episodes = new();
+                    continue;
+                }
+
+                var p = RssUtilHelpers.GetPodFeedFromXML(xmlFile, i.Url);
+
+                // Copy loaded fields to podcast object.
+                i.Episodes = p.Episodes;
+                i.About = p.About;
+                i.ImageUrl = p.ImageUrl;
+                i.Title = p.Title;
+                i.Genre = p.Genre;
             }
 
             return feeds;
@@ -48,10 +66,10 @@ namespace pod_app.BusinessLogicLayer
 
         public async Task DeleteFeedAsync(Podcast feed)
         {
-           
+
             feed.Episodes.Clear();
 
-          
+
             await podcastRepo.DeleteFeedAsync(feed);
         }
 
@@ -63,7 +81,7 @@ namespace pod_app.BusinessLogicLayer
             return podcasts
             .Select(p => p.Category?.Trim())
             .Where(c => !string.IsNullOrWhiteSpace(c))
-            .Select(c => c!) 
+            .Select(c => c!)
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .OrderBy(c => c, StringComparer.OrdinalIgnoreCase)
             .ToList();
@@ -91,7 +109,7 @@ namespace pod_app.BusinessLogicLayer
                 throw new ArgumentException("New category cannot be empty.");
 
             if (oldCategory.Trim().Equals(newCategory.Trim(), StringComparison.OrdinalIgnoreCase))
-                return; 
+                return;
 
             var podcasts = await podcastRepo.GetAllFeedsAsync();
 
@@ -129,10 +147,6 @@ namespace pod_app.BusinessLogicLayer
                 await podcastRepo.UpdateFeedAsync(podcast);
             }
         }
-
-
-
-
     }
 }
 

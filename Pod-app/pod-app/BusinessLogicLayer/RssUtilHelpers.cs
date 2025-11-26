@@ -36,8 +36,9 @@ namespace pod_app.BusinessLogicLayer
         /// Expects all the item tags in the xml to be a valid podcast episode.
         /// </summary>
         /// <param name="XML_str">The complete XML document in raw format.</param>
+        /// <param name="source_url">The source url of the xml document.</param>
         /// <returns>The parsed Xml items to a single podcast feed.</returns>
-        public static Podcast GetPodFeedFromXML(string XML_str)
+        public static Podcast GetPodFeedFromXML(string XML_str, string source_url)
         {
             XDocument xmlReader = XDocument.Parse(XML_str);
 
@@ -60,8 +61,9 @@ namespace pod_app.BusinessLogicLayer
                                     .Element("image")?
                                     .Element("url")?
                                     .Value ?? "PresentationLayer\\Views\\Assets\\NoImage.png";
-                
+
                 podFeed.Genre = channel?.Element(itunes + "category")?.Attribute("text")?.Value ?? "";
+                podFeed.Url = source_url;
 
                 // Create a podcast model per item and push to podFeed
                 foreach (var item in xmlReader.Descendants("item"))

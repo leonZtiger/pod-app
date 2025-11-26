@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Xml;
 using MongoDB.Driver;
 using pod_app.DataLayer;
 
@@ -40,7 +41,6 @@ namespace pod_app.PresentationLayer.Views
             try
             {
                 MainWindow.podcastManager = new(new MongoDbRepositoryAsync(Input));
-                // Test if connection is alive
                 await MainWindow.podcastManager.GetAllFeedsAsync();
                 Close();
             }
@@ -57,6 +57,11 @@ namespace pod_app.PresentationLayer.Views
                 else if (ex is MongoConfigurationException)
                 {
                     ErrorMsg.Value = "Felaktig sträng";
+                }
+                // Failed to get feed, ignored can fail. Means that the user was authenticated still.
+                else if(ex is XmlException)
+                {
+                    Close();
                 }
                 else
                 {
