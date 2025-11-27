@@ -151,8 +151,7 @@ namespace pod_app.PresentationLayer.Pages
 
             
             var dialog = new PodcastDetailsDialog(currentPodcastFeed);
-
-            bool? result = dialog.ShowDialog();
+            dialog.ShowDialog();
 
            
         }

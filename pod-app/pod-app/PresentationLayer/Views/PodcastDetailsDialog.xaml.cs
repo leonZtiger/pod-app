@@ -21,7 +21,6 @@ namespace pod_app.PresentationLayer.Views
     public partial class PodcastDetailsDialog : Window
     {
         public Podcast CurrentFeed { get; }
-       
 
         public PodcastDetailsDialog(Podcast feed)
         {
@@ -30,16 +29,12 @@ namespace pod_app.PresentationLayer.Views
             CurrentFeed = feed ?? throw new ArgumentNullException(nameof(feed));
 
             TitleTextBox.Text = feed.Title;
-            CategoryTextBox.Text = feed.Genre;
+            CategoryTextBox.Text = feed.Genre;  // Suggests the Genre as the podcast category
 
         }
 
         private async void Save_Click(object sender, RoutedEventArgs e)
         {
-
-            CurrentFeed.Title = TitleTextBox.Text;
-            CurrentFeed.Category = CategoryTextBox.Text;
-
            
             if (MainWindow.podcastManager is null)
                 MainWindow.InitDbManager();
@@ -55,6 +50,9 @@ namespace pod_app.PresentationLayer.Views
                 return;
             }
 
+              CurrentFeed.Title = TitleTextBox.Text;
+              CurrentFeed.Category = CategoryTextBox.Text;
+
             try
             {
                 await MainWindow.podcastManager.PushFeedAsync(CurrentFeed);
@@ -66,11 +64,8 @@ namespace pod_app.PresentationLayer.Views
             }
         }
 
-
-
         private void Cancel_Click(object sender, RoutedEventArgs e)
-        {
-            
+        {            
             Close();
         }
 
