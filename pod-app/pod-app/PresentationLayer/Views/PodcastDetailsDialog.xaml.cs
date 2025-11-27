@@ -28,7 +28,7 @@ namespace pod_app.PresentationLayer.Views
 
             CurrentFeed = feed ?? throw new ArgumentNullException(nameof(feed));
 
-            TitleTextBox.Text = feed.Title;
+            TitleTextBox.Text = feed.Title;     // Suggests the Title as the podcast name
             CategoryTextBox.Text = feed.Genre;  // Suggests the Genre as the podcast category
 
         }
@@ -36,7 +36,7 @@ namespace pod_app.PresentationLayer.Views
         private async void Save_Click(object sender, RoutedEventArgs e)
         {
            
-            if (MainWindow.podcastManager is null)
+            if (MainWindow.podcastManager is null)  // Sends the user to the connectionDialog pop up if theres no connection to MongoDB
                 MainWindow.InitDbManager();
 
             if (MainWindow.podcastManager is null)
@@ -50,18 +50,24 @@ namespace pod_app.PresentationLayer.Views
                 return;
             }
 
-              CurrentFeed.Title = TitleTextBox.Text;
-              CurrentFeed.Category = CategoryTextBox.Text;
+            if (MainWindow.homePage is not null)
+            {
+                MainWindow.homePage.UpdateConnectButtonUI();  // Changes the status for the Connect Button
+            }
+
+             CurrentFeed.Title = TitleTextBox.Text;              // sets the new name for the Podcast and its category
+             CurrentFeed.Category = CategoryTextBox.Text;
 
             try
             {
-                await MainWindow.podcastManager.PushFeedAsync(CurrentFeed);
+                await MainWindow.podcastManager.PushFeedAsync(CurrentFeed); // Pushes the Podcast to the database and then closes the pop up
                 Close();
             }
             catch (Exception)
             {
                 MessageBox.Show("Kunde inte spara podden.");
             }
+
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
