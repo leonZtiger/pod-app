@@ -129,7 +129,7 @@ namespace pod_app.PresentationLayer.Pages
                         var feed = await Task.Run(() => RssUtilHelpers.GetPodFeedFromXML(xmlStr, query));
 
                         PodcastImageUrl.Value = feed.ImageUrl;
-                        PodcastTitle.Value = feed.Category;
+                        PodcastTitle.Value = feed.Title;
                         currentPodcastFeed = feed;
                         PodcastDescription.Value = feed.About;
                         PodcastCategory.Value = feed.Genre;
