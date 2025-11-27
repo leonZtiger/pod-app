@@ -15,6 +15,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -91,20 +92,7 @@ namespace pod_app.PresentationLayer.Pages
             IsSearching = false;
         }
 
-
-        private void PodcastFeed_LikeClicked(object sender, EventArgs e)
-        {
-            var p = sender as EpisodeView;
-
-            if (p is not null && MainWindow.podcastManager is not null && currentPodcastFeed is not null)
-            {
-                MainWindow.podcastManager.PushPodcast(currentPodcastFeed);
-            }
-            else if (MainWindow.podcastManager is null)
-            {
-                MainWindow.InitDbManager();
-            }
-        }
+      
 
         private void FilterButton_Click(object sender, RoutedEventArgs e)
         {
@@ -143,5 +131,35 @@ namespace pod_app.PresentationLayer.Pages
                 ResultsList.Add(currentPodcastFeed.Episodes[alreadyLoaded + i]);
             }
         }
+        // Toast animation
+        private void ShowSaveToast()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                var sb = (Storyboard)FindResource("ToastStoryboard");
+                Storyboard.SetTarget(sb, SaveToast);
+                sb.Begin();
+            });
+        }
+
+        // Updateded LikeClicked för att visa toast
+        private void PodcastFeed_LikeClicked(object sender, EventArgs e)
+        {
+            var p = sender as EpisodeView;
+
+            if (p is not null && MainWindow.podcastManager is not null && currentPodcastFeed is not null)
+            {
+                MainWindow.podcastManager.PushPodcast(currentPodcastFeed);
+                ShowSaveToast(); 
+            }
+            else if (MainWindow.podcastManager is null)
+            {
+                MainWindow.InitDbManager();
+            }
+        }
+
+
+
+
     }
 }
