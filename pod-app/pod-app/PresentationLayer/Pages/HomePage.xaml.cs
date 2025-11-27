@@ -31,9 +31,13 @@ namespace pod_app.PresentationLayer.Pages
         private Frame parentFrame;
         public ObservableString PodcastImageUrl { get; set; }
         public ObservableString PodcastTitle { get; set; }
+        public ObservableString PodcastCategory { get; set; }
+        public ObservableString PodcastDescription { get; set; }
+
+        private readonly int ItemsPerPage = 7;
 
         private Podcast? currentPodcastFeed;
-        public BindingList<Episode> ResultsList { get; set; }   
+        public ObservableCollection<Episode> ResultsList { get; set; }
         private bool isLoadingMore = false;
         private bool IsSearching { get; set; } = false;
         public HomePage()
@@ -42,6 +46,8 @@ namespace pod_app.PresentationLayer.Pages
             ResultsList = new();
             PodcastImageUrl = new();
             PodcastTitle = new();
+            PodcastCategory = new();
+            PodcastDescription = new();
             this.DataContext = this;
         }
 
@@ -53,6 +59,12 @@ namespace pod_app.PresentationLayer.Pages
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             parentFrame.Navigate(MainWindow.savedPage);
+        }
+
+        private void ConnectButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.podcastManager is null)
+                MainWindow.InitDbManager();
         }
 
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
@@ -70,6 +82,8 @@ namespace pod_app.PresentationLayer.Pages
             ResultsList.Clear();
             PodcastImageUrl.Value = "";
             PodcastTitle.Value = "";
+            PodcastDescription.Value = "";
+            PodcastCategory.Value = "";
             currentPodcastFeed = null;
             IsSearching = true;
             try
@@ -77,12 +91,13 @@ namespace pod_app.PresentationLayer.Pages
                 // Start search
                 var xmlStr = await RssUtilHelpers.GetRssXMLFile(query);
                 // Get podcast
-                var feed = await Task.Run(() => RssUtilHelpers.GetPodFeedFromXML(xmlStr));
+                var feed = await Task.Run(() => RssUtilHelpers.GetPodFeedFromXML(xmlStr,query));
 
                 PodcastImageUrl.Value = feed.ImageUrl;
                 PodcastTitle.Value = feed.Category;
                 currentPodcastFeed = feed;
-
+                PodcastDescription.Value = feed.About;
+                PodcastCategory.Value = feed.Genre;
                 LoadNextPage();
             }
             catch (Exception ex)
@@ -91,8 +106,6 @@ namespace pod_app.PresentationLayer.Pages
             }
             IsSearching = false;
         }
-
-      
 
         private void FilterButton_Click(object sender, RoutedEventArgs e)
         {
@@ -124,42 +137,23 @@ namespace pod_app.PresentationLayer.Pages
             if (currentPodcastFeed is null || currentPodcastFeed.Episodes is null || currentPodcastFeed.Episodes.Count == 0) return;
 
             int alreadyLoaded = ResultsList.Count;
-            int toTake = Math.Min(20, currentPodcastFeed.Episodes.Count - alreadyLoaded);
+            int toTake = Math.Min(ItemsPerPage, currentPodcastFeed.Episodes.Count - alreadyLoaded);
 
             for (int i = 0; i < toTake; i++)
             {
                 ResultsList.Add(currentPodcastFeed.Episodes[alreadyLoaded + i]);
             }
         }
-        // Toast animation
-        private void ShowSaveToast()
-        {
-            Dispatcher.Invoke(() =>
-            {
-                var sb = (Storyboard)FindResource("ToastStoryboard");
-                Storyboard.SetTarget(sb, SaveToast);
-                sb.Begin();
-            });
-        }
 
-        // Updateded LikeClicked för att visa toast
-        private void PodcastFeed_LikeClicked(object sender, EventArgs e)
+        private void OnPodcastLike_Click(object sender, RoutedEventArgs e)
         {
-            var p = sender as EpisodeView;
-
-            if (p is not null && MainWindow.podcastManager is not null && currentPodcastFeed is not null)
-            {
-                MainWindow.podcastManager.PushPodcast(currentPodcastFeed);
-                ShowSaveToast(); 
-            }
-            else if (MainWindow.podcastManager is null)
-            {
+            if (MainWindow.podcastManager is null)
                 MainWindow.InitDbManager();
+
+            if (currentPodcastFeed is not null && MainWindow.podcastManager is not null)
+            {
+                MainWindow.podcastManager.PushFeedAsync(currentPodcastFeed);
             }
         }
-
-
-
-
     }
 }

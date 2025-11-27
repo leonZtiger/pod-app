@@ -11,8 +11,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Xml;
 using MongoDB.Driver;
-using pod_app.Service;
+using pod_app.DataLayer;
+
 
 namespace pod_app.PresentationLayer.Views
 {
@@ -33,14 +35,17 @@ namespace pod_app.PresentationLayer.Views
             this.DataContext = this;
         }
 
-        private void Connect_Click(object sender, RoutedEventArgs e)
+        private async void Connect_Click(object sender, RoutedEventArgs e)
         {
             // Try to create new manager
             try
             {
-                MainWindow.podcastManager = new(new PodcastServiceMongoDb(Input));
-                // Test if connection is alive
-                MainWindow.podcastManager.GetAllFeedsAsync();
+                MainWindow.podcastManager = new(new MongoDbRepositoryAsync(Input));
+                await MainWindow.podcastManager.GetAllFeedsAsync();
+                // Store new connection string
+                Properties.Settings.Default.ConnectionString = Input;
+                Properties.Settings.Default.Save();
+
                 Close();
             }
             catch (Exception ex)
@@ -57,6 +62,11 @@ namespace pod_app.PresentationLayer.Views
                 {
                     ErrorMsg.Value = "Felaktig sträng";
                 }
+                // Failed to get feed, ignored can fail. Means that the user was authenticated still.
+                else if (ex is XmlException)
+                {
+                    Close();
+                }
                 else
                 {
                     ErrorMsg.Value = "Ett fel inträffade";
@@ -66,7 +76,7 @@ namespace pod_app.PresentationLayer.Views
 
         private void Continue_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.podcastManager = new(new PodcastServiceInMemory());
+            MainWindow.podcastManager = new(new PodcastRepositoryInMemoryAsync());
             Close();
         }
     }

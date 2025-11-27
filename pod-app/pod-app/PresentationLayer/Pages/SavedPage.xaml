@@ -1,60 +1,19 @@
-﻿<Page x:Class="pod_app.PresentationLayer.Pages.SavedPage" 
+﻿<Page x:Class="pod_app.PresentationLayer.Pages.SavedPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:pod_app.PresentationLayer.Pages"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:views="clr-namespace:pod_app.PresentationLayer.Views"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      mc:Ignorable="d"
       Title="SavedPage">
-
-    <Page.Resources>
-        
-        <Style x:Key="HeaderButtonStyle" TargetType="Button">
-            <Setter Property="Width" Value="110"/>
-            <Setter Property="Height" Value="36"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="border"
-                                Background="#F5F5F5"
-                                BorderBrush="#C5C5C5"
-                                BorderThickness="1.5"
-                                CornerRadius="18"
-                                Padding="10"
-                                SnapsToDevicePixels="True">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border"
-                                        Property="Background"
-                                        Value="#E6E6E6"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="border"
-                                        Property="Background"
-                                        Value="White"/>
-                                <Setter TargetName="border"
-                                        Property="BorderBrush"
-                                        Value="White"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Page.Resources>
 
     <Grid Background="#0F0F10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>  
-            <RowDefinition Height="*"/>      
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- TOPBAR -->
+        <!-- TOP BAR -->
         <Grid Grid.Row="0" Margin="20,20,20,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -62,44 +21,65 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <Button Name="BtnBack"
-                    Grid.Column="0"
-                    Content="Tillbaka"
+            <Button Content="Tillbaka"
                     Click="BtnBack_Click"
-                    Style="{StaticResource HeaderButtonStyle}"/>
+                    Width="110" Height="36"/>
 
             <TextBlock Grid.Column="1"
                        Text="Sparade poddar"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
+                       Foreground="White"
                        FontSize="20"
                        FontWeight="SemiBold"
-                       Foreground="White"/>
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
 
-            <Button Name="BtnFilter"
-                    Grid.Column="2"
+            <Button Grid.Column="2"
                     Content="Filtrera"
-                    Click="BtnFilter_Click"
-                    Style="{StaticResource HeaderButtonStyle}">
-                <Button.ContextMenu>
-                    <ContextMenu x:Name="filterMenu">
-                        <MenuItem Header="Alla" Click="FilterItem_Click"/>
-                        <MenuItem Header="Nyheter" Click="FilterItem_Click"/>
-                        <MenuItem Header="Sport" Click="FilterItem_Click"/>
-                        <MenuItem Header="Humor" Click="FilterItem_Click"/>
-                        <MenuItem Header="Dokumentär" Click="FilterItem_Click"/>
-                    </ContextMenu>
-                </Button.ContextMenu>
-            </Button>
+                    Width="110" Height="36"/>
         </Grid>
 
-      
+        <!-- CONTENT -->
         <Border Grid.Row="1"
-                Margin="40,0,40,30"
-                Padding="20">
-            <views:EpisodeView x:Name="podViewControl"
-                           Margin="10"/>
+                Margin="40"
+                Padding="20"
+                Background="#1A1A1D"
+                CornerRadius="14">
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ItemsControl x:Name="PodListControl">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="0 10">
+
+                                <!-- FEED TILE -->
+                                <views:PodFeedView MouseLeftButtonUp="OnFeedClicked"/>
+
+                                <!-- EPISODES (EXPAND AREA) -->
+                                <ItemsControl ItemsSource="{Binding Episodes}">
+                                    <ItemsControl.Style>
+                                        <Style TargetType="ItemsControl">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsExpanded}" Value="True">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ItemsControl.Style>
+
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <views:PodFeedView/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+
         </Border>
     </Grid>
 </Page>
-

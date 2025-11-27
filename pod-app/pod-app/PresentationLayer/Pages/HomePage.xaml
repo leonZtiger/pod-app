@@ -15,7 +15,7 @@
 
     <Page.Resources>
         <DropShadowEffect x:Key="ShadowEffect"
-                          Color="Black"
+                          Color="#0f0f0f"
                           BlurRadius="15"
                           ShadowDepth="0"
                           Opacity="1" />
@@ -39,84 +39,74 @@
 
             <!-- Naviagte to Savedpage button -->
             <Button Width="120"
-                    Height="35"
-                    Margin="10,22,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Click="Button_Click"
-                    Content="Sparade"
-                    Background="#1f1f1f"
-                    Foreground="White"
-                    Effect="{StaticResource ShadowEffect}"
-                    FontSize="14">
+        Height="35"
+        Margin="10,22,10,0"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Top"
+        Click="Button_Click"
+        Content="Sparade"
+        Background="#1f1f1f"
+        Foreground="White"
+        Effect="{StaticResource ShadowEffect}"
+        FontSize="14">
+
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius"
-                                Value="20" />
+                        <Setter Property="CornerRadius" Value="20" />
                     </Style>
                 </Button.Resources>
             </Button>
 
+            <Button Width="120"
+        Height="35"
+        Margin="0,20,10,0"
+        HorizontalAlignment="Right"
+        VerticalAlignment="Top"
+        Click="ConnectButton_Click"
+        Content="Anslut"
+        Background="#1f1f1f"
+        Foreground="White"
+        Effect="{StaticResource ShadowEffect}"
+        FontSize="14">
+
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="20" />
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+
             <!-- Main container -->
             <Grid>
                 <Grid.RowDefinitions>
-                    <!-- podcast info-->
+                    <!-- Title -->
                     <RowDefinition MaxHeight="300"
                                    MinHeight="200"
                                    Height="4*" />
                     <!-- Search bar -->
                     <RowDefinition Height="50" />
+                    <!-- Result podcast info -->
+                    <RowDefinition Height="130" />
                     <!-- Results -->
                     <RowDefinition Height="7*" />
                 </Grid.RowDefinitions>
 
-                <!-- podcast info-->
+                <!-- About applicaiton -->
                 <StackPanel HorizontalAlignment="Center"
-                            VerticalAlignment="Bottom"
+                            VerticalAlignment="Center"
                             Height="auto">
-                    <Border SnapsToDevicePixels="True"
-                            Effect="{StaticResource ShadowEffect}"
-                            HorizontalAlignment="Center"
-                            Grid.Column="0"
-                            Height="150"
-                            Width="150"
-                            CornerRadius="150"
-                            RenderTransformOrigin="0.5,0.5">
 
-                        <Border.Background>
-                            <ImageBrush ImageSource="{Binding PodcastImageUrl.Value}"
-                                        RenderOptions.BitmapScalingMode="HighQuality"
-                                        d:ImageSource="https://hips.hearstapps.com/clv.h-cdn.co/assets/16/18/gettyimages-586890581.jpg?crop=0.668xw:1.00xh;0.219xw,0" />
-
-                        </Border.Background>
-
-                        <Border.RenderTransform>
-                            <RotateTransform Angle="0" />
-                        </Border.RenderTransform>
-
-                        <!-- Spin animation -->
-                        <Border.Triggers>
-                            <EventTrigger RoutedEvent="Loaded">
-                                <BeginStoryboard>
-                                    <Storyboard RepeatBehavior="Forever">
-                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(RotateTransform.Angle)"
-                                                         From="0"
-                                                         To="360"
-                                                         Duration="0:0:10"
-                                                         RepeatBehavior="Forever" />
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                        </Border.Triggers>
-
-                    </Border>
-
-                    <TextBlock Text="{Binding PodcastTitle.Value}"
-                               d:Text="Test title"
+                    <TextBlock Text="Lägg Till Din Favorit Podcast"
+                               TextAlignment="Center"
+                               FontSize="40"
+                               FontWeight="Light"
+                               Foreground="White" />
+                    <TextBlock Text="Skriv In Din RSS-Länk I Sökrutan Nedan"
                                TextAlignment="Center"
                                FontSize="20"
                                FontWeight="Light"
-                               Foreground="White" />
+                               Foreground="Gray" />
                 </StackPanel>
 
                 <!-- Search panel -->
@@ -284,12 +274,172 @@
                     </Border>
                 </Grid>
 
+                <!-- Podcast result info -->
+                <Border Grid.Row="2"
+                        CornerRadius="12"
+                        MaxWidth="500"
+                        MinWidth="370"
+                        Margin="10"
+                        Padding="0 0"
+                        Effect="{StaticResource ShadowEffect}"
+                        Background="#2f2f2f">
 
-                <!-- On searching animation -->
+                    <!-- Only show on results -->
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Visibility"
+                                    Value="Visible" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ResultsList.Count}"
+                                             Value="0">
+                                    <Setter Property="Visibility"
+                                            Value="Hidden" />
+                                </DataTrigger>
 
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+
+                    <Grid HorizontalAlignment="Stretch">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="3*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Podcast image -->
+                        <Border HorizontalAlignment="left"
+                                VerticalAlignment="Center"
+                                Grid.Column="0"
+                                Height="90"
+                                Margin="10"
+                                Padding="10"
+                                Width="90"
+                                CornerRadius="10">
+                            <Border.Background>
+                                <ImageBrush ImageSource="{Binding PodcastImageUrl.Value}"
+                                            RenderOptions.BitmapScalingMode="HighQuality"
+                                            d:ImageSource="https://hips.hearstapps.com/clv.h-cdn.co/assets/16/18/gettyimages-586890581.jpg?crop=0.668xw:1.00xh;0.219xw,0" />
+                            </Border.Background>
+                        </Border>
+
+                        <!-- Podcast overview -->
+                        <Grid Grid.Column="1" Margin="0 10">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*" />
+                                <RowDefinition Height="2*" />
+                                <RowDefinition Height="1*" />
+                            </Grid.RowDefinitions>
+
+                            <!-- Title and like button container -->
+                            <Grid Grid.Row="0"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <!-- Title column -->
+                                    <ColumnDefinition Width="7*" />
+                                    <!-- Like column -->
+                                    <ColumnDefinition Width="3*" />
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Title -->
+                                <TextBlock d:Text="Podcast test title"
+                                           Foreground="White"
+                                           FontSize="15"
+                                           Grid.Column="0"
+                                           Text="{Binding PodcastTitle.Value}" />
+
+                                <!-- Like button -->
+                                <Button Grid.Column="1"
+                                        Width="30"
+                                        HorizontalAlignment="Right"
+                                        Margin="0 0 10 0"
+                                        BorderBrush="Transparent"
+                                        Background="Transparent"
+                                        Click="OnPodcastLike_Click">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Image x:Name="img"
+                                                   Source="/PresentationLayer/Views/Assets/heart_fill.png"
+                                                   RenderOptions.BitmapScalingMode="Fant" />
+
+                                            <ControlTemplate.Triggers>
+
+                                                <!-- On hover -->
+                                                <Trigger Property="IsMouseOver"
+                                                         Value="True">
+                                                    <Setter TargetName="img"
+                                                            Property="Opacity"
+                                                            Value="0.7" />
+                                                </Trigger>
+
+                                                <!-- On click -->
+                                                <Trigger Property="IsPressed"
+                                                         Value="True">
+                                                    <Setter TargetName="img"
+                                                            Property="Opacity"
+                                                            Value="0.5" />
+                                                </Trigger>
+
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+
+                            </Grid>
+
+                            <TextBlock d:Text="Test title about podcat"
+                                       Foreground="Gray"
+                                       TextWrapping="WrapWithOverflow"
+                                       TextTrimming="CharacterEllipsis"
+                                       Grid.Row="1"
+                                       FontSize="15"
+                                       Text="{Binding PodcastDescription.Value}" />
+
+                            <StackPanel Grid.Row="2"
+                                        Orientation="Horizontal">
+                                <TextBlock Foreground="White"
+                                           FontWeight="Bold"
+                                           Grid.Row="2"
+                                           FontSize="15"
+                                           Margin="0 0 10 0"
+                                           Text="Genre:">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility"
+                                                    Value="Visible" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding PodcastCategory.Value}"
+                                                             Value="">
+                                                    <Setter Property="Visibility"
+                                                            Value="Hidden" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding PodcastCategory.Value}"
+                                                             Value="{x:Null}">
+                                                    <Setter Property="Visibility"
+                                                            Value="Hidden" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                                <TextBlock Foreground="White"
+                                           Grid.Row="2"
+                                           FontSize="15"
+                                           d:Text="Krim, Humor"
+                                           Text="{Binding PodcastCategory.Value}" />
+
+
+                            </StackPanel>
+                        </Grid>
+
+                    </Grid>
+
+                </Border>
 
                 <!-- Result Container -->
-                <ItemsControl Grid.Row="2"
+                <ItemsControl Grid.Row="3"
                               ItemsSource="{Binding ResultsList,IsAsync=True}"
                               HorizontalAlignment="Center"
                               Background="Transparent"

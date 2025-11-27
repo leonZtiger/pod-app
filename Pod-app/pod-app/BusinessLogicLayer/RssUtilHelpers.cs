@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Channels;
 using System.Xml;
 using System.Xml.Linq;
@@ -35,8 +36,9 @@ namespace pod_app.BusinessLogicLayer
         /// Expects all the item tags in the xml to be a valid podcast episode.
         /// </summary>
         /// <param name="XML_str">The complete XML document in raw format.</param>
+        /// <param name="source_url">The source url of the xml document.</param>
         /// <returns>The parsed Xml items to a single podcast feed.</returns>
-        public static Podcast GetPodFeedFromXML(string XML_str)
+        public static Podcast GetPodFeedFromXML(string XML_str, string source_url)
         {
             XDocument xmlReader = XDocument.Parse(XML_str);
 
@@ -50,13 +52,18 @@ namespace pod_app.BusinessLogicLayer
 
                 var channel = xmlReader.Root?.Element("channel");
                 // Get show title
-                podFeed.Category = channel?.Element("title")?.Value ?? "Unknown";
+                podFeed.Category = channel?.Element(itunes + "category")?.Attribute("text")?.Value ?? "No category yet";
+                podFeed.About = channel?.Element("description")?.Value ?? "No description found.";
+                podFeed.Title = channel?.Element("title")?.Value ?? "No title yet.";
+
                 // Get show image
                 podFeed.ImageUrl = channel?
                                     .Element("image")?
                                     .Element("url")?
                                     .Value ?? "PresentationLayer\\Views\\Assets\\NoImage.png";
 
+                podFeed.Genre = channel?.Element(itunes + "category")?.Attribute("text")?.Value ?? "";
+                podFeed.Url = source_url;
 
                 // Create a podcast model per item and push to podFeed
                 foreach (var item in xmlReader.Descendants("item"))
@@ -103,10 +110,12 @@ namespace pod_app.BusinessLogicLayer
 
             bool validEpisode = int.TryParse(episode, out var episodeId);
 
+            string desc_formated = Regex.Replace(desc ?? "No description", @"<[^>]*>", String.Empty);
+
             Episode pod = new Episode()
             {
                 Title = title ?? "Unknown",
-                Description = desc ?? "No description",
+                Description = desc_formated,
                 ImageUrl = image ?? "",
                 ReleaseDate = release != null ? DateTime.Parse(release) : DateTime.MinValue,
                 Duration = duration ?? "Unknown",

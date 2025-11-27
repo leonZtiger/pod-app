@@ -1,4 +1,5 @@
 ﻿using pod_app.BusinessLogicLayer;
+using pod_app.DataLayer;
 using pod_app.PresentationLayer.Pages;
 using pod_app.PresentationLayer.Views;
 using System.Text;
@@ -22,15 +23,31 @@ namespace pod_app
     {
         public static HomePage? homePage = null;
         public static SavedPage? savedPage = null;
-        public static PodcastManager? podcastManager;
+        public static PodcastManagerAsync? podcastManager;
         public MainWindow()
         {
             InitializeComponent();
 
+            // Try to connect to database if persistant connection string exist
+            string con_str = Properties.Settings.Default.ConnectionString;
+
+            if (!string.IsNullOrEmpty(con_str))
+            {
+                try
+                {
+                    podcastManager = new(new MongoDbRepositoryAsync(con_str));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Föregående sessionens Connection-string misslyckades. Vänlig återanslut.");
+                }
+            }
+
             homePage = new HomePage(mainFrame);
             savedPage = new SavedPage(mainFrame);
             this.DataContext = this;
-            mainFrame.Navigate(homePage);           
+            mainFrame.Navigate(homePage);
+
         }
 
         public static void InitDbManager()

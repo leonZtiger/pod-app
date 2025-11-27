@@ -9,20 +9,41 @@
 		<UseWPF>true</UseWPF>
 	</PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Services\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <None Remove="Services\**" />
+    <Page Remove="Services\**" />
+  </ItemGroup>
+
 	<ItemGroup>
-		<Folder Include="Services\" />
+		<PackageReference Include="MongoDB.Driver" Version="3.5.1" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="MongoDB.Driver" Version="2.21.0" />
-	</ItemGroup>
-
-	<ItemGroup>
+		<Resource Include="PresentationLayer\Views\Assets\appIcon.ico">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
 		<Resource Include="PresentationLayer\Views\Assets\Fonts\Inter.ttc" />
 		<Resource Include="PresentationLayer\Views\Assets\heart_fill.png" />
 		<Resource Include="PresentationLayer\Views\Assets\heart_no_fill.png" />
 		<Resource Include="PresentationLayer\Views\Assets\share.png" />
-		<Resource Include="PresentationLayer\Views\Assets\NoImage.png"/>
+		<Resource Include="PresentationLayer\Views\Assets\NoImage.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Properties\Settings.Designer.cs">
+	    <DesignTimeSharedInput>True</DesignTimeSharedInput>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Settings.settings</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="Properties\Settings.settings">
+	    <Generator>SettingsSingleFileGenerator</Generator>
+	    <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+	  </None>
 	</ItemGroup>
 
 </Project>
