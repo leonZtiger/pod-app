@@ -2,6 +2,7 @@
 using pod_app.DataLayer;
 using pod_app.PresentationLayer.Pages;
 using pod_app.PresentationLayer.Views;
+using System;
 using System.Windows;
 
 namespace pod_app
@@ -10,29 +11,51 @@ namespace pod_app
     {
         public static HomePage? homePage = null;
         public static SavedPage? savedPage = null;
-
         public static PodcastManagerAsync? podcastManager;
 
         public MainWindow()
         {
             InitializeComponent();
-            InitDbManager();
-            this.DataContext = this;
 
-        }
+            
+            string con_str = Properties.Settings.Default.ConnectionString;  // Persistent connectionString
 
-        public void InitDbManager()
-        {
-            var dialog = new ConnectionDialog();
-            dialog.ShowDialog();   // <-- Här skapas podcastManager
+            if (!string.IsNullOrWhiteSpace(con_str)) 
+            {
+                try
+                {
+                    podcastManager = new PodcastManagerAsync(new MongoDbRepositoryAsync(con_str));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        "Föregående sessionens Connection-string misslyckades. Vänligen återanslut.\n\n" +
+                        ex.Message);
 
-            // Skapa sidorna EFTER att podcastManager finns
+                    podcastManager = null; 
+                }
+            }
+
+           
+            if (podcastManager is null)
+            {
+                InitDbManager();
+            }
+
+            
             homePage = new HomePage(mainFrame, podcastManager!);
             savedPage = new SavedPage(mainFrame, podcastManager!);
 
+            this.DataContext = this;
             mainFrame.Navigate(homePage);
+        }
 
+        public static void InitDbManager()
+        {
+            var dialog = new ConnectionDialog();
+            dialog.ShowDialog();
             dialog.Close();
+            
         }
     }
 }

@@ -31,6 +31,7 @@ namespace pod_app.BusinessLogicLayer
                     i.Episodes = new();
                     continue;
                 }
+
                 string xmlFile = await RssUtilHelpers.GetRssXMLFile(i.Url);
 
                 if (string.IsNullOrEmpty(xmlFile))
@@ -45,12 +46,23 @@ namespace pod_app.BusinessLogicLayer
                 i.Episodes = p.Episodes;
                 i.About = p.About;
                 i.ImageUrl = p.ImageUrl;
-                i.Title = p.Title;
-                i.Genre = p.Genre;
+
+                // Only gets the title from the rss if the user hasnt put in its own title
+                if (string.IsNullOrWhiteSpace(i.Title))
+                {
+                    i.Title = p.Title;
+                }
+
+                // Only gets the Genre as category from the rss if the user hasnt put in its own Category
+                if (string.IsNullOrWhiteSpace(i.Genre))
+                {
+                    i.Genre = p.Genre;
+                }
             }
 
             return feeds;
         }
+
 
 
         // Pushes the podcast into the collection
