@@ -1,4 +1,4 @@
-﻿using pod_app.BusinessLogicLayer;
+using pod_app.BusinessLogicLayer;
 using pod_app.Models;
 using pod_app.PresentationLayer.Views;
 using System;
@@ -15,6 +15,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -27,6 +28,7 @@ namespace pod_app.PresentationLayer.Pages
     /// </summary>
     public partial class HomePage : Page
     {
+        private readonly PodcastManagerAsync _manager;
         private Frame parentFrame;
         public ObservableString PodcastImageUrl { get; set; }
         public ObservableString PodcastTitle { get; set; }
@@ -54,14 +56,16 @@ namespace pod_app.PresentationLayer.Pages
             UpdateConnectButtonUI();
         }
 
-        public HomePage(Frame parentFrame) : this()
+        public HomePage(Frame parentFrame, PodcastManagerAsync manager) : this()
         {
             this.parentFrame = parentFrame;
+            _manager = manager;
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            parentFrame.Navigate(MainWindow.savedPage);
+            parentFrame.Navigate(new SavedPage(parentFrame, _manager));
         }
 
         // Changes the status of the connect button depending on the status of the MongoDB connection
