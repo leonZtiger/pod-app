@@ -19,6 +19,17 @@
                           BlurRadius="15"
                           ShadowDepth="0"
                           Opacity="1" />
+        
+        <Storyboard x:Key="ToastStoryboard">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                     From="0" To="1"
+                     Duration="0:0:0.2"/>
+            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                     BeginTime="0:0:01.2"
+                     From="1" To="0"
+                     Duration="0:0:0.3"/>
+        </Storyboard>
+
     </Page.Resources>
 
     <ScrollViewer ScrollChanged="ScrollContainer_ScrollChanged"
@@ -451,6 +462,21 @@
 
 
             </Grid>
+            <!--Save toast notification -->
+            <Border x:Name="SaveToast"
+        Background="#333"
+        CornerRadius="8"
+        Padding="12,6"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Top"
+        Margin="0,20,0,0"
+        Opacity="0">
+                <TextBlock Text="Sparad!"
+               Foreground="White"
+               FontSize="16"
+               FontWeight="Bold"/>
+            </Border>
+
         </Grid>
     </ScrollViewer>
 </Page>
