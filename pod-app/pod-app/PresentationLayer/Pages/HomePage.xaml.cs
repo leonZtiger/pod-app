@@ -28,6 +28,7 @@ namespace pod_app.PresentationLayer.Pages
     /// </summary>
     public partial class HomePage : Page
     {
+        private readonly PodcastManagerAsync _manager;
         private Frame parentFrame;
         public ObservableString PodcastImageUrl { get; set; }
         public ObservableString PodcastTitle { get; set; }
@@ -51,20 +52,22 @@ namespace pod_app.PresentationLayer.Pages
             this.DataContext = this;
         }
 
-        public HomePage(Frame parentFrame) : this()
+        public HomePage(Frame parentFrame, PodcastManagerAsync manager) : this()
         {
             this.parentFrame = parentFrame;
+            _manager = manager;
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            parentFrame.Navigate(MainWindow.savedPage);
+            parentFrame.Navigate(new SavedPage(parentFrame, _manager));
         }
 
         private void ConnectButton_Click(object sender, RoutedEventArgs e)
         {
             if (MainWindow.podcastManager is null)
-                MainWindow.InitDbManager();
+                ((MainWindow)Application.Current.MainWindow).InitDbManager();
         }
 
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
@@ -148,12 +151,14 @@ namespace pod_app.PresentationLayer.Pages
         private void OnPodcastLike_Click(object sender, RoutedEventArgs e)
         {
             if (MainWindow.podcastManager is null)
-                MainWindow.InitDbManager();
+                ((MainWindow)Application.Current.MainWindow).InitDbManager();
 
             if (currentPodcastFeed is not null && MainWindow.podcastManager is not null)
             {
                 MainWindow.podcastManager.PushFeedAsync(currentPodcastFeed);
             }
+
+
         }
     }
 }
