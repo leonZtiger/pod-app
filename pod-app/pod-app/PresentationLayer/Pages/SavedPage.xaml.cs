@@ -98,5 +98,11 @@ namespace pod_app.PresentationLayer.Pages
         {
             parentFrame.Navigate(MainWindow.homePage);
         }
+
+        private void FilterItem_Click(object sender, RoutedEventArgs e)
+        {
+            // 
+        }
+
     }
 }

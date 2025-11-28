@@ -3,6 +3,40 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:views="clr-namespace:pod_app.PresentationLayer.Views">
 
+
+
+    <Page.Resources>
+        <DropShadowEffect x:Key="ShadowEffect"
+                      Color="#0f0f0f"
+                      BlurRadius="15"
+                      ShadowDepth="0"
+                      Opacity="1" />
+
+        <Style x:Key="RoundedButton" TargetType="Button">
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Background" Value="#1f1f1f"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Effect" Value="{StaticResource ShadowEffect}"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="20"
+                            Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Page.Resources>
+
     <Grid Background="#0F0F10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -18,8 +52,11 @@
             </Grid.ColumnDefinitions>
 
             <Button Content="Tillbaka"
-                    Width="110" Height="36"
-                    Click="BtnBack_Click"/>
+                    Width="110" 
+                    Height="36"
+                    Click="BtnBack_Click"
+                    Style="{StaticResource RoundedButton}"/>
+            
 
             <TextBlock Grid.Column="1"
                        Text="Sparade poddar"
@@ -30,7 +67,22 @@
 
             <Button Grid.Column="2"
                     Content="Filtrera"
-                    Width="110" Height="36"/>
+                    Width="110" 
+                    Height="36"
+                    Click="FilterItem_Click"
+                    Style="{StaticResource RoundedButton}">
+                
+                <Button.ContextMenu>
+                    <ContextMenu x:Name="filterMenu">
+                        <MenuItem Header="Alla" Click="FilterItem_Click"/>
+                        <MenuItem Header="Nyheter" Click="FilterItem_Click"/>
+                        <MenuItem Header="Sport" Click="FilterItem_Click"/>
+                        <MenuItem Header="Humor" Click="FilterItem_Click"/>
+                        <MenuItem Header="Dokumentär" Click="FilterItem_Click"/>
+                    </ContextMenu>
+                </Button.ContextMenu>
+            </Button>
+
         </Grid>
 
         <!-- MAIN CONTENT -->
@@ -76,7 +128,10 @@
                                     <Button Margin="0,10,0,0"
                                             Content="Visa fler"
                                             Click="LoadMore_Click"
-                                            HorizontalAlignment="Center"/>
+                                            HorizontalAlignment="Center"
+                                            Style="{StaticResource RoundedButton}"
+                                            Width="140"/>
+                             
                                 </StackPanel>
 
                             </StackPanel>
