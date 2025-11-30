@@ -15,6 +15,8 @@ using System.Xml;
 using MongoDB.Driver;
 using pod_app.DataLayer;
 using pod_app.Models;
+using pod_app.PresentationLayer.Validation;
+
 
 namespace pod_app.PresentationLayer.Views
 {
@@ -35,18 +37,23 @@ namespace pod_app.PresentationLayer.Views
 
         private async void Save_Click(object sender, RoutedEventArgs e)
         {
-           
+            // Validates the user input
+            var validation = Validator.ValidatePodcastForm(
+             TitleTextBox.Text,
+             CategoryTextBox.Text);
+
+            if (!validation.IsValid)
+            {
+                MessageBox.Show(validation.ErrorMessage);
+                return;
+            }
+
             if (MainWindow.podcastManager is null)  // Sends the user to the connectionDialog pop up if theres no connection to MongoDB
                 MainWindow.InitDbManager();
 
             if (MainWindow.podcastManager is null)
             {
                 MessageBox.Show("Ingen databasanslutning kunde skapas.");
-                return;
-            }
-            if (string.IsNullOrWhiteSpace(TitleTextBox.Text))
-            {
-                MessageBox.Show("Du måste ange ett namn.");
                 return;
             }
 

@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using System.Xml;
 using MongoDB.Driver;
 using pod_app.DataLayer;
+using pod_app.PresentationLayer.Validation;
 
 
 namespace pod_app.PresentationLayer.Views
@@ -37,6 +38,12 @@ namespace pod_app.PresentationLayer.Views
 
         private async void Connect_Click(object sender, RoutedEventArgs e)
         {
+            var validation = Validator.ValidateConnectionString(Input);
+            if (!validation.IsValid)
+            {
+                ErrorMsg.Value = validation.ErrorMessage;
+                return;
+            }
             // Try to create new manager
             try
             {

@@ -1,5 +1,6 @@
 using pod_app.BusinessLogicLayer;
 using pod_app.Models;
+using pod_app.PresentationLayer.Validation;
 using pod_app.PresentationLayer.Views;
 using System;
 using System.Collections.Generic;
@@ -107,18 +108,19 @@ namespace pod_app.PresentationLayer.Pages
 
 
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
-                {
-                    // Validate text input first
-                    string? query = SearchBox.Text;
-                    if (!RssUtilHelpers.IsvalidXmlUrl(query))
-                    {
-                        // TODO: Prompt user with bad query messsage
-                        MessageBox.Show("Search failed");
-                        return;
-                    }
+        {
+            // Validates the user input
+            string? query = SearchBox.Text;
+            var validation = Validator.ValidateSearchQuery(query);
 
-                    // Clear previus results
-                    ResultsList.Clear();
+            if (!validation.IsValid)
+            {   
+                MessageBox.Show(validation.ErrorMessage);
+                return;   
+            }
+                   
+            // Clear previus results
+            ResultsList.Clear();
                     PodcastImageUrl.Value = "";
                     PodcastTitle.Value = "";
                     PodcastDescription.Value = "";
