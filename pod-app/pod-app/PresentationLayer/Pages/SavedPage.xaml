@@ -3,10 +3,6 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:views="clr-namespace:pod_app.PresentationLayer.Views">
 
-
-
-
-
     <Page.Resources>
 
 
@@ -69,23 +65,19 @@
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"/>
 
-            <Button Grid.Column="2"
-                    Content="Filtrera"
-                    Width="110" 
-                    Height="36"
-                    Click="FilterButton_Click"
-                    Style="{StaticResource RoundedButton}">
+            
 
-                <Button.ContextMenu>
-                    <ContextMenu x:Name="filterMenu">
-                        <MenuItem Header="Alla" Click="FilterItem_Click"/>
-                        <MenuItem Header="Nyheter" Click="FilterItem_Click"/>
-                        <MenuItem Header="Sport" Click="FilterItem_Click"/>
-                        <MenuItem Header="Humor" Click="FilterItem_Click"/>
-                        <MenuItem Header="Dokumentär" Click="FilterItem_Click"/>
-                    </ContextMenu>
-                </Button.ContextMenu>
-            </Button>
+                <Button Grid.Column="2"
+                        Content="Filtrera"
+                        Width="110" 
+                        Height="36"
+                        Click="FilterButton_Click"
+                        Style="{StaticResource RoundedButton}">
+                    <Button.ContextMenu>
+                        <ContextMenu x:Name="filterMenu"/>
+                    </Button.ContextMenu>
+                </Button>
+
 
         </Grid>
 
@@ -106,6 +98,8 @@
 
                                 <!-- PODCAST TILE (KLICKBAR) -->
                                 <views:EpisodeView  MouseLeftButtonUp="OnFeedClicked"/>
+                                
+
 
                                 <!-- EXPANDED EPISODES -->
                                 <StackPanel>
