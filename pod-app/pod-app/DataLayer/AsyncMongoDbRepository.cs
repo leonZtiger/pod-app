@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 
 namespace pod_app.DataLayer
 {
-    public class MongoDbRepositoryAsync : IPodcastRepositoryAsync
+    // Async methods for the repository using Builders from MongoDB-Driver and transactions
+
+    public class MongoDbRepositoryAsync : IPodcastRepositoryAsync  // Implementing the interface
     {
         private readonly MongoClient client;
         private readonly IMongoCollection<Podcast> feedCollection;
@@ -20,11 +22,12 @@ namespace pod_app.DataLayer
 
             client = new MongoClient(settings);
 
-            var database = client.GetDatabase("Smultron-storage");
+            var database = client.GetDatabase("Smultron-storage");  
             feedCollection = database.GetCollection<Podcast>("Podcasts");
             podcastCollection = database.GetCollection<Episode>("Episodes");
         }
 
+        // Adds the podcast to the collection
         public async Task PushFeedAsync(Podcast feed)
         {
             using var session = await client.StartSessionAsync();
@@ -42,12 +45,14 @@ namespace pod_app.DataLayer
             }
         }
 
+        // Gets a podcast based on the id
         public async Task<Podcast?> GetFeedAsync(string id)
         {
             var filter = Builders<Podcast>.Filter.Eq(f => f.Id, id);
             return await feedCollection.Find(filter).FirstOrDefaultAsync();
         }
 
+        // Updates the podcast
         public async Task UpdateFeedAsync(Podcast feed)
         {
             using var session = await client.StartSessionAsync();
@@ -67,8 +72,7 @@ namespace pod_app.DataLayer
             }
         }
 
-
-
+        // Deleting a podcast
         public async Task DeleteFeedAsync(Podcast feed)
         {
             using var session = await client.StartSessionAsync();
@@ -98,6 +102,7 @@ namespace pod_app.DataLayer
             }
         }
 
+        // Gets all podcasts from the collection
         public async Task<List<Podcast>> GetAllFeedsAsync()
         {
             return await feedCollection
