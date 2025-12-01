@@ -138,7 +138,7 @@ namespace pod_app.PresentationLayer.Pages
                         PodcastTitle.Value = feed.Title;
                         currentPodcastFeed = feed;
                         PodcastDescription.Value = feed.About;
-                        PodcastCategory.Value = feed.Genre;
+                        PodcastCategory.Value = feed.Category;
                         LoadNextPage();
                     }
                     catch (Exception ex)

@@ -31,7 +31,7 @@ namespace pod_app.PresentationLayer.Views
             CurrentFeed = feed ?? throw new ArgumentNullException(nameof(feed));
 
             TitleTextBox.Text = feed.Title;     // Suggests the Title as the podcast name
-            CategoryTextBox.Text = feed.Genre;  // Suggests the Genre as the podcast category
+            CategoryTextBox.Text = feed.Category;  // Suggests the Genre as the podcast category
 
         }
 
