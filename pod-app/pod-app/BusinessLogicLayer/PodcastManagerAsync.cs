@@ -117,7 +117,11 @@ namespace pod_app.BusinessLogicLayer
             podcast.Category = categoryName.Trim();
             await podcastRepo.UpdateFeedAsync(podcast);
         }
-
+        
+        public async Task UpdateFeedAsync(Podcast feed)
+        {
+            await podcastRepo.UpdateFeedAsync(feed);
+        }
 
         // Changes the name of a category and makes sure all podcasts gets the new name
         public async Task RenameCategoryAsync(string oldCategory, string newCategory)
