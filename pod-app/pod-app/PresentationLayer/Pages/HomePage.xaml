@@ -19,15 +19,17 @@
                           BlurRadius="15"
                           ShadowDepth="0"
                           Opacity="1" />
-        
+
         <Storyboard x:Key="ToastStoryboard">
             <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                     From="0" To="1"
-                     Duration="0:0:0.2"/>
+                             From="0"
+                             To="1"
+                             Duration="0:0:0.2" />
             <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                     BeginTime="0:0:01.2"
-                     From="1" To="0"
-                     Duration="0:0:0.3"/>
+                             BeginTime="0:0:01.2"
+                             From="1"
+                             To="0"
+                             Duration="0:0:0.3" />
         </Storyboard>
 
     </Page.Resources>
@@ -39,40 +41,42 @@
 
             <!-- Naviagte to Savedpage button -->
             <Button Width="120"
-        Height="35"
-        Margin="10,22,10,0"
-        HorizontalAlignment="Left"
-        VerticalAlignment="Top"
-        Click="Button_Click"
-        Content="Sparade"
-        Background="#1f1f1f"
-        Foreground="White"
-        Effect="{StaticResource ShadowEffect}"
-        FontSize="14">
+                    Height="35"
+                    Margin="10,22,10,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Click="Button_Click"
+                    Content="Sparade"
+                    Background="#1f1f1f"
+                    Foreground="White"
+                    Effect="{StaticResource ShadowEffect}"
+                    FontSize="14">
 
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="20" />
+                        <Setter Property="CornerRadius"
+                                Value="20" />
                     </Style>
                 </Button.Resources>
             </Button>
 
-            <Button Name ="ConnectButton"  
-         Width="120"
-        Height="35"
-        Margin="0,20,10,0"
-        HorizontalAlignment="Right"
-        VerticalAlignment="Top"
-        Click="ConnectButton_Click"
-        Content="Anslut"
-        Background="#1f1f1f"
-        Foreground="White"
-        Effect="{StaticResource ShadowEffect}"
-        FontSize="14">
+            <Button Name="ConnectButton"
+                    Width="120"
+                    Height="35"
+                    Margin="0,20,10,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Click="ConnectButton_Click"
+                    Content="Anslut"
+                    Background="#1f1f1f"
+                    Foreground="White"
+                    Effect="{StaticResource ShadowEffect}"
+                    FontSize="14">
 
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="20" />
+                        <Setter Property="CornerRadius"
+                                Value="20" />
                     </Style>
                 </Button.Resources>
             </Button>
@@ -196,7 +200,7 @@
                                  VerticalContentAlignment="Center" />
                     </Border>
 
-                    <!-- Sökknapp -->
+                    <!-- Search button -->
                     <Border Grid.Column="2"
                             Background="White"
                             CornerRadius="20"
@@ -204,6 +208,7 @@
                             Height="40"
                             Effect="{StaticResource ShadowEffect}"
                             VerticalAlignment="Center">
+
                         <Button SnapsToDevicePixels="True"
                                 x:Name="SearchButton"
                                 Background="Transparent"
@@ -212,67 +217,42 @@
                                 Padding="0"
                                 Cursor="Hand"
                                 Click="SearchButton_Click">
-                            <!-- Ikon -->
-                            🔍
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
-                                    <Border CornerRadius="20"
-                                            Background="{TemplateBinding Background}"
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            BorderThickness="{TemplateBinding BorderThickness}">
-                                        <ContentPresenter HorizontalAlignment="Center"
-                                                          VerticalAlignment="Center" />
-                                    </Border>
+
+                                    <Grid Width="40"
+                                          Height="40">
+                                        <!-- Search icon -->
+                                        <TextBlock x:Name="Icon"
+                                                   Text="🔍"
+                                                   FontSize="16"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center" />
+
+                                        <!-- Spinner -->
+                                        <views:Spinner Visibility="Hidden"
+                                                       Width="35"
+                                                       Height="35"
+                                                       x:Name="Spinner" />
+                                    </Grid>
+
+                                    <!-- Show spinner on search, else search icon -->
+                                    <ControlTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding IsSearching.Value}"
+                                                     Value="True">
+                                            <Setter TargetName="Icon"
+                                                    Property="UIElement.Visibility"
+                                                    Value="Collapsed" />
+                                            <Setter TargetName="Spinner"
+                                                    Property="UIElement.Visibility"
+                                                    Value="Visible" />
+                                        </DataTrigger>
+                                    </ControlTemplate.Triggers>
                                 </ControlTemplate>
                             </Button.Template>
                         </Button>
                     </Border>
 
-                    <!-- Sort button -->
-                    <Border Grid.Column="4"
-                            Background="White"
-                            CornerRadius="12"
-                            Width="40"
-                            Height="25"
-                            Effect="{StaticResource ShadowEffect}"
-                            VerticalAlignment="Center">
-
-                        <Button Background="Transparent"
-                                BorderThickness="0"
-                                Padding="0"
-                                Cursor="Hand"
-                                Foreground="Black"
-                                Click="FilterButton_Click">
-
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border CornerRadius="17"
-                                            Background="{TemplateBinding Background}"
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            BorderThickness="{TemplateBinding BorderThickness}">
-                                        <ContentPresenter HorizontalAlignment="Center"
-                                                          VerticalAlignment="Center" />
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-
-                            <StackPanel Orientation="Horizontal"
-                                        HorizontalAlignment="Center">
-                                <Ellipse Width="6"
-                                         Height="6"
-                                         Fill="Black"
-                                         Margin="2" />
-                                <Ellipse Width="6"
-                                         Height="6"
-                                         Fill="Black"
-                                         Margin="2" />
-                                <Ellipse Width="6"
-                                         Height="6"
-                                         Fill="Black"
-                                         Margin="2" />
-                            </StackPanel>
-                        </Button>
-                    </Border>
                 </Grid>
 
                 <!-- Podcast result info -->
@@ -325,7 +305,8 @@
                         </Border>
 
                         <!-- Podcast overview -->
-                        <Grid Grid.Column="1" Margin="0 10">
+                        <Grid Grid.Column="1"
+                              Margin="0 10">
 
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="1*" />
@@ -465,17 +446,17 @@
             </Grid>
             <!--Save toast notification -->
             <Border x:Name="SaveToast"
-        Background="#333"
-        CornerRadius="8"
-        Padding="12,6"
-        HorizontalAlignment="Center"
-        VerticalAlignment="Top"
-        Margin="0,20,0,0"
-        Opacity="0">
+                    Background="#333"
+                    CornerRadius="8"
+                    Padding="12,6"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Margin="0,20,0,0"
+                    Opacity="0">
                 <TextBlock Text="Sparad!"
-               Foreground="White"
-               FontSize="16"
-               FontWeight="Bold"/>
+                           Foreground="White"
+                           FontSize="16"
+                           FontWeight="Bold" />
             </Border>
 
         </Grid>
