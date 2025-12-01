@@ -41,9 +41,7 @@ namespace pod_app.PresentationLayer.Pages
         private Podcast? currentPodcastFeed;
         public ObservableCollection<Episode> ResultsList { get; set; }
         private bool isLoadingMore = false;
-        private bool IsSearching { get; set; } = false;
-
-        private bool IsConnected = false;
+        public ObservableBool IsSearching { get; set; }
 
         public HomePage()
         {
@@ -53,6 +51,7 @@ namespace pod_app.PresentationLayer.Pages
             PodcastTitle = new();
             PodcastCategory = new();
             PodcastDescription = new();
+            IsSearching = new(false);
             this.DataContext = this;
             UpdateConnectButtonUI();
         }
@@ -71,10 +70,10 @@ namespace pod_app.PresentationLayer.Pages
 
         // Changes the status of the connect button depending on the status of the MongoDB connection
         public void UpdateConnectButtonUI()
-        { 
+        {
             if (MainWindow.podcastManager is null)
             {
-                ConnectButton.Content = "Anslut";  
+                ConnectButton.Content = "Anslut";
             }
             else
             {
@@ -87,15 +86,15 @@ namespace pod_app.PresentationLayer.Pages
         {
             if (MainWindow.podcastManager is null)
             {
-               
+
                 MainWindow.InitDbManager();            // Sends the user to the connectionDialog pop up if theres no connection to the database
             }
             else
             {
-               
+
                 MainWindow.podcastManager = null;
 
-                
+
                 Properties.Settings.Default.ConnectionString = string.Empty;    // Removing the connection by Emptying the connectionString
                 Properties.Settings.Default.Save();
             }
@@ -114,43 +113,39 @@ namespace pod_app.PresentationLayer.Pages
             var validation = Validator.ValidateSearchQuery(query);
 
             if (!validation.IsValid)
-            {   
+            {
                 MessageBox.Show(validation.ErrorMessage);
-                return;   
+                return;
             }
-                   
+
             // Clear previus results
             ResultsList.Clear();
-                    PodcastImageUrl.Value = "";
-                    PodcastTitle.Value = "";
-                    PodcastDescription.Value = "";
-                    PodcastCategory.Value = "";
-                    currentPodcastFeed = null;
-                    IsSearching = true;
-                    try
-                    {
-                        // Start search
-                        var xmlStr = await RssUtilHelpers.GetRssXMLFile(query);
-                        // Get podcast
-                        var feed = await Task.Run(() => RssUtilHelpers.GetPodFeedFromXML(xmlStr, query));
+            PodcastImageUrl.Value = "";
+            PodcastTitle.Value = "";
+            PodcastDescription.Value = "";
+            PodcastCategory.Value = "";
+            currentPodcastFeed = null;
 
-                        PodcastImageUrl.Value = feed.ImageUrl;
-                        PodcastTitle.Value = feed.Title;
-                        currentPodcastFeed = feed;
-                        PodcastDescription.Value = feed.About;
-                        PodcastCategory.Value = feed.Genre;
-                        LoadNextPage();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-                    IsSearching = false;
-                }
+            IsSearching.Value = true;
+            try
+            {
+                // Start search
+                var xmlStr = await RssUtilHelpers.GetRssXMLFile(query);
+                // Get podcast
+                var feed = await Task.Run(() => RssUtilHelpers.GetPodFeedFromXML(xmlStr, query));
 
-        private void FilterButton_Click(object sender, RoutedEventArgs e)
-        {
-
+                PodcastImageUrl.Value = feed.ImageUrl;
+                PodcastTitle.Value = feed.Title;
+                currentPodcastFeed = feed;
+                PodcastDescription.Value = feed.About;
+                PodcastCategory.Value = feed.Genre;
+                LoadNextPage();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            IsSearching.Value = false;
         }
 
         private void ScrollContainer_ScrollChanged(object sender, ScrollChangedEventArgs e)
@@ -190,9 +185,9 @@ namespace pod_app.PresentationLayer.Pages
         private void OnPodcastLike_Click(object sender, RoutedEventArgs e)
         {
             if (currentPodcastFeed is null)
-                return; 
+                return;
 
-            
+
             var dialog = new PodcastDetailsDialog(currentPodcastFeed);
             dialog.ShowDialog();
 
