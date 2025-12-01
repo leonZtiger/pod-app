@@ -31,6 +31,7 @@ namespace pod_app.BusinessLogicLayer
                     i.Episodes = new();
                     continue;
                 }
+
                 string xmlFile = await RssUtilHelpers.GetRssXMLFile(i.Url);
 
                 if (string.IsNullOrEmpty(xmlFile))
@@ -45,14 +46,26 @@ namespace pod_app.BusinessLogicLayer
                 i.Episodes = p.Episodes;
                 i.About = p.About;
                 i.ImageUrl = p.ImageUrl;
-                i.Title = p.Title;
-                i.Genre = p.Genre;
+
+                // Only gets the title from the rss if the user hasnt put in its own title
+                if (string.IsNullOrWhiteSpace(i.Title))
+                {
+                    i.Title = p.Title;
+                }
+
+                // Only gets the Genre as category from the rss if the user hasnt put in its own Category
+                if (string.IsNullOrWhiteSpace(i.Genre))
+                {
+                    i.Genre = p.Genre;
+                }
             }
 
             return feeds;
         }
 
 
+
+        // Pushes the podcast into the collection
         public async Task PushFeedAsync(Podcast feed)
         {
             var feeds = await podcastRepo.GetAllFeedsAsync();
@@ -64,6 +77,8 @@ namespace pod_app.BusinessLogicLayer
 
         }
 
+
+        // Removes the podcast from the collection
         public async Task DeleteFeedAsync(Podcast feed)
         {
 
@@ -74,6 +89,7 @@ namespace pod_app.BusinessLogicLayer
         }
 
 
+        // Gets all the different categories in the collection
         public async Task<List<string>> GetAllCategoriesAsync()
         {
             var podcasts = await podcastRepo.GetAllFeedsAsync();
@@ -83,10 +99,12 @@ namespace pod_app.BusinessLogicLayer
             .Where(c => !string.IsNullOrWhiteSpace(c))
             .Select(c => c!)
             .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(c => c, StringComparer.OrdinalIgnoreCase)
+            .OrderBy(c => c, StringComparer.OrdinalIgnoreCase)  // does not differentiate between upper and lowercase
             .ToList();
         }
 
+
+        // Adds a category to a Podcast
         public async Task AddCategoryToPodcastAsync(string podId, string categoryName)
         {
             if (string.IsNullOrWhiteSpace(categoryName))
@@ -100,6 +118,8 @@ namespace pod_app.BusinessLogicLayer
             await podcastRepo.UpdateFeedAsync(podcast);
         }
 
+
+        // Changes the name of a category and makes sure all podcasts gets the new name
         public async Task RenameCategoryAsync(string oldCategory, string newCategory)
         {
             if (string.IsNullOrWhiteSpace(oldCategory))
@@ -127,6 +147,7 @@ namespace pod_app.BusinessLogicLayer
             }
         }
 
+        // Removes a category from the collection
         public async Task DeleteCategoryAsync(string categoryName)
         {
             if (string.IsNullOrWhiteSpace(categoryName))

@@ -1,5 +1,6 @@
-﻿using pod_app.BusinessLogicLayer;
+using pod_app.BusinessLogicLayer;
 using pod_app.Models;
+using pod_app.PresentationLayer.Validation;
 using pod_app.PresentationLayer.Views;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,7 @@ namespace pod_app.PresentationLayer.Pages
     /// </summary>
     public partial class HomePage : Page
     {
+        private readonly PodcastManagerAsync _manager;
         private Frame parentFrame;
         public ObservableString PodcastImageUrl { get; set; }
         public ObservableString PodcastTitle { get; set; }
@@ -40,6 +42,9 @@ namespace pod_app.PresentationLayer.Pages
         public ObservableCollection<Episode> ResultsList { get; set; }
         private bool isLoadingMore = false;
         private bool IsSearching { get; set; } = false;
+
+        private bool IsConnected = false;
+
         public HomePage()
         {
             InitializeComponent();
@@ -49,63 +54,99 @@ namespace pod_app.PresentationLayer.Pages
             PodcastCategory = new();
             PodcastDescription = new();
             this.DataContext = this;
+            UpdateConnectButtonUI();
         }
 
-        public HomePage(Frame parentFrame) : this()
+        public HomePage(Frame parentFrame, PodcastManagerAsync manager) : this()
         {
             this.parentFrame = parentFrame;
+            _manager = manager;
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            parentFrame.Navigate(MainWindow.savedPage);
+            parentFrame.Navigate(new SavedPage(parentFrame, _manager));
         }
+
+        // Changes the status of the connect button depending on the status of the MongoDB connection
+        public void UpdateConnectButtonUI()
+        { 
+            if (MainWindow.podcastManager is null)
+            {
+                ConnectButton.Content = "Anslut";  
+            }
+            else
+            {
+                ConnectButton.Content = "Koppla från";
+            }
+        }
+
 
         private void ConnectButton_Click(object sender, RoutedEventArgs e)
         {
             if (MainWindow.podcastManager is null)
-                MainWindow.InitDbManager();
+            {
+               
+                MainWindow.InitDbManager();            // Sends the user to the connectionDialog pop up if theres no connection to the database
+            }
+            else
+            {
+               
+                MainWindow.podcastManager = null;
+
+                
+                Properties.Settings.Default.ConnectionString = string.Empty;    // Removing the connection by Emptying the connectionString
+                Properties.Settings.Default.Save();
+            }
+
+            UpdateConnectButtonUI();  // Updates the status of the button
         }
+
+
+
+
 
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            // Validate text input first
+            // Validates the user input
             string? query = SearchBox.Text;
-            if (!RssUtilHelpers.IsvalidXmlUrl(query))
-            {
-                // TODO: Prompt user with bad query messsage
-                MessageBox.Show("Search failed");
-                return;
-            }
+            var validation = Validator.ValidateSearchQuery(query);
 
+            if (!validation.IsValid)
+            {   
+                MessageBox.Show(validation.ErrorMessage);
+                return;   
+            }
+                   
             // Clear previus results
             ResultsList.Clear();
-            PodcastImageUrl.Value = "";
-            PodcastTitle.Value = "";
-            PodcastDescription.Value = "";
-            PodcastCategory.Value = "";
-            currentPodcastFeed = null;
-            IsSearching = true;
-            try
-            {
-                // Start search
-                var xmlStr = await RssUtilHelpers.GetRssXMLFile(query);
-                // Get podcast
-                var feed = await Task.Run(() => RssUtilHelpers.GetPodFeedFromXML(xmlStr,query));
+                    PodcastImageUrl.Value = "";
+                    PodcastTitle.Value = "";
+                    PodcastDescription.Value = "";
+                    PodcastCategory.Value = "";
+                    currentPodcastFeed = null;
+                    IsSearching = true;
+                    try
+                    {
+                        // Start search
+                        var xmlStr = await RssUtilHelpers.GetRssXMLFile(query);
+                        // Get podcast
+                        var feed = await Task.Run(() => RssUtilHelpers.GetPodFeedFromXML(xmlStr, query));
 
-                PodcastImageUrl.Value = feed.ImageUrl;
-                PodcastTitle.Value = feed.Category;
-                currentPodcastFeed = feed;
-                PodcastDescription.Value = feed.About;
-                PodcastCategory.Value = feed.Genre;
-                LoadNextPage();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            IsSearching = false;
-        }
+                        PodcastImageUrl.Value = feed.ImageUrl;
+                        PodcastTitle.Value = feed.Title;
+                        currentPodcastFeed = feed;
+                        PodcastDescription.Value = feed.About;
+                        PodcastCategory.Value = feed.Genre;
+                        LoadNextPage();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                    IsSearching = false;
+                }
 
         private void FilterButton_Click(object sender, RoutedEventArgs e)
         {
@@ -145,35 +186,17 @@ namespace pod_app.PresentationLayer.Pages
             }
         }
 
+        // Sends the user to the PodcastDetailsDialog to save the name and category 
         private void OnPodcastLike_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.podcastManager is null)
-                MainWindow.InitDbManager();
+            if (currentPodcastFeed is null)
+                return; 
 
-            if (currentPodcastFeed is not null && MainWindow.podcastManager is not null)
-            {
-                MainWindow.podcastManager.PushFeedAsync(currentPodcastFeed);
-            }
+            
+            var dialog = new PodcastDetailsDialog(currentPodcastFeed);
+            dialog.ShowDialog();
 
-         
-        private void ShowLikeToast()
-        {
-           
-            if (currentPodcastFeed is not null)
-            {
-                ShowSaveToast(); // Toast animation from HomePage.XAML
-            }
         }
-
-        // Event handler to trigger the toast
-        private void OnLikeToastButton_Click(object sender, RoutedEventArgs e)
-        {
-            ShowLikeToast();
-        }
-
-        
-    
-
 
     }
 }

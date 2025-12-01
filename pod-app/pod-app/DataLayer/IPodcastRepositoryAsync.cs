@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace pod_app.DataLayer
 {
+
+    // Interface for the repository
+    // Makes sure the repository implements these methods
     public interface IPodcastRepositoryAsync
     {
         Task<List<Podcast>> GetAllFeedsAsync();
@@ -17,9 +20,7 @@ namespace pod_app.DataLayer
 
         Task UpdateFeedAsync(Podcast feed);
 
-        Task DeleteFeedAsync(Podcast feed);
-
-        
+        Task DeleteFeedAsync(Podcast feed);  
 
     }
 }
