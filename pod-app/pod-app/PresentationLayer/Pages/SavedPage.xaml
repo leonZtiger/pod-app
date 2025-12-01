@@ -5,7 +5,11 @@
 
 
 
+
+
     <Page.Resources>
+
+
         <DropShadowEffect x:Key="ShadowEffect"
                       Color="#0f0f0f"
                       BlurRadius="15"
@@ -56,7 +60,7 @@
                     Height="36"
                     Click="BtnBack_Click"
                     Style="{StaticResource RoundedButton}"/>
-            
+
 
             <TextBlock Grid.Column="1"
                        Text="Sparade poddar"
@@ -69,9 +73,9 @@
                     Content="Filtrera"
                     Width="110" 
                     Height="36"
-                    Click="FilterItem_Click"
+                    Click="FilterButton_Click"
                     Style="{StaticResource RoundedButton}">
-                
+
                 <Button.ContextMenu>
                     <ContextMenu x:Name="filterMenu">
                         <MenuItem Header="Alla" Click="FilterItem_Click"/>
@@ -86,20 +90,22 @@
         </Grid>
 
         <!-- MAIN CONTENT -->
-        <ScrollViewer Grid.Row="1" Margin="40" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Row="1" 
+                      Margin="40" 
+                      VerticalScrollBarVisibility="Auto">
+
             <StackPanel>
 
                 <ItemsControl x:Name="PodListControl">
-
-                    
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
 
-                            <StackPanel Margin="0 15">
+                            <StackPanel Margin="0 15"
+                                        DataContext="{Binding}">
+
 
                                 <!-- PODCAST TILE (KLICKBAR) -->
-                                <views:EpisodeView MouseLeftButtonUp="OnFeedClicked"/>
-
+                                <views:EpisodeView  MouseLeftButtonUp="OnFeedClicked"/>
 
                                 <!-- EXPANDED EPISODES -->
                                 <StackPanel>
@@ -131,7 +137,33 @@
                                             HorizontalAlignment="Center"
                                             Style="{StaticResource RoundedButton}"
                                             Width="140"/>
-                             
+
+
+                                    <!--  EDIT KNAPP -->
+                                    <Button Content="Byt namn"
+                                            Width="90"
+                                            Height="32"
+                                            Style="{StaticResource RoundedButton}"
+                                            DataContext="{Binding}"
+                                            Click="OnRenamePodcast_Click"/>
+
+                                    <Button Content="Kategori"
+                                            Width="90"
+                                            Height="32"
+                                            Style="{StaticResource RoundedButton}"
+                                            DataContext="{Binding}"
+                                            Click="OnEditCategory_Click"/>
+
+                                    <Button Content="Ta bort"
+                                            Width="90"
+                                            Height="32"
+                                            Style="{StaticResource RoundedButton}"
+                                            Click="OnDeletePodcast_Click"/>
+
+
+
+
+
                                 </StackPanel>
 
                             </StackPanel>
@@ -145,3 +177,4 @@
 
     </Grid>
 </Page>
+
