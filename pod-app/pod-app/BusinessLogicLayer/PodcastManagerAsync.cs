@@ -73,6 +73,10 @@ namespace pod_app.BusinessLogicLayer
             await podcastRepo.DeleteFeedAsync(feed);
         }
 
+        public async Task UpdateFeedAsync(Podcast feed)
+        {
+            await podcastRepo.UpdateFeedAsync(feed);
+        }
 
         public async Task<List<string>> GetAllCategoriesAsync()
         {

@@ -93,16 +93,95 @@ namespace pod_app.PresentationLayer.Pages
             UpdateEpisodeList();
         }
 
+        //  DELETE PODCAST
+
+        private async void OnDeletePodcast_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as FrameworkElement)?.DataContext is not Podcast pod)
+                return;
+
+            var confirm = MessageBox.Show(
+                $"Vill du ta bort '{pod.Title}'?",
+                "Bekräfta borttagning",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+
+            if (confirm != MessageBoxResult.Yes)
+                return;
+
+            await _manager.DeleteFeedAsync(pod);
+            RefreshSavedFeeds();
+        }
+
+
+
+
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
             parentFrame.Navigate(MainWindow.homePage);
         }
 
-        private void FilterItem_Click(object sender, RoutedEventArgs e)
+        private async void FilterItem_Click(object sender, RoutedEventArgs e)
         {
-            // 
+            var item = sender as MenuItem;
+            if (item == null) return;
+
+            string category = item.Header.ToString();
+            var allFeeds = await _manager.GetAllFeedsAsync();
+
+            if (category == "Alla")
+                PodListControl.ItemsSource = allFeeds;
+            else
+                PodListControl.ItemsSource = allFeeds
+                    .Where(f => f.Category == category)
+                    .ToList();
         }
+
+        private void FilterButton_Click(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as Button;
+            btn.ContextMenu.PlacementTarget = btn;
+            btn.ContextMenu.IsOpen = true;
+        }
+
+        private async void OnEditCategory_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as FrameworkElement)?.DataContext is not Podcast pod) return;
+
+            string newCat = Microsoft.VisualBasic.Interaction.InputBox(
+                "Ny kategori:", "Byt kategori", pod.Category);
+
+            if (string.IsNullOrWhiteSpace(newCat))
+                return;
+
+            await _manager.AddCategoryToPodcastAsync(pod.Id, newCat);
+            RefreshSavedFeeds();
+
+
+        }
+
+        private async void OnRenamePodcast_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as FrameworkElement)?.DataContext is not Podcast pod)
+                return;
+
+            string newName = Microsoft.VisualBasic.Interaction.InputBox(
+                "Nytt namn:", "Byt namn", pod.Title);
+
+            if (string.IsNullOrWhiteSpace(newName))
+                return;
+
+            pod.Title = newName.Trim();
+
+            // Spara i databasen
+            await _manager.UpdateFeedAsync(pod);
+
+            // Ladda om listan så UI uppdateras
+            RefreshSavedFeeds();
+        }
+
+
 
     }
 }
