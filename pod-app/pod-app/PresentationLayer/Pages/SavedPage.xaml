@@ -60,32 +60,29 @@
                     Height="36"
                     Click="BtnBack_Click"
                     Style="{StaticResource RoundedButton}"/>
-            
+
 
             <TextBlock Grid.Column="1"
-                       Text="Sparade poddar"
-                       Foreground="White"
-                       FontSize="20"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center"/>
+                    Text="Sparade poddar"
+                    Foreground="White"
+                    FontSize="20"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"/>
 
             <Button Grid.Column="2"
                     Content="Filtrera"
-                    Width="110" 
+                    Width="110"
                     Height="36"
                     Click="FilterButton_Click"
-                    Style="{StaticResource RoundedButton}">
-                
+                    Style="{StaticResource RoundedButton}"> 
+
                 <Button.ContextMenu>
-                    <ContextMenu x:Name="filterMenu">
-                        <MenuItem Header="Alla" Click="FilterItem_Click"/>
-                        <MenuItem Header="Nyheter" Click="FilterItem_Click"/>
-                        <MenuItem Header="Sport" Click="FilterItem_Click"/>
-                        <MenuItem Header="Humor" Click="FilterItem_Click"/>
-                        <MenuItem Header="Dokumentär" Click="FilterItem_Click"/>
-                    </ContextMenu>
+                    <ContextMenu x:Name="filterMenu"/>
                 </Button.ContextMenu>
+
             </Button>
+
+
 
         </Grid>
 

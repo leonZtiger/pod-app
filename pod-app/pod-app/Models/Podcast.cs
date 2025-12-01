@@ -42,5 +42,9 @@ namespace pod_app.Models
 
         [BsonIgnore]
         public bool IsExpanded { get; set; } = false;
+
+        public bool IsFavorite { get; set; } = false;
+
+
     }
 }

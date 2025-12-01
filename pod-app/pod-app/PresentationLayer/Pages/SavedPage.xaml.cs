@@ -27,6 +27,8 @@ namespace pod_app.PresentationLayer.Pages
             this.DataContext = this;
 
             LoadPodFlows();
+            _ = BuildCategoryMenuAsync();
+        
         }
 
         private async void LoadPodFlows()
@@ -138,6 +140,30 @@ namespace pod_app.PresentationLayer.Pages
                     .ToList();
         }
 
+
+        private async Task BuildCategoryMenuAsync()
+        {
+            filterMenu.Items.Clear();
+
+            // Always include "Alla"
+            var allItem = new MenuItem { Header = "Alla" };
+            allItem.Click += FilterItem_Click;
+            filterMenu.Items.Add(allItem);
+
+            var feeds = await _manager.GetAllFeedsAsync();
+            var categories = feeds
+                .Where(f => !string.IsNullOrWhiteSpace(f.Category))
+                .Select(f => f.Category.Trim())
+                .Distinct()
+                .OrderBy(c => c);
+
+            foreach (var cat in categories)
+            {
+                var item = new MenuItem { Header = cat };
+                item.Click += FilterItem_Click;
+                filterMenu.Items.Add(item);
+            }
+        }
         private void FilterButton_Click(object sender, RoutedEventArgs e)
         {
             var btn = sender as Button;
