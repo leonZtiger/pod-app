@@ -154,6 +154,29 @@ namespace pod_app.PresentationLayer.Pages
             {
                 MainWindow.podcastManager.PushFeedAsync(currentPodcastFeed);
             }
+
+         
+        private void ShowLikeToast()
+        {
+           
+            if (currentPodcastFeed is not null)
+            {
+                ShowSaveToast(); // Toast animation from HomePage.XAML
+            }
         }
+
+        // Event handler to trigger the toast
+        private void OnLikeToastButton_Click(object sender, RoutedEventArgs e)
+        {
+            ShowLikeToast();
+        }
+
+        
+    
+
+
     }
 }
+}
+
+
