@@ -141,6 +141,7 @@ namespace pod_app.PresentationLayer.Pages
         }
 
 
+
         private async Task BuildCategoryMenuAsync()
         {
             filterMenu.Items.Clear();
@@ -164,6 +165,7 @@ namespace pod_app.PresentationLayer.Pages
                 filterMenu.Items.Add(item);
             }
         }
+
         private void FilterButton_Click(object sender, RoutedEventArgs e)
         {
             var btn = sender as Button;

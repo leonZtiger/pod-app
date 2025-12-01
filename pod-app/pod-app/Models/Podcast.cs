@@ -20,6 +20,7 @@ namespace pod_app.Models
         public string Id { get; set; }   
 
         [BsonIgnore]
+
         public List<Episode> Episodes { get; set; } // Filled by RssUtilHelpers.GetPodFeedFromXML
 
         [BsonElement("url")]
@@ -38,13 +39,7 @@ namespace pod_app.Models
         public string Title { get; set; }
         
         [BsonIgnore]
-        public string Genre { get; set; } // Filled by RssUtilHelpers.GetPodFeedFromXML
-
-        [BsonIgnore]
         public bool IsExpanded { get; set; } = false;
-
-        public bool IsFavorite { get; set; } = false;
-
-
     }
 }
+

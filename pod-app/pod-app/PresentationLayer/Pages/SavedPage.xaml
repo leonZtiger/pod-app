@@ -74,7 +74,9 @@
                     Width="110"
                     Height="36"
                     Click="FilterButton_Click"
+
                     Style="{StaticResource RoundedButton}"> 
+
 
                 <Button.ContextMenu>
                     <ContextMenu x:Name="filterMenu"/>
@@ -94,8 +96,6 @@
             <StackPanel>
 
                 <ItemsControl x:Name="PodListControl">
-
-                    
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
 
@@ -177,3 +177,4 @@
 
     </Grid>
 </Page>
+

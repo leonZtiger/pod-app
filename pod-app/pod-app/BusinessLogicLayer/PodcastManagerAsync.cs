@@ -54,9 +54,9 @@ namespace pod_app.BusinessLogicLayer
                 }
 
                 // Only gets the Genre as category from the rss if the user hasnt put in its own Category
-                if (string.IsNullOrWhiteSpace(i.Genre))
+                if (string.IsNullOrWhiteSpace(i.Category))
                 {
-                    i.Genre = p.Genre;
+                    i.Category = p.Category;
                 }
             }
 
@@ -121,7 +121,11 @@ namespace pod_app.BusinessLogicLayer
             podcast.Category = categoryName.Trim();
             await podcastRepo.UpdateFeedAsync(podcast);
         }
-
+        
+        public async Task UpdateFeedAsync(Podcast feed)
+        {
+            await podcastRepo.UpdateFeedAsync(feed);
+        }
 
         // Changes the name of a category and makes sure all podcasts gets the new name
         public async Task RenameCategoryAsync(string oldCategory, string newCategory)
