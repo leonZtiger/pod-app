@@ -230,7 +230,10 @@
                                                    VerticalAlignment="Center" />
 
                                         <!-- Spinner -->
-                                        <views:Spinner x:Name="Spinner"/>
+                                        <views:Spinner Visibility="Hidden"
+                                                       Width="35"
+                                                       Height="35"
+                                                       x:Name="Spinner" />
                                     </Grid>
 
                                     <!-- Show spinner on search, else search icon -->

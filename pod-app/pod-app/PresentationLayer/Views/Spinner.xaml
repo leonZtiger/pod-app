@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ed="clr-namespace:Microsoft.Expression.Shapes;assembly=Microsoft.Expression.Drawing"
              mc:Ignorable="d"
-             d:DesignHeight="80"
-             d:DesignWidth="80">
+             d:DesignHeight="40"
+             d:DesignWidth="40">
 
     <!-- Animations -->
     <UserControl.Resources>
@@ -53,27 +53,43 @@
     </UserControl.Resources>
 
     <!-- Arc -->
-    <Grid>
-        <ed:Arc x:Name="arc"
-                Width="20"
-                Height="20"
-                ArcThickness="3"
-                StartAngle="-360"
-                EndAngle="-350"
-                Fill="black"
-                StrokeThickness="0"
-                RenderTransformOrigin="0.5,0.5">
-            <ed:Arc.RenderTransform>
-                <RotateTransform />
-            </ed:Arc.RenderTransform>
-        </ed:Arc>
-    </Grid>
+    <Viewbox Stretch="Fill">
+        <Grid x:Name="grid"
+              Height="300"
+              Width="300">
+            <ed:Arc x:Name="arc"
+                    ArcThickness="30"
+                    EndAngle="-350"
+                    Fill="Black"
+                    HorizontalAlignment="Left"
+                    Height="280"
+                    Margin="10,10,0,0"
+                    Stretch="None"
+                    Stroke="Black"
+                    StartAngle="-360"
+                    VerticalAlignment="Top"
+                    Width="280"
+                    RenderTransformOrigin="0.5,0.5"
+                    StrokeThickness="0">
+                <ed:Arc.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform />
+                        <SkewTransform />
+                        <RotateTransform />
+                        <TranslateTransform />
+                    </TransformGroup>
+                </ed:Arc.RenderTransform>
+            </ed:Arc>
+        </Grid>
+    </Viewbox>
 
     <!-- Start animations when the control loads -->
     <UserControl.Triggers>
         <EventTrigger RoutedEvent="FrameworkElement.Loaded">
-            <BeginStoryboard Storyboard="{StaticResource Progress}" />
-            <BeginStoryboard Storyboard="{StaticResource Rotate}" />
+            <BeginStoryboard x:Name="rotate_BeginStoryboard"
+                             Storyboard="{StaticResource Progress}" />
+            <BeginStoryboard x:Name="rotate_BeginStoryboard1"
+                             Storyboard="{StaticResource rotate}" />
         </EventTrigger>
     </UserControl.Triggers>
 </UserControl>
