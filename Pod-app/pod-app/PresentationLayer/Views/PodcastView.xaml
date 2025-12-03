@@ -1,0 +1,170 @@
+﻿<UserControl x:Class="pod_app.PresentationLayer.Views.PodcastView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:pod_app.PresentationLayer.Views"
+             mc:Ignorable="d"
+             Background="#1e1e1e"
+             d:DesignWidth="500">
+
+    <UserControl.Resources>
+        <Style x:Key="RoundedButton"
+               TargetType="Button">
+           
+            <Setter Property="Background"
+                    Value="#3f3f3f" />
+            <Setter Property="Foreground"
+                    Value="White" />
+            <Setter Property="FontSize"
+                    Value="14" />
+            <Setter Property="Margin"
+                    Value="0, 0, 5, 0" />
+            <Setter Property="Cursor"
+                    Value="Hand" />
+           
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="20"
+                                Padding="5"
+                                Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </UserControl.Resources>
+    
+    <Grid HorizontalAlignment="Stretch">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="3*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Podcast image -->
+        <Border HorizontalAlignment="left"
+                VerticalAlignment="Center"
+                Grid.Column="0"
+                Height="90"
+                Margin="10"
+                Padding="10"
+                Width="90"
+                CornerRadius="10">
+            <Border.Background>
+                <ImageBrush ImageSource="{Binding ImageUrl}"
+                            RenderOptions.BitmapScalingMode="HighQuality"
+                            d:ImageSource="https://hips.hearstapps.com/clv.h-cdn.co/assets/16/18/gettyimages-586890581.jpg?crop=0.668xw:1.00xh;0.219xw,0" />
+            </Border.Background>
+        </Border>
+
+        <!-- Podcast overview -->
+        <Grid Grid.Column="1"
+              Margin="0 10">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+
+            <!-- Title and like button container -->
+            <Grid Grid.Row="0"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <!-- Title column -->
+                    <ColumnDefinition Width="2*" />
+                    <!-- Edit buttond column -->
+                    <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Title -->
+                <TextBlock d:Text="Podcast test title"
+                           Foreground="White"
+                           FontSize="15"
+                           Grid.Column="0"
+                           Text="{Binding Title}" />
+
+                <!-- Edit buttons button -->
+                <Grid Grid.Column="1"
+                      HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <!--  EDIT KNAPP -->
+                    <Button Grid.Column="0"
+                            Content="Byt namn"
+                            Style="{StaticResource RoundedButton}"
+                            DataContext="{Binding}"
+                            Click="OnRenamePodcast_Click" />
+
+                    <Button Grid.Column="1"
+                            Content="Kategori"
+                            Style="{StaticResource RoundedButton}"
+                            DataContext="{Binding}"
+                            Click="OnEditCategory_Click"
+                             />
+
+                    <Button Grid.Column="2"
+                            Content="Ta bort"
+                            Style="{StaticResource RoundedButton}"
+                            Click="OnDeletePodcast_Click" />
+                </Grid>
+            </Grid>
+
+            <TextBlock d:Text="Test title about podcat"
+                       Foreground="Gray"
+                       TextWrapping="WrapWithOverflow"
+                       TextTrimming="CharacterEllipsis"
+                       Grid.Row="1"
+                       FontSize="15"
+                       Text="{Binding About}" />
+
+            <StackPanel Grid.Row="2"
+                        Orientation="Horizontal">
+                <TextBlock Foreground="White"
+                           FontWeight="Bold"
+                           Grid.Row="2"
+                           FontSize="15"
+                           Margin="0 0 10 0"
+                           Text="Kategori:">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility"
+                                    Value="Visible" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Category}"
+                                             Value="">
+                                    <Setter Property="Visibility"
+                                            Value="Hidden" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Category}"
+                                             Value="{x:Null}">
+                                    <Setter Property="Visibility"
+                                            Value="Hidden" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBlock Foreground="White"
+                           Grid.Row="2"
+                           FontSize="15"
+                           d:Text="Krim, Humor"
+                           Text="{Binding Category}" />
+
+
+            </StackPanel>
+        </Grid>
+
+    </Grid>
+
+</UserControl>

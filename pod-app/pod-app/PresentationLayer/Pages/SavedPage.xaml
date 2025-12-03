@@ -105,7 +105,7 @@
 
 
                                 <!-- PODCAST TILE (KLICKBAR) -->
-                                <views:EpisodeView  MouseLeftButtonUp="OnFeedClicked"/>
+                                <views:PodcastView MouseDoubleClick="OnFeedClicked"/>
 
                                 <!-- EXPANDED EPISODES -->
                                 <StackPanel>
@@ -136,33 +136,7 @@
                                             Click="LoadMore_Click"
                                             HorizontalAlignment="Center"
                                             Style="{StaticResource RoundedButton}"
-                                            Width="140"/>
-
-
-                                    <!--  EDIT KNAPP -->
-                                    <Button Content="Byt namn"
-                                            Width="90"
-                                            Height="32"
-                                            Style="{StaticResource RoundedButton}"
-                                            DataContext="{Binding}"
-                                            Click="OnRenamePodcast_Click"/>
-
-                                    <Button Content="Kategori"
-                                            Width="90"
-                                            Height="32"
-                                            Style="{StaticResource RoundedButton}"
-                                            DataContext="{Binding}"
-                                            Click="OnEditCategory_Click"/>
-
-                                    <Button Content="Ta bort"
-                                            Width="90"
-                                            Height="32"
-                                            Style="{StaticResource RoundedButton}"
-                                            Click="OnDeletePodcast_Click"/>
-
-
-
-
+                                            Width="140" />
 
                                 </StackPanel>
 

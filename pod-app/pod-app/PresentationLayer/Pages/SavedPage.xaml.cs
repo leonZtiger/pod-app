@@ -95,24 +95,7 @@ namespace pod_app.PresentationLayer.Pages
 
         //  DELETE PODCAST
 
-        private async void OnDeletePodcast_Click(object sender, RoutedEventArgs e)
-        {
-            if ((sender as FrameworkElement)?.DataContext is not Podcast pod)
-                return;
-
-            var confirm = MessageBox.Show(
-                $"Vill du ta bort '{pod.Title}'?",
-                "Bekräfta borttagning",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning);
-
-            if (confirm != MessageBoxResult.Yes)
-                return;
-
-            await _manager.DeleteFeedAsync(pod);
-            RefreshSavedFeeds();
-        }
-
+        
 
 
 
@@ -145,43 +128,9 @@ namespace pod_app.PresentationLayer.Pages
             btn.ContextMenu.IsOpen = true;
         }
 
-        private async void OnEditCategory_Click(object sender, RoutedEventArgs e)
-        {
-            if ((sender as FrameworkElement)?.DataContext is not Podcast pod) return;
+      
 
-            string newCat = Microsoft.VisualBasic.Interaction.InputBox(
-                "Ny kategori:", "Byt kategori", pod.Category);
-
-            if (string.IsNullOrWhiteSpace(newCat))
-                return;
-
-            await _manager.AddCategoryToPodcastAsync(pod.Id, newCat);
-            RefreshSavedFeeds();
-
-
-        }
-
-        private async void OnRenamePodcast_Click(object sender, RoutedEventArgs e)
-        {
-            if ((sender as FrameworkElement)?.DataContext is not Podcast pod)
-                return;
-
-            string newName = Microsoft.VisualBasic.Interaction.InputBox(
-                "Nytt namn:", "Byt namn", pod.Title);
-
-            if (string.IsNullOrWhiteSpace(newName))
-                return;
-
-            pod.Title = newName.Trim();
-
-            // Spara i databasen
-            await _manager.UpdateFeedAsync(pod);
-
-            // Ladda om listan så UI uppdateras
-            RefreshSavedFeeds();
-        }
-
-
+        
 
     }
 }
