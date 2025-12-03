@@ -1,0 +1,91 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net9.0-windows</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ApplicationDefinition Include="App.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Page Include="PresentationLayer\MainWindow.xaml" />
+		<Page Include="PresentationLayer\Pages\HomePage.xaml" />
+		<Page Include="PresentationLayer\Pages\ResultPage.xaml" />
+		<Page Include="PresentationLayer\Pages\SavedPage.xaml" />
+		<Page Include="PresentationLayer\Pages\UserPage.xaml" />
+		<Page Include="PresentationLayer\Views\AddCategoryDialog.xaml" />
+		<Page Include="PresentationLayer\Views\CategoryManagerDialog.xaml" />
+		<Page Include="PresentationLayer\Views\ConnectionDialog.xaml" />
+		<Page Include="PresentationLayer\Views\EpisodeView.xaml" />
+		<Page Include="PresentationLayer\Views\PodcastDetailsDialog.xaml" />
+		<Page Include="PresentationLayer\Views\Spinner.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Pod_app.BL\Pod_app.BL.csproj" />
+		<ProjectReference Include="..\Pod_app.Models\Pod_app.Models.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Resource Include="PresentationLayer\Views\Assets\appIcon.ico">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="PresentationLayer\Views\Assets\Fonts\Inter.ttc" />
+		<Resource Include="PresentationLayer\Views\Assets\heart_fill.png" />
+		<Resource Include="PresentationLayer\Views\Assets\heart_no_fill.png" />
+		<Resource Include="PresentationLayer\Views\Assets\NoImage.png" />
+		<Resource Include="PresentationLayer\Views\Assets\share.png" />
+	</ItemGroup>
+
+</Project>
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net9.0-windows</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ApplicationDefinition Include="App.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Page Include="PresentationLayer\MainWindow.xaml" />
+		<Page Include="PresentationLayer\Pages\HomePage.xaml" />
+		<Page Include="PresentationLayer\Pages\ResultPage.xaml" />
+		<Page Include="PresentationLayer\Pages\SavedPage.xaml" />
+		<Page Include="PresentationLayer\Pages\UserPage.xaml" />
+		<Page Include="PresentationLayer\Views\AddCategoryDialog.xaml" />
+		<Page Include="PresentationLayer\Views\CategoryManagerDialog.xaml" />
+		<Page Include="PresentationLayer\Views\ConnectionDialog.xaml" />
+		<Page Include="PresentationLayer\Views\EpisodeView.xaml" />
+		<Page Include="PresentationLayer\Views\PodcastDetailsDialog.xaml" />
+		<Page Include="PresentationLayer\Views\Spinner.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Pod_app.BL\Pod_app.BL.csproj" />
+		<ProjectReference Include="..\Pod_app.Models\Pod_app.Models.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Resource Include="PresentationLayer\Views\Assets\appIcon.ico">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="PresentationLayer\Views\Assets\Fonts\Inter.ttc" />
+		<Resource Include="PresentationLayer\Views\Assets\heart_fill.png" />
+		<Resource Include="PresentationLayer\Views\Assets\heart_no_fill.png" />
+		<Resource Include="PresentationLayer\Views\Assets\NoImage.png" />
+		<Resource Include="PresentationLayer\Views\Assets\share.png" />
+	</ItemGroup>
+
+</Project>
+
