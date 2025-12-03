@@ -126,18 +126,25 @@ namespace pod_app.PresentationLayer.Pages
 
         private async void FilterItem_Click(object sender, RoutedEventArgs e)
         {
-            var item = sender as MenuItem;
-            if (item == null) return;
+            if (sender is not MenuItem item)
+                return;
 
-            string category = item.Header.ToString();
+            string? category = item.Header?.ToString();
+            if (string.IsNullOrWhiteSpace(category))
+                return;
+
             var allFeeds = await _manager.GetAllFeedsAsync();
 
             if (category == "Alla")
+            {
                 PodListControl.ItemsSource = allFeeds;
+            }
             else
+            {
                 PodListControl.ItemsSource = allFeeds
-                    .Where(f => f.Category == category)
+                    .Where(p => string.Equals(p.Category?.Trim(), category.Trim(), StringComparison.OrdinalIgnoreCase))
                     .ToList();
+            }
         }
 
 
@@ -167,11 +174,37 @@ namespace pod_app.PresentationLayer.Pages
         }
 
         private void FilterButton_Click(object sender, RoutedEventArgs e)
+
         {
-            var btn = sender as Button;
-            btn.ContextMenu.PlacementTarget = btn;
-            btn.ContextMenu.IsOpen = true;
+            if (sender is not Button btn)
+                return;
+
+            var menu = btn.ContextMenu;
+            if (menu == null)
+                return;
+
+            menu.Items.Clear();
+
+            
+            var categories = await _manager.GetAllCategoriesAsync();
+
+           
+            var allItem = new MenuItem { Header = "Alla" };
+            allItem.Click += FilterItem_Click;
+            menu.Items.Add(allItem);
+
+            
+            foreach (var cat in categories)
+            {
+                var item = new MenuItem { Header = cat };
+                item.Click += FilterItem_Click;
+                menu.Items.Add(item);
+            }
+
+            menu.PlacementTarget = btn;
+            menu.IsOpen = true;
         }
+
 
         private async void OnEditCategory_Click(object sender, RoutedEventArgs e)
         {
