@@ -95,24 +95,7 @@ namespace pod_app.PresentationLayer.Pages
 
         //  DELETE PODCAST
 
-        private async void OnDeletePodcast_Click(object sender, RoutedEventArgs e)
-        {
-            if ((sender as FrameworkElement)?.DataContext is not Podcast pod)
-                return;
-
-            var confirm = MessageBox.Show(
-                $"Vill du ta bort '{pod.Title}'?",
-                "Bekräfta borttagning",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning);
-
-            if (confirm != MessageBoxResult.Yes)
-                return;
-
-            await _manager.DeleteFeedAsync(pod);
-            RefreshSavedFeeds();
-        }
-
+        
 
 
 
@@ -215,6 +198,7 @@ namespace pod_app.PresentationLayer.Pages
         }
 
 
+        
 
     }
 }
