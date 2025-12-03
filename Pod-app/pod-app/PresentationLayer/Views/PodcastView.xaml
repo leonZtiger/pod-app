@@ -5,13 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:pod_app.PresentationLayer.Views"
              mc:Ignorable="d"
-             Background="#1e1e1e"
+             Background="Transparent"
+             MaxWidth="500"
              d:DesignWidth="500">
 
     <UserControl.Resources>
+
         <Style x:Key="RoundedButton"
                TargetType="Button">
-           
             <Setter Property="Background"
                     Value="#3f3f3f" />
             <Setter Property="Foreground"
@@ -19,152 +20,188 @@
             <Setter Property="FontSize"
                     Value="14" />
             <Setter Property="Margin"
-                    Value="0, 0, 5, 0" />
+                    Value="0,0,5,0" />
+            <Setter Property="Padding"
+                    Value="8,4" />
             <Setter Property="Cursor"
                     Value="Hand" />
-           
-
+            <Setter Property="BorderThickness"
+                    Value="0" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border CornerRadius="20"
-                                Padding="5"
-                                Background="{TemplateBinding Background}">
+                        <Border x:Name="border"
+                                CornerRadius="8"
+                                Background="{TemplateBinding Background}"
+                                SnapsToDevicePixels="True">
                             <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center" />
+                                              VerticalAlignment="Center"
+                                              RecognizesAccessKey="True" />
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- Hover -->
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter TargetName="border"
+                                        Property="Background"
+                                        Value="#555555" />
+                            </Trigger>
+                            <!-- Pressed -->
+                            <Trigger Property="IsPressed"
+                                     Value="True">
+                                <Setter TargetName="border"
+                                        Property="Background"
+                                        Value="#2b2b2b" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
     </UserControl.Resources>
-    
-    <Grid HorizontalAlignment="Stretch">
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="3*" />
-        </Grid.ColumnDefinitions>
+    <Border Margin="10"
+            CornerRadius="12"
+            Background="#2f2f2f"
+            SnapsToDevicePixels="True">
+        <Border.Effect>
+            <DropShadowEffect Color="Black"
+                              BlurRadius="18"
+                              ShadowDepth="3"
+                              Opacity="0.5" />
+        </Border.Effect>
 
-        <!-- Podcast image -->
-        <Border HorizontalAlignment="left"
-                VerticalAlignment="Center"
-                Grid.Column="0"
-                Height="90"
-                Margin="10"
-                Padding="10"
-                Width="90"
-                CornerRadius="10">
-            <Border.Background>
-                <ImageBrush ImageSource="{Binding ImageUrl}"
-                            RenderOptions.BitmapScalingMode="HighQuality"
-                            d:ImageSource="https://hips.hearstapps.com/clv.h-cdn.co/assets/16/18/gettyimages-586890581.jpg?crop=0.668xw:1.00xh;0.219xw,0" />
-            </Border.Background>
-        </Border>
+        <Grid HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
 
-        <!-- Podcast overview -->
-        <Grid Grid.Column="1"
-              Margin="0 10">
+            <Border HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Grid.Column="0"
+                    Height="90"
+                    Margin="10"
+                    Padding="10"
+                    Width="90"
+                    CornerRadius="10">
+                <Border.Background>
+                    <ImageBrush ImageSource="{Binding ImageUrl}"
+                                RenderOptions.BitmapScalingMode="HighQuality"
+                                d:ImageSource="https://hips.hearstapps.com/clv.h-cdn.co/assets/16/18/gettyimages-586890581.jpg?crop=0.668xw:1.00xh;0.219xw,0" />
+                </Border.Background>
+            </Border>
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="2*" />
-                <RowDefinition Height="1*" />
-            </Grid.RowDefinitions>
+            <!-- Podcast overview -->
+            <Grid Grid.Column="1"
+                  Margin="0 10">
 
-            <!-- Title and like button container -->
-            <Grid Grid.Row="0"
-                  HorizontalAlignment="Stretch"
-                  VerticalAlignment="Center">
-                <Grid.ColumnDefinitions>
-                    <!-- Title column -->
-                    <ColumnDefinition Width="2*" />
-                    <!-- Edit buttond column -->
-                    <ColumnDefinition Width="3*" />
-                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
 
-                <!-- Title -->
-                <TextBlock d:Text="Podcast test title"
-                           Foreground="White"
-                           FontSize="15"
-                           Grid.Column="0"
-                           Text="{Binding Title}" />
-
-                <!-- Edit buttons button -->
-                <Grid Grid.Column="1"
-                      HorizontalAlignment="Stretch">
+                <!-- Title and option -->
+                <Grid Grid.Row="0"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Center">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
+                        <!-- Title -->
+                        <ColumnDefinition Width="2*" />
+                        <!-- Edit buttons -->
+                        <ColumnDefinition Width="3*" />
                     </Grid.ColumnDefinitions>
-                    <!--  EDIT KNAPP -->
-                    <Button Grid.Column="0"
-                            Content="Byt namn"
-                            Style="{StaticResource RoundedButton}"
-                            DataContext="{Binding}"
-                            Click="OnRenamePodcast_Click" />
 
-                    <Button Grid.Column="1"
-                            Content="Kategori"
-                            Style="{StaticResource RoundedButton}"
-                            DataContext="{Binding}"
-                            Click="OnEditCategory_Click"
-                             />
+                    <!-- Title -->
+                    <TextBlock Grid.Column="0"
+                               d:Text="Podcast test title"
+                               Text="{Binding Title}"
+                               Foreground="White"
+                               FontSize="15"
+                               Margin="0,0,10,0"
+                               TextWrapping="Wrap"
+                               TextTrimming="CharacterEllipsis" />
 
-                    <Button Grid.Column="2"
-                            Content="Ta bort"
-                            Style="{StaticResource RoundedButton}"
-                            Click="OnDeletePodcast_Click" />
+
+
+
+                    <!-- Edit buttons -->
+                    <Grid Grid.Column="2"
+                          HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Column="0"
+                                Content="Byt namn"
+                                Style="{StaticResource RoundedButton}"
+                                DataContext="{Binding}"
+                                Click="OnRenamePodcast_Click" />
+
+                        <Button Grid.Column="1"
+                                Content="Kategori"
+                                Style="{StaticResource RoundedButton}"
+                                DataContext="{Binding}"
+                                Click="OnEditCategory_Click" />
+
+                        <Button Grid.Column="2"
+                                Content="Ta bort"
+                                Style="{StaticResource RoundedButton}"
+                                Click="OnDeletePodcast_Click" />
+                    </Grid>
                 </Grid>
+
+
+                <TextBlock Grid.Row="1"
+                           d:Text="Test title about podcat"
+                           Text="{Binding About}"
+                           Foreground="Gray"
+                           FontSize="15"
+                           TextWrapping="Wrap"
+                           TextTrimming="CharacterEllipsis"
+                           MaxHeight="60" />
+
+
+                <StackPanel Grid.Row="2"
+                            Orientation="Horizontal">
+                    <TextBlock Foreground="White"
+                               FontWeight="Bold"
+                               Grid.Row="2"
+                               FontSize="15"
+                               Margin="0 0 10 0"
+                               Text="Kategori:">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility"
+                                        Value="Visible" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Category}"
+                                                 Value="">
+                                        <Setter Property="Visibility"
+                                                Value="Hidden" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Category}"
+                                                 Value="{x:Null}">
+                                        <Setter Property="Visibility"
+                                                Value="Hidden" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <TextBlock Foreground="White"
+                               Grid.Row="2"
+                               FontSize="15"
+                               d:Text="Krim, Humor"
+                               Text="{Binding Category}" />
+                </StackPanel>
             </Grid>
 
-            <TextBlock d:Text="Test title about podcat"
-                       Foreground="Gray"
-                       TextWrapping="WrapWithOverflow"
-                       TextTrimming="CharacterEllipsis"
-                       Grid.Row="1"
-                       FontSize="15"
-                       Text="{Binding About}" />
-
-            <StackPanel Grid.Row="2"
-                        Orientation="Horizontal">
-                <TextBlock Foreground="White"
-                           FontWeight="Bold"
-                           Grid.Row="2"
-                           FontSize="15"
-                           Margin="0 0 10 0"
-                           Text="Kategori:">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Visibility"
-                                    Value="Visible" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Category}"
-                                             Value="">
-                                    <Setter Property="Visibility"
-                                            Value="Hidden" />
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Category}"
-                                             Value="{x:Null}">
-                                    <Setter Property="Visibility"
-                                            Value="Hidden" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
-                <TextBlock Foreground="White"
-                           Grid.Row="2"
-                           FontSize="15"
-                           d:Text="Krim, Humor"
-                           Text="{Binding Category}" />
-
-
-            </StackPanel>
         </Grid>
-
-    </Grid>
+    </Border>
 
 </UserControl>
