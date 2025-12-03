@@ -1,0 +1,142 @@
+﻿<Window x:Class="pod_app.PresentationLayer.Views.CategoryManagerDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Hantera kategorier"
+        Height="430"
+        Width="450"
+        Background="#1F1F21"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize">
+
+    <Grid Margin="20 10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Foreground="White"
+                   FontSize="16"
+                   FontWeight="UltraLight"
+                   TextAlignment="Center"
+                   Margin="0 0 0 15"
+                   Text="Hantera kategorier för poddar." />
+
+        <StackPanel Grid.Row="1"
+                    Orientation="Vertical"
+                    HorizontalAlignment="Center">
+
+            <TextBlock Foreground="White"
+                       FontSize="12"
+                       Margin="0,0,0,2"
+                       Text="Befintliga kategorier:" />
+
+            <ListBox x:Name="CategoryList"
+                     Width="220"
+                     Height="140"
+                     Margin="0,0,0,10"
+                     Background="#2f2f2f"
+                     Foreground="White"
+                     BorderBrush="Gray"
+                     BorderThickness="1"
+                     SelectionChanged="CategoryList_SelectionChanged" />
+
+            <TextBlock Foreground="White"
+                       FontSize="12"
+                       Margin="0,0,0,2"
+                       Text="Namn på kategori:" />
+
+            <TextBox x:Name="CategoryNameTextBox"
+                     Background="#cccccc"
+                     Height="30"
+                     Width="220"
+                     VerticalContentAlignment="Center"
+                     Margin="0,0,0,5">
+                <TextBox.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="15" />
+                        <Setter Property="Padding" Value="10 0" />
+                    </Style>
+                </TextBox.Resources>
+            </TextBox>
+
+          
+
+
+        </StackPanel>
+
+        <StackPanel Grid.Row="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Margin="0,10,0,0">
+
+            <Button Foreground="white"
+                    Margin="0,0,10,0"
+                    Height="30"
+                    Width="90"
+                    BorderBrush="Gray"
+                    Content="Lägg till ny"
+                    Background="#0c0c0c"
+                    Click="AddCategoryToPodcast_Click">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="15" />
+                        <Setter Property="Padding" Value="10 0" />
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+            <Button Foreground="white"
+                    Margin="0,0,10,0"
+                    Height="30"
+                    Width="90"
+                    BorderBrush="Gray"
+                    Content="Byt namn"
+                    Background="#0c0c0c"
+                    Click="RenameCategory_Click">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="15" />
+                        <Setter Property="Padding" Value="10 0" />
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+            <Button Foreground="white"
+                    Margin="0,0,10,0"
+                    Height="30"
+                    Width="90"
+                    BorderBrush="Gray"
+                    Content="Ta bort"
+                    Background="#2f2f2f"
+                    Click="DeleteCategory_Click">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="15" />
+                        <Setter Property="Padding" Value="10 0" />
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+            <Button Foreground="white"
+                    Height="30"
+                    Width="90"
+                    BorderBrush="Gray"
+                    Content="Stäng"
+                    Background="#2f2f2f"
+                    Click="Close_Click">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="15" />
+                        <Setter Property="Padding" Value="10 0" />
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+        </StackPanel>
+    </Grid>
+</Window>

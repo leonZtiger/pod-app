@@ -1,5 +1,6 @@
 ﻿using pod_app.BusinessLogicLayer;
 using pod_app.Models;
+using pod_app.PresentationLayer.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -180,18 +181,16 @@ namespace pod_app.PresentationLayer.Pages
 
         private async void OnEditCategory_Click(object sender, RoutedEventArgs e)
         {
-            if ((sender as FrameworkElement)?.DataContext is not Podcast pod) return;
+            {
+                var dlg = new CategoryManagerDialog(_manager)
+                {
+                    Owner = Window.GetWindow(this)
+                };
 
-            string newCat = Microsoft.VisualBasic.Interaction.InputBox(
-                "Ny kategori:", "Byt kategori", pod.Category);
-
-            if (string.IsNullOrWhiteSpace(newCat))
-                return;
-
-            await _manager.AddCategoryToPodcastAsync(pod.Id, newCat);
-            RefreshSavedFeeds();
+                dlg.ShowDialog();
 
 
+            }
         }
 
         private async void OnRenamePodcast_Click(object sender, RoutedEventArgs e)
@@ -207,10 +206,10 @@ namespace pod_app.PresentationLayer.Pages
 
             pod.Title = newName.Trim();
 
-            // Spara i databasen
+            // Saves to the database
             await _manager.UpdateFeedAsync(pod);
 
-            // Ladda om listan så UI uppdateras
+            // Update the UI
             RefreshSavedFeeds();
         }
 
