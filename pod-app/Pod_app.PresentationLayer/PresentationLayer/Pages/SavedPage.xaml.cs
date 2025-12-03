@@ -43,7 +43,9 @@ namespace pod_app.PresentationLayer.Pages
             }
         }
 
-        public async void RefreshSavedFeeds()
+        public async 
+        Task
+RefreshSavedFeeds()
         {
             var feeds = await _manager.GetAllFeedsAsync();
             PodListControl.ItemsSource = feeds;
@@ -155,7 +157,7 @@ namespace pod_app.PresentationLayer.Pages
         }
 
 
-        private void CategoryHandler_Click(object sender, RoutedEventArgs e)
+        private async void CategoryHandler_Click(object sender, RoutedEventArgs e)
         {
             
                 var dlg = new CategoryManagerDialog(_manager)
@@ -164,9 +166,12 @@ namespace pod_app.PresentationLayer.Pages
                 };
 
                 dlg.ShowDialog();
+        
+                await RefreshSavedFeeds();
 
 
-            
+
+
 
         }
     }

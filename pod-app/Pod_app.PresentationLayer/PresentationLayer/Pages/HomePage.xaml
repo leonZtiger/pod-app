@@ -103,7 +103,7 @@
                             VerticalAlignment="Center"
                             Height="auto">
 
-                    <TextBlock Text="Lägg Till Din Favorit Podcast"
+                    <TextBlock Text="Lägg Till Din Favoritpodcast"
                                TextAlignment="Center"
                                FontSize="40"
                                FontWeight="Light"

@@ -53,11 +53,6 @@ namespace pod_app.BusinessLogicLayer
                     i.Title = p.Title;
                 }
 
-                // Only gets the Genre as category from the rss if the user hasnt put in its own Category
-                if (string.IsNullOrWhiteSpace(i.Category))
-                {
-                    i.Category = p.Category;
-                }
             }
 
             return feeds;

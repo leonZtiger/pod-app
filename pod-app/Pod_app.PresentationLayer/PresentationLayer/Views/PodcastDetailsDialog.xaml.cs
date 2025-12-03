@@ -38,9 +38,7 @@ namespace pod_app.PresentationLayer.Views
         private async void Save_Click(object sender, RoutedEventArgs e)
         {
             // Validates the user input
-            var validation = Validator.ValidatePodcastForm(
-             TitleTextBox.Text,
-             CategoryTextBox.Text);
+            var validation = Validator.ValidatePodcastForm(TitleTextBox.Text, CategoryTextBox.Text);
 
             if (!validation.IsValid)
             {

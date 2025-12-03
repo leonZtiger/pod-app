@@ -55,9 +55,6 @@ using System.Threading.Tasks;
         {
             var trimmed = categoryName?.Trim();
 
-            if (string.IsNullOrWhiteSpace(trimmed))
-                return ValidationResult.Fail("Du måste ange ett kategorinamn.");
-
             if (trimmed!.Length > 30)
                 return ValidationResult.Fail("Kategorin är för lång (max 30 tecken).");
 
