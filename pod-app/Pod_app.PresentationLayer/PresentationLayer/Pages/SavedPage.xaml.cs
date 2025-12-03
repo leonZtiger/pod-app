@@ -94,30 +94,6 @@ namespace pod_app.PresentationLayer.Pages
             UpdateEpisodeList();
         }
 
-        //  DELETE PODCAST
-
-        private async void OnDeletePodcast_Click(object sender, RoutedEventArgs e)
-        {
-            if ((sender as FrameworkElement)?.DataContext is not Podcast pod)
-                return;
-
-            var confirm = MessageBox.Show(
-                $"Vill du ta bort '{pod.Title}'?",
-                "Bekräfta borttagning",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning);
-
-            if (confirm != MessageBoxResult.Yes)
-                return;
-
-            await _manager.DeleteFeedAsync(pod);
-            RefreshSavedFeeds();
-        }
-
-
-
-
-
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
             parentFrame.Navigate(MainWindow.homePage);
@@ -158,15 +134,15 @@ namespace pod_app.PresentationLayer.Pages
 
             menu.Items.Clear();
 
-            
+
             var categories = await _manager.GetAllCategoriesAsync();
 
-           
+
             var allItem = new MenuItem { Header = "Alla" };
             allItem.Click += FilterItem_Click;
             menu.Items.Add(allItem);
 
-            
+
             foreach (var cat in categories)
             {
                 var item = new MenuItem { Header = cat };
@@ -179,9 +155,9 @@ namespace pod_app.PresentationLayer.Pages
         }
 
 
-        private async void OnEditCategory_Click(object sender, RoutedEventArgs e)
+        private void CategoryHandler_Click(object sender, RoutedEventArgs e)
         {
-            {
+            
                 var dlg = new CategoryManagerDialog(_manager)
                 {
                     Owner = Window.GetWindow(this)
@@ -190,30 +166,8 @@ namespace pod_app.PresentationLayer.Pages
                 dlg.ShowDialog();
 
 
-            }
+            
+
         }
-
-        private async void OnRenamePodcast_Click(object sender, RoutedEventArgs e)
-        {
-            if ((sender as FrameworkElement)?.DataContext is not Podcast pod)
-                return;
-
-            string newName = Microsoft.VisualBasic.Interaction.InputBox(
-                "Nytt namn:", "Byt namn", pod.Title);
-
-            if (string.IsNullOrWhiteSpace(newName))
-                return;
-
-            pod.Title = newName.Trim();
-
-            // Saves to the database
-            await _manager.UpdateFeedAsync(pod);
-
-            // Update the UI
-            RefreshSavedFeeds();
-        }
-
-
-
     }
 }
