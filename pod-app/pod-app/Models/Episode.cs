@@ -26,5 +26,7 @@ namespace pod_app.Models
         public string URL { get; set; } = default!;
         public string Category { get; set; } = default!;
         public int EpisodeNum { get; set; } = default;
+        public bool IsExpanded { get; set; }
+
     }
 }

@@ -75,6 +75,18 @@ namespace pod_app.PresentationLayer.Pages
             PodListControl.Items.Refresh();
         }
 
+
+        private void OnEpisodeClicked(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is FrameworkElement fe && fe.DataContext is Episode episode)
+            {
+                episode.IsExpanded = !episode.IsExpanded;
+            }
+        }
+
+
+
+
         private void UpdateEpisodeList()
         {
             if (selectedPodcast == null) return;
@@ -95,8 +107,8 @@ namespace pod_app.PresentationLayer.Pages
             UpdateEpisodeList();
         }
 
-        //  DELETE PODCAST
 
+        
         
 
 
@@ -156,6 +168,10 @@ namespace pod_app.PresentationLayer.Pages
             }
         }
 
+       
+        
+        
+        
         private void FilterButton_Click(object sender, RoutedEventArgs e)
 
         {
