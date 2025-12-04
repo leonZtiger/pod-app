@@ -1,6 +1,7 @@
 ﻿<Page x:Class="pod_app.PresentationLayer.Pages.SavedPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="#1F1F21"
       xmlns:views="clr-namespace:pod_app.PresentationLayer.Views">
 
     <Page.Resources>
@@ -37,7 +38,7 @@
 
     </Page.Resources>
 
-    <Grid Background="#0F0F10">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -100,9 +101,7 @@
 
 
                                 <!-- PODCAST TILE (KLICKBAR) -->
-                                <views:EpisodeView  MouseLeftButtonUp="OnFeedClicked"/>
-                                
-
+                                <views:PodcastView MouseDoubleClick="OnFeedClicked"/>
 
 
                                 <!-- EXPANDED EPISODES -->
@@ -134,33 +133,7 @@
                                             Click="LoadMore_Click"
                                             HorizontalAlignment="Center"
                                             Style="{StaticResource RoundedButton}"
-                                            Width="140"/>
-
-
-                                    <!--  EDIT KNAPP -->
-                                    <Button Content="Byt namn"
-                                            Width="90"
-                                            Height="32"
-                                            Style="{StaticResource RoundedButton}"
-                                            DataContext="{Binding}"
-                                            Click="OnRenamePodcast_Click"/>
-
-                                    <Button Content="Kategori"
-                                            Width="90"
-                                            Height="32"
-                                            Style="{StaticResource RoundedButton}"
-                                            DataContext="{Binding}"
-                                            Click="OnEditCategory_Click"/>
-
-                                    <Button Content="Ta bort"
-                                            Width="90"
-                                            Height="32"
-                                            Style="{StaticResource RoundedButton}"
-                                            Click="OnDeletePodcast_Click"/>
-
-
-
-
+                                            Width="140" />
 
                                 </StackPanel>
 
