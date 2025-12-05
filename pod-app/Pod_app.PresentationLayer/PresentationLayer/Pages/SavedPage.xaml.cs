@@ -43,9 +43,7 @@ namespace pod_app.PresentationLayer.Pages
             }
         }
 
-        public async 
-        Task
-RefreshSavedFeeds()
+        public async Task RefreshSavedFeeds()
         {
             var feeds = await _manager.GetAllFeedsAsync();
             PodListControl.ItemsSource = feeds;
@@ -159,20 +157,75 @@ RefreshSavedFeeds()
 
         private async void CategoryHandler_Click(object sender, RoutedEventArgs e)
         {
-            
-                var dlg = new CategoryManagerDialog(_manager)
-                {
-                    Owner = Window.GetWindow(this)
-                };
 
-                dlg.ShowDialog();
-        
-                await RefreshSavedFeeds();
+            var dlg = new CategoryManagerDialog(_manager)
+            {
+                Owner = Window.GetWindow(this)
+            };
 
+            dlg.ShowDialog();
 
+            await RefreshSavedFeeds();
 
 
 
+
+
+        }
+
+        private async void PodcastView_EditClicked(object sender, EventArgs e)
+        {
+            if ((sender as FrameworkElement)?.DataContext is not Podcast pod)
+                return;
+
+            string newName = Microsoft.VisualBasic.Interaction.InputBox(
+              "Nytt namn:", "Byt namn", pod.Title);
+
+            if (string.IsNullOrWhiteSpace(newName))
+                return;
+
+            pod.Title = newName.Trim();
+
+            // Spara i databasen
+            await MainWindow.podcastManager?.UpdateFeedAsync(pod);
+
+            // Ladda om listan så UI uppdateras
+            RefreshSavedFeeds();
+
+        }
+
+        private async void PodcastView_CategoryClicked(object sender, EventArgs e)
+        {
+            if ((sender as FrameworkElement)?.DataContext is not Podcast pod) return;
+
+            string newCat = Microsoft.VisualBasic.Interaction.InputBox(
+                "Ny kategori:", "Byt kategori", pod.Category);
+
+            if (string.IsNullOrWhiteSpace(newCat))
+                return;
+
+            await MainWindow.podcastManager.AddCategoryToPodcastAsync(pod.Id, newCat);
+            RefreshSavedFeeds();
+
+
+        }
+
+        private async void PodcastView_DeleteClicked(object sender, EventArgs e)
+        {
+            if ((sender as FrameworkElement)?.DataContext is not Podcast pod)
+                return;
+
+            var confirm = MessageBox.Show(
+                $"Vill du ta bort '{pod.Title}'?",
+                "Bekräfta borttagning",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+
+            if (confirm != MessageBoxResult.Yes)
+                return;
+
+            await MainWindow.podcastManager?.DeleteFeedAsync(pod);
+            RefreshSavedFeeds();
         }
     }
 }

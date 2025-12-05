@@ -11,8 +11,6 @@ namespace pod_app.DataLayer
         private readonly List<Podcast> feedCollection = new();
         private readonly List<Episode> podcastCollection = new();
 
-
-
         public Task<List<Podcast>> GetAllFeedsAsync()
         {
 

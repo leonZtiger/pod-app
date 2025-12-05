@@ -7,28 +7,37 @@
     <Page.Resources>
 
         <DropShadowEffect x:Key="ShadowEffect"
-                      Color="#0f0f0f"
-                      BlurRadius="15"
-                      ShadowDepth="0"
-                      Opacity="1" />
+                          Color="#0f0f0f"
+                          BlurRadius="15"
+                          ShadowDepth="0"
+                          Opacity="1" />
 
-        <Style x:Key="RoundedButton" TargetType="Button">
-            <Setter Property="Width" Value="120"/>
-            <Setter Property="Height" Value="35"/>
-            <Setter Property="Background" Value="#1f1f1f"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Effect" Value="{StaticResource ShadowEffect}"/>
+        <Style x:Key="RoundedButton"
+               TargetType="Button">
+            <Setter Property="Width"
+                    Value="120" />
+            <Setter Property="Height"
+                    Value="35" />
+            <Setter Property="Background"
+                    Value="#1f1f1f" />
+            <Setter Property="Foreground"
+                    Value="White" />
+            <Setter Property="FontSize"
+                    Value="14" />
+            <Setter Property="Padding"
+                    Value="0" />
+            <Setter Property="Cursor"
+                    Value="Hand" />
+            <Setter Property="Effect"
+                    Value="{StaticResource ShadowEffect}" />
 
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border CornerRadius="20"
-                            Background="{TemplateBinding Background}">
+                                Background="{TemplateBinding Background}">
                             <ContentPresenter HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"/>
+                                              VerticalAlignment="Center" />
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -39,25 +48,26 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <!-- TOP BAR -->
-        <Grid Grid.Row="0" Margin="20">
+        <Grid Grid.Row="0"
+              Margin="20">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <Button Content="Tillbaka"
-                    Width="110" 
+                    Width="110"
                     Height="36"
                     Click="BtnBack_Click"
-                    Style="{StaticResource RoundedButton}"/>
+                    Style="{StaticResource RoundedButton}" />
 
-            
+
             <StackPanel Grid.Column="1"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center">
@@ -66,44 +76,45 @@
                 <TextBlock Text="Sparade poddar"
                            Foreground="White"
                            FontSize="20"
-                           HorizontalAlignment="Center"/>
+                           HorizontalAlignment="Center" />
 
-                
+
                 <TextBlock Text="Dubbelklicka på en podcast för att visa dess avsnitt."
                            Foreground="#AAFFFFFF"
                            FontSize="12"
                            Margin="0,4,0,0"
-                           HorizontalAlignment="Center"/>
+                           HorizontalAlignment="Center" />
             </StackPanel>
-            
+
 
             <Button Grid.Column="2"
-                        Content="Filtrera"
-                        Width="110" 
-                        Height="36"
-                        Click="FilterButton_Click"
-                        Style="{StaticResource RoundedButton}">
+                    Content="Filtrera"
+                    Width="110"
+                    Height="36"
+                    Click="FilterButton_Click"
+                    Style="{StaticResource RoundedButton}">
                 <Button.ContextMenu>
-                    <ContextMenu x:Name="filterMenu"/>
+                    <ContextMenu x:Name="filterMenu" />
                 </Button.ContextMenu>
             </Button>
 
-            <Button
-            Content="Hantera kategorier"
-            Width="150" 
-            Height="36"
-            Click="CategoryHandler_Click"
-            Style="{StaticResource RoundedButton}" Grid.Column="1" Margin="16,64,16,-64">
+            <Button Content="Hantera kategorier"
+                    Width="150"
+                    Height="36"
+                    Click="CategoryHandler_Click"
+                    Style="{StaticResource RoundedButton}"
+                    Grid.Column="1"
+                    Margin="16,64,16,-64">
                 <Button.ContextMenu>
-                    <ContextMenu x:Name="CategryMeny"/>
+                    <ContextMenu x:Name="CategryMeny" />
                 </Button.ContextMenu>
             </Button>
 
         </Grid>
 
         <!-- MAIN CONTENT -->
-        <ScrollViewer Grid.Row="1" 
-                      Margin="40" 
+        <ScrollViewer Grid.Row="1"
+                      Margin="40"
                       VerticalScrollBarVisibility="Auto">
 
             <StackPanel>
@@ -116,16 +127,22 @@
                                         DataContext="{Binding}">
 
                                 <!-- PODCAST TILE (KLICKBAR) -->
-                                <views:PodcastView MouseDoubleClick="OnFeedClicked"/>
+                                <views:PodcastView EditClicked="PodcastView_EditClicked"
+                                                   CategoryClicked="PodcastView_CategoryClicked"
+                                                   DeleteClicked="PodcastView_DeleteClicked"
+                                                   MouseDoubleClick="OnFeedClicked" />
 
                                 <!-- EXPANDED EPISODES -->
                                 <StackPanel>
                                     <StackPanel.Style>
                                         <Style TargetType="StackPanel">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Setter Property="Visibility"
+                                                    Value="Collapsed" />
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsExpanded}" Value="True">
-                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                <DataTrigger Binding="{Binding IsExpanded}"
+                                                             Value="True">
+                                                    <Setter Property="Visibility"
+                                                            Value="Visible" />
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -136,7 +153,7 @@
                                                         RelativeSource={RelativeSource AncestorType=Page}}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <views:EpisodeView/>
+                                                <views:EpisodeView />
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>

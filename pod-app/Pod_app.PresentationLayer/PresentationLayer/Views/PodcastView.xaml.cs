@@ -21,6 +21,10 @@ namespace pod_app.PresentationLayer.Views
     /// </summary>
     public partial class PodcastView : UserControl
     {
+        public event EventHandler DeleteClicked;
+        public event EventHandler EditClicked;
+        public event EventHandler CategoryClicked;
+
         public PodcastView()
         {
             InitializeComponent();
@@ -29,55 +33,22 @@ namespace pod_app.PresentationLayer.Views
 
         private async void OnDeletePodcast_Click(object sender, RoutedEventArgs e)
         {
-            if ((sender as FrameworkElement)?.DataContext is not Podcast pod)
-                return;
+            if (DeleteClicked is not null)
+                DeleteClicked(this, EventArgs.Empty);
 
-            var confirm = MessageBox.Show(
-                $"Vill du ta bort '{pod.Title}'?",
-                "Bekräfta borttagning",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning);
-
-            if (confirm != MessageBoxResult.Yes)
-                return;
-
-            await MainWindow.podcastManager?.DeleteFeedAsync(pod);
-            // RefreshSavedFeeds();
         }
         private async void OnEditCategory_Click(object sender, RoutedEventArgs e)
         {
-            if ((sender as FrameworkElement)?.DataContext is not Podcast pod) return;
-
-            string newCat = Microsoft.VisualBasic.Interaction.InputBox(
-                "Ny kategori:", "Byt kategori", pod.Category);
-
-            if (string.IsNullOrWhiteSpace(newCat))
-                return;
-
-            await MainWindow.podcastManager.AddCategoryToPodcastAsync(pod.Id, newCat);
-            //  RefreshSavedFeeds();
-
+            if (CategoryClicked is not null)
+                CategoryClicked(this, EventArgs.Empty);
 
         }
 
         private async void OnRenamePodcast_Click(object sender, RoutedEventArgs e)
         {
-            if ((sender as FrameworkElement)?.DataContext is not Podcast pod)
-                return;
+            if (EditClicked is not null)
+                EditClicked(this, EventArgs.Empty);
 
-            string newName = Microsoft.VisualBasic.Interaction.InputBox(
-                "Nytt namn:", "Byt namn", pod.Title);
-
-            if (string.IsNullOrWhiteSpace(newName))
-                return;
-
-            pod.Title = newName.Trim();
-
-            // Spara i databasen
-            await MainWindow.podcastManager?.UpdateFeedAsync(pod);
-
-            // Ladda om listan så UI uppdateras
-            //   RefreshSavedFeeds();
         }
 
     }

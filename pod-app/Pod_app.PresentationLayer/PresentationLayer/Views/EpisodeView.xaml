@@ -146,7 +146,7 @@
             <!-- Right info container -->
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
-                    <!-- Title and like button -->
+                    <!-- Title -->
                     <RowDefinition Height="1*" />
                     <!-- Description -->
                     <RowDefinition Height="2*" />
@@ -154,24 +154,16 @@
                     <RowDefinition Height="1*" />
                 </Grid.RowDefinitions>
 
-                <!-- Title and like button container -->
-                <Grid HorizontalAlignment="Stretch"
-                      VerticalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <!-- Title column -->
-                        <ColumnDefinition Width="7*" />
-                        <!-- Like column -->
-                        <ColumnDefinition Width="3*" />
-                    </Grid.ColumnDefinitions>
-
+  
+                   
                     <!-- Title -->
                     <TextBlock d:Text="#321 MMA Fight Islam"
                                Foreground="White"
+                               VerticalAlignment="Center"
                                FontSize="15"
-                               Grid.Column="0"
+                               Grid.Row="0"
                                Style="{StaticResource TextStyle}"
                                Text="{Binding Title}" />
-                </Grid>
 
                 <!-- Description -->
                 <TextBlock Foreground="DarkGray"
