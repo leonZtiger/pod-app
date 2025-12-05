@@ -9,7 +9,7 @@
              Margin="10"
              Cursor="Hand"
              SnapsToDevicePixels="True"
-             >
+             MouseLeftButtonUp="EpisodeView_ToggleEpisodeExpanded">
 
     <UserControl.Effect>
         <DropShadowEffect Color="Black"
@@ -111,15 +111,15 @@
         </EventTrigger>
 
     </UserControl.Triggers>
-    
-    <Border CornerRadius="22"
+
+    <Border x:Name="RootBorder"
+            CornerRadius="22"
             Background="#1F1F23"
             BorderBrush="Gray"
-            BorderThickness="0 0 0 0"
+            BorderThickness="0"
             Padding="10 10 14 10"
             Height="120">
 
-  
         <Grid>
             <Grid.ColumnDefinitions>
                 <!-- Left picture column -->
@@ -140,8 +140,6 @@
                                 d:ImageSource="https://hips.hearstapps.com/clv.h-cdn.co/assets/16/18/gettyimages-586890581.jpg?crop=0.668xw:1.00xh;0.219xw,0" />
                 </Border.Background>
             </Border>
-
-
 
             <!-- Right info container -->
             <Grid Grid.Column="1">
@@ -166,11 +164,13 @@
                                Text="{Binding Title}" />
 
                 <!-- Description -->
-                <TextBlock Foreground="DarkGray"
+                <TextBlock x:Name="DescriptionText"
+                           Foreground="DarkGray"
                            d:Text="In this episode Joe Rogan takes shrooms and trip while the MMA fighter Islam Makhachev talks about how to do a safe-guard."
                            Grid.Row="1"
                            Style="{StaticResource TextStyle}"
-                           Text="{Binding Description}" />
+                           Text="{Binding Description}"
+                           MaxHeight="40" />
 
                 <!-- Metadata and links -->
                 <Grid Grid.Row="2"
@@ -206,7 +206,7 @@
                             Style="{StaticResource IconButtonStyle}">
                         <Image RenderOptions.BitmapScalingMode="Fant"
                                Source="/PresentationLayer/Views/Assets/share.png">
-                           
+
                             <!-- Only show link image if url exist -->
                             <Image.Style>
                                 <Style TargetType="Image">

@@ -23,13 +23,36 @@ namespace pod_app.PresentationLayer.Views
     /// </summary>
     public partial class EpisodeView : UserControl
     {
-     
-        /// <summary>
-        /// Only used to initialize for tests. For actual use, please use <code> PodView(EventHandler LikeClicked, PodModel podModel)</code>.
-        /// </summary>
+        public bool IsExpanded { get; set; }
+        
         public EpisodeView()
         {
             InitializeComponent();
+        }
+
+        // Event for toggle the size of the view
+        private void EpisodeView_ToggleEpisodeExpanded(object sender, MouseButtonEventArgs e)
+        {
+            ToggleExpanded();
+        }
+
+        private void ToggleExpanded()
+        {
+            IsExpanded = !IsExpanded;
+
+            // Expands the EpisodeView so the entire title and description shows
+            if (IsExpanded)
+            {
+                RootBorder.Height = Double.NaN; 
+                DescriptionText.TextTrimming = TextTrimming.None;
+                DescriptionText.MaxHeight = double.PositiveInfinity; // No height limit
+            }
+            // Shorinks the EpisodeView 
+            else
+            {
+                RootBorder.Height = 120; 
+                DescriptionText.MaxHeight = 40;
+            }
         }
 
 
