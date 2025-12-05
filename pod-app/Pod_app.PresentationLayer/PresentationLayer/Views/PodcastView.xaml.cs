@@ -62,6 +62,7 @@ namespace pod_app.PresentationLayer.Views
             {
                 string newCategory = dlg.SelectedCategory;
                 await MainWindow.podcastManager.AddCategoryToPodcastAsync(pod.Id, newCategory);
+                pod.Category = newCategory;
             }
         
 
