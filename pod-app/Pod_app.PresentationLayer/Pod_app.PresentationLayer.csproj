@@ -1,0 +1,56 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<RootNamespace>pod_app</RootNamespace>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+	</PropertyGroup>
+
+	
+
+	
+	<ItemGroup>
+		<ProjectReference Include="..\Pod_app.BL\Pod_app.BL.csproj" />
+		<ProjectReference Include="..\pod_app.Models\pod_app.Models.csproj" />
+	</ItemGroup>
+
+	
+	<ItemGroup>
+		<PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
+		
+    <PackageReference Include="Unnoficial.Microsoft.Expression.Drawing" Version="1.0.0" />
+   
+	</ItemGroup>
+
+	
+	<ItemGroup>
+		<Resource Include="PresentationLayer\Views\Assets\appIcon.ico">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="PresentationLayer\Views\Assets\Fonts\Inter.ttc" />
+		<Resource Include="PresentationLayer\Views\Assets\heart_fill.png" />
+		<Resource Include="PresentationLayer\Views\Assets\heart_no_fill.png" />
+		<Resource Include="PresentationLayer\Views\Assets\NoImage.png" />
+		<Resource Include="PresentationLayer\Views\Assets\share.png" />
+	</ItemGroup>
+
+	
+	<ItemGroup>
+		<Compile Update="Properties\Settings.Designer.cs">
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Settings.settings</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="Properties\Settings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
+
+</Project>

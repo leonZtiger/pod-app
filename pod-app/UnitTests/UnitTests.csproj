@@ -18,7 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\pod-app\pod-app.csproj" />
+    <ProjectReference Include="..\Pod_app.BL\Pod_app.BL.csproj" />
+    <ProjectReference Include="..\Pod_app.DAL\Pod_app.DAL.csproj" />
+    <ProjectReference Include="..\Pod_app.Models\pod_app.Models.csproj" />
+    <ProjectReference Include="..\Pod_app.PresentationLayer\Pod_app.PresentationLayer.csproj" />
   </ItemGroup>
 
   <ItemGroup>

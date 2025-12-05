@@ -82,7 +82,7 @@ namespace UnitTests
         [Fact]
         public async Task RenameCategoryAsync_UpdatesAllMatchingCategories()
         {
-            // Arrange — seed
+            // Arrange seed
             repo.Seed(
                 new Podcast { Id = "1", Category = "Tech" },
                 new Podcast { Id = "2", Category = "News" },

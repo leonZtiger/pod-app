@@ -1,0 +1,465 @@
+﻿<Page x:Class="pod_app.PresentationLayer.Pages.HomePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:pod_app.PresentationLayer.Pages"
+      mc:Ignorable="d"
+      d:DesignHeight="600"
+      d:DesignWidth="1000"
+      Title="HomePage"
+      Background="#1F1F21"
+      UseLayoutRounding="True"
+      xmlns:views="clr-namespace:pod_app.PresentationLayer.Views"
+      xmlns:models="clr-namespace:pod_app.Models;assembly=Pod_app.Models">
+
+
+    <Page.Resources>
+        <DropShadowEffect x:Key="ShadowEffect"
+                          Color="#0f0f0f"
+                          BlurRadius="15"
+                          ShadowDepth="0"
+                          Opacity="1" />
+
+        <Storyboard x:Key="ToastStoryboard">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                             From="0"
+                             To="1"
+                             Duration="0:0:0.2" />
+            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                             BeginTime="0:0:01.2"
+                             From="1"
+                             To="0"
+                             Duration="0:0:0.3" />
+        </Storyboard>
+
+    </Page.Resources>
+
+    <ScrollViewer ScrollChanged="ScrollContainer_ScrollChanged"
+                  VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
+        <Grid>
+
+            <!-- Naviagte to Savedpage button -->
+            <Button Width="120"
+                    Height="35"
+                    Margin="10,22,10,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Click="Button_Click"
+                    Content="Sparade"
+                    Background="#1f1f1f"
+                    Foreground="White"
+                    Effect="{StaticResource ShadowEffect}"
+                    FontSize="14">
+
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius"
+                                Value="20" />
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+            <Button Name="ConnectButton"
+                    Width="120"
+                    Height="35"
+                    Margin="0,20,10,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Click="ConnectButton_Click"
+                    Content="Ny koppling"
+                    Background="#1f1f1f"
+                    Foreground="White"
+                    Effect="{StaticResource ShadowEffect}"
+                    FontSize="14">
+
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius"
+                                Value="20" />
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+
+            <!-- Main container -->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <!-- Title -->
+                    <RowDefinition MaxHeight="300"
+                                   MinHeight="200"
+                                   Height="4*" />
+                    <!-- Search bar -->
+                    <RowDefinition Height="50" />
+                    <!-- Result podcast info -->
+                    <RowDefinition Height="130" />
+                    <!-- Results -->
+                    <RowDefinition Height="7*" />
+                </Grid.RowDefinitions>
+
+                <!-- About applicaiton -->
+                <StackPanel HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Height="auto">
+
+                    <TextBlock Text="Lägg Till Din Favoritpodcast"
+                               TextAlignment="Center"
+                               FontSize="40"
+                               FontWeight="Light"
+                               Foreground="White" />
+                    <TextBlock Text="Skriv In Din RSS-Länk I Sökrutan Nedan"
+                               TextAlignment="Center"
+                               FontSize="20"
+                               FontWeight="Light"
+                               Foreground="Gray" />
+                </StackPanel>
+
+                <!-- Search panel -->
+                <Grid Grid.Row="1"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center">
+
+                    <Grid.ColumnDefinitions>
+                        <!-- Search bar -->
+                        <ColumnDefinition Width="Auto" />
+                        <!-- Spacing -->
+                        <ColumnDefinition Width="10" />
+                        <!-- Search button -->
+                        <ColumnDefinition Width="Auto" />
+                        <!-- Spacing -->
+                        <ColumnDefinition Width="10" />
+                        <!-- Spacing -->
+                        <ColumnDefinition Width="Auto" />
+
+                    </Grid.ColumnDefinitions>
+
+                    <!-- On focus and un-focused animation -->
+                    <Grid.Triggers>
+                        <!-- On focus -->
+                        <EventTrigger RoutedEvent="GotFocus"
+                                      SourceName="SearchBox">
+                            <BeginStoryboard>
+                                <Storyboard>
+
+                                    <DoubleAnimation Storyboard.TargetName="SearchBarBorder"
+                                                     Storyboard.TargetProperty="Opacity"
+                                                     To="1"
+                                                     Duration="0:0:0.2" />
+
+                                    <DoubleAnimation Storyboard.TargetName="SearchBarBorder"
+                                                     Storyboard.TargetProperty="Width"
+                                                     To="300"
+                                                     Duration="0:0:0.2">
+                                        <DoubleAnimation.EasingFunction>
+                                            <CircleEase EasingMode="EaseOut" />
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                        <!-- On search pressed -->
+                        <EventTrigger RoutedEvent="Button.Click"
+                                      SourceName="SearchButton">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetName="SearchBarBorder"
+                                                     Storyboard.TargetProperty="Opacity"
+                                                     To="0.9"
+                                                     Duration="0:0:0.2" />
+
+                                    <DoubleAnimation Storyboard.TargetName="SearchBarBorder"
+                                                     Storyboard.TargetProperty="Width"
+                                                     To="200"
+                                                     Duration="0:0:0.2">
+                                        <DoubleAnimation.EasingFunction>
+                                            <CircleEase EasingMode="EaseOut" />
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Grid.Triggers>
+
+                    <!-- Sökfält -->
+                    <Border Grid.Column="0"
+                            Background="White"
+                            CornerRadius="20"
+                            Padding="10,5"
+                            Height="40"
+                            Width="200"
+                            x:Name="SearchBarBorder"
+                            Effect="{StaticResource ShadowEffect}">
+
+                        <TextBox SnapsToDevicePixels="True"
+                                 x:Name="SearchBox"
+                                 Background="Transparent"
+                                 BorderThickness="0"
+                                 FontSize="16"
+                                 Foreground="Black"
+                                 VerticalContentAlignment="Center" />
+                    </Border>
+
+                    <!-- Search button -->
+                    <Border Grid.Column="2"
+                            Background="White"
+                            CornerRadius="20"
+                            Width="40"
+                            Height="40"
+                            Effect="{StaticResource ShadowEffect}"
+                            VerticalAlignment="Center">
+
+                        <Button SnapsToDevicePixels="True"
+                                x:Name="SearchButton"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                FontSize="16"
+                                Padding="0"
+                                Cursor="Hand"
+                                Click="SearchButton_Click">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+
+                                    <Grid Width="40"
+                                          Height="40">
+                                        <!-- Search icon -->
+                                        <TextBlock x:Name="Icon"
+                                                   Text="🔍"
+                                                   FontSize="16"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center" />
+
+                                        <!-- Spinner -->
+                                        <views:Spinner Visibility="Hidden"
+                                                       Width="35"
+                                                       Height="35"
+                                                       x:Name="Spinner" />
+                                    </Grid>
+
+                                    <!-- Show spinner on search, else search icon -->
+                                    <ControlTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding IsSearching.Value}"
+                                                     Value="True">
+                                            <Setter TargetName="Icon"
+                                                    Property="UIElement.Visibility"
+                                                    Value="Collapsed" />
+                                            <Setter TargetName="Spinner"
+                                                    Property="UIElement.Visibility"
+                                                    Value="Visible" />
+                                        </DataTrigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </Border>
+
+                </Grid>
+
+                <!-- Podcast result info -->
+                <Border Grid.Row="2"
+                        CornerRadius="12"
+                        MaxWidth="500"
+                        MinWidth="370"
+                        Margin="10"
+                        Padding="0 0"
+                        Effect="{StaticResource ShadowEffect}"
+                        Background="#2f2f2f">
+
+                    <!-- Only show on results -->
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Visibility"
+                                    Value="Visible" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ResultsList.Count}"
+                                             Value="0">
+                                    <Setter Property="Visibility"
+                                            Value="Hidden" />
+                                </DataTrigger>
+
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+
+                    <Grid HorizontalAlignment="Stretch">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="3*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Podcast image -->
+                        <Border HorizontalAlignment="left"
+                                VerticalAlignment="Center"
+                                Grid.Column="0"
+                                Height="90"
+                                Margin="10"
+                                Padding="10"
+                                Width="90"
+                                CornerRadius="10">
+                            <Border.Background>
+                                <ImageBrush ImageSource="{Binding PodcastImageUrl.Value}"
+                                            RenderOptions.BitmapScalingMode="HighQuality"
+                                            d:ImageSource="https://hips.hearstapps.com/clv.h-cdn.co/assets/16/18/gettyimages-586890581.jpg?crop=0.668xw:1.00xh;0.219xw,0" />
+                            </Border.Background>
+                        </Border>
+
+                        <!-- Podcast overview -->
+                        <Grid Grid.Column="1"
+                              Margin="0 10">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*" />
+                                <RowDefinition Height="2*" />
+                                <RowDefinition Height="1*" />
+                            </Grid.RowDefinitions>
+
+                            <!-- Title and like button container -->
+                            <Grid Grid.Row="0"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <!-- Title column -->
+                                    <ColumnDefinition Width="7*" />
+                                    <!-- Like column -->
+                                    <ColumnDefinition Width="3*" />
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Title -->
+                                <TextBlock d:Text="Podcast test title"
+                                           Foreground="White"
+                                           FontSize="15"
+                                           Grid.Column="0"
+                                           Text="{Binding PodcastTitle.Value}" />
+
+                                <!-- Like button -->
+                                <Button Grid.Column="1"
+                                        Width="30"
+                                        HorizontalAlignment="Right"
+                                        Margin="0 0 10 0"
+                                        BorderBrush="Transparent"
+                                        Background="Transparent"
+                                        Click="OnPodcastLike_Click">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Image x:Name="img"
+                                                   Source="/PresentationLayer/Views/Assets/heart_fill.png"
+                                                   RenderOptions.BitmapScalingMode="Fant" />
+
+                                            <ControlTemplate.Triggers>
+
+                                                <!-- On hover -->
+                                                <Trigger Property="IsMouseOver"
+                                                         Value="True">
+                                                    <Setter TargetName="img"
+                                                            Property="Opacity"
+                                                            Value="0.7" />
+                                                </Trigger>
+
+                                                <!-- On click -->
+                                                <Trigger Property="IsPressed"
+                                                         Value="True">
+                                                    <Setter TargetName="img"
+                                                            Property="Opacity"
+                                                            Value="0.5" />
+                                                </Trigger>
+
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+
+                            </Grid>
+
+                            <TextBlock d:Text="Test title about podcat"
+                                       Foreground="Gray"
+                                       TextWrapping="WrapWithOverflow"
+                                       TextTrimming="CharacterEllipsis"
+                                       Grid.Row="1"
+                                       FontSize="15"
+                                       Text="{Binding PodcastDescription.Value}" />
+
+                            <StackPanel Grid.Row="2"
+                                        Orientation="Horizontal">
+                                <TextBlock Foreground="White"
+                                           FontWeight="Bold"
+                                           Grid.Row="2"
+                                           FontSize="15"
+                                           Margin="0 0 10 0"
+                                           Text="Genre:">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility"
+                                                    Value="Visible" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding PodcastCategory.Value}"
+                                                             Value="">
+                                                    <Setter Property="Visibility"
+                                                            Value="Hidden" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding PodcastCategory.Value}"
+                                                             Value="{x:Null}">
+                                                    <Setter Property="Visibility"
+                                                            Value="Hidden" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                                <TextBlock Foreground="White"
+                                           Grid.Row="2"
+                                           FontSize="15"
+                                           d:Text="Krim, Humor"
+                                           Text="{Binding PodcastCategory.Value}" />
+
+
+                            </StackPanel>
+                        </Grid>
+
+                    </Grid>
+
+                </Border>
+
+                <!-- Result Container -->
+                <ItemsControl Grid.Row="3"
+                              ItemsSource="{Binding ResultsList,IsAsync=True}"
+                              HorizontalAlignment="Center"
+                              Background="Transparent"
+                              MaxWidth="1100"
+                              Margin="0,0,0,20">
+
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type models:Episode}">
+                            <views:EpisodeView />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
+                </ItemsControl>
+
+
+            </Grid>
+            <!--Save toast notification -->
+            <Border x:Name="SaveToast"
+                    Background="#333"
+                    CornerRadius="8"
+                    Padding="12,6"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Margin="0,20,0,0"
+                    Opacity="0">
+                <TextBlock Text="Sparad!"
+                           Foreground="White"
+                           FontSize="16"
+                           FontWeight="Bold" />
+            </Border>
+
+        </Grid>
+    </ScrollViewer>
+</Page>

@@ -3,9 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36623.8
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pod-app", "pod-app\pod-app.csproj", "{BB517596-56DB-461D-99F6-02AC16EAD10A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{0CED9252-92F0-406A-9EAC-0694FA86C5F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pod_app.DAL", "Pod_app.DAL\Pod_app.DAL.csproj", "{0E006397-7D88-4B9A-8E24-E00968E33F89}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pod_app.BL", "Pod_app.BL\Pod_app.BL.csproj", "{41893C86-B3D4-4E7D-942A-A5EE849E5776}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pod_app.Models", "Pod_app.Models\pod_app.Models.csproj", "{5B5BB670-5527-4AB2-B55D-2BF730E3F078}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pod_app.PresentationLayer", "Pod_app.PresentationLayer\Pod_app.PresentationLayer.csproj", "{4E6866FB-6FE7-4CCE-B9BB-A667D8A7DF60}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +19,26 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BB517596-56DB-461D-99F6-02AC16EAD10A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BB517596-56DB-461D-99F6-02AC16EAD10A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BB517596-56DB-461D-99F6-02AC16EAD10A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BB517596-56DB-461D-99F6-02AC16EAD10A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0CED9252-92F0-406A-9EAC-0694FA86C5F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0CED9252-92F0-406A-9EAC-0694FA86C5F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CED9252-92F0-406A-9EAC-0694FA86C5F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CED9252-92F0-406A-9EAC-0694FA86C5F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E006397-7D88-4B9A-8E24-E00968E33F89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E006397-7D88-4B9A-8E24-E00968E33F89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E006397-7D88-4B9A-8E24-E00968E33F89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E006397-7D88-4B9A-8E24-E00968E33F89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41893C86-B3D4-4E7D-942A-A5EE849E5776}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41893C86-B3D4-4E7D-942A-A5EE849E5776}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41893C86-B3D4-4E7D-942A-A5EE849E5776}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41893C86-B3D4-4E7D-942A-A5EE849E5776}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B5BB670-5527-4AB2-B55D-2BF730E3F078}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B5BB670-5527-4AB2-B55D-2BF730E3F078}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B5BB670-5527-4AB2-B55D-2BF730E3F078}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B5BB670-5527-4AB2-B55D-2BF730E3F078}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E6866FB-6FE7-4CCE-B9BB-A667D8A7DF60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E6866FB-6FE7-4CCE-B9BB-A667D8A7DF60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E6866FB-6FE7-4CCE-B9BB-A667D8A7DF60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E6866FB-6FE7-4CCE-B9BB-A667D8A7DF60}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
