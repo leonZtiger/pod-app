@@ -29,12 +29,17 @@ namespace pod_app.PresentationLayer.Views
             InitializeComponent();
 
             CurrentFeed = feed ?? throw new ArgumentNullException(nameof(feed));
-
-            TitleTextBox.Text = feed.Title;     // Suggests the Title as the podcast name
-            CategoryTextBox.Text = feed.Category;  // Suggests the Genre as the podcast category
+            // Suggests the Title as the podcast name
+            TitleTextBox.Text = feed.Title;
+            // Suggests the Genre as the podcast category
+            CategoryTextBox.Text = feed.Category;
 
         }
-
+        /// <summary>
+        /// Pushes the CurrentFeed to the database. If no database connection, it tries to reconnect.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The args of this event.</param>
         private async void Save_Click(object sender, RoutedEventArgs e)
         {
             // Validates the user input
@@ -46,7 +51,8 @@ namespace pod_app.PresentationLayer.Views
                 return;
             }
 
-            if (MainWindow.podcastManager is null)  // Sends the user to the connectionDialog pop up if theres no connection to MongoDB
+            if (MainWindow.podcastManager is null)
+                // Sends the user to the connectionDialog pop up if theres no connection to MongoDB
                 MainWindow.InitDbManager();
 
             if (MainWindow.podcastManager is null)
@@ -55,17 +61,14 @@ namespace pod_app.PresentationLayer.Views
                 return;
             }
 
-            if (MainWindow.homePage is not null)
-            {
-                MainWindow.homePage.UpdateConnectButtonUI();  // Changes the status for the Connect Button
-            }
-
-             CurrentFeed.Title = TitleTextBox.Text;              // sets the new name for the Podcast and its category
-             CurrentFeed.Category = CategoryTextBox.Text;
+            // sets the new name for the Podcast and its category
+            CurrentFeed.Title = TitleTextBox.Text;
+            CurrentFeed.Category = CategoryTextBox.Text;
 
             try
             {
-                await MainWindow.podcastManager.PushFeedAsync(CurrentFeed); // Pushes the Podcast to the database and then closes the pop up
+                // Pushes the Podcast to the database and then closes the pop up
+                await MainWindow.podcastManager.PushFeedAsync(CurrentFeed);
                 Close();
             }
             catch (Exception)
@@ -74,15 +77,20 @@ namespace pod_app.PresentationLayer.Views
             }
 
         }
+        /// <summary>
+        /// Cancels the dialog and closes.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
-        {            
+        {
             Close();
         }
 
     }
 }
 
-          
+
 
 

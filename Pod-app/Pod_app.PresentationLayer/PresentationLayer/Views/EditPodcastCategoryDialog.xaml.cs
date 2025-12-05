@@ -30,6 +30,11 @@ namespace pod_app.PresentationLayer.Views
             CategoryComboBox.SelectedItem = _podcast.Category;    
         }
 
+        /// <summary>
+        /// Saves the new category if any.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             if (SelectedCategory == null)
@@ -42,6 +47,11 @@ namespace pod_app.PresentationLayer.Views
             Close();
         }
 
+        /// <summary>
+        /// Cancels the dialog & terminates the dialog.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;

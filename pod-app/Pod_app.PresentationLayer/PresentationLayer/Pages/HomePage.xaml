@@ -68,7 +68,7 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
                     Click="ConnectButton_Click"
-                    Content="Anslut"
+                    Content="Ny koppling"
                     Background="#1f1f1f"
                     Foreground="White"
                     Effect="{StaticResource ShadowEffect}"

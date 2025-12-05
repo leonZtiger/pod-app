@@ -18,10 +18,9 @@
                           Opacity="0.4" />
     </UserControl.Effect>
 
-    <!-- Styling -->
     <UserControl.Resources>
 
-        <!-- Buttons -->
+        <!-- Style for buttons -->
         <Style x:Key="IconButtonStyle"
                TargetType="Button">
             <Setter Property="Background"

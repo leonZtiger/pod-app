@@ -55,7 +55,11 @@ namespace pod_app.PresentationLayer.Views
             }
         }
 
-
+        /// <summary>
+        /// Expands the whole usercontrol, to alow all content to be seen.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnOpenLinkClicked(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty((this.DataContext as Episode).URL))

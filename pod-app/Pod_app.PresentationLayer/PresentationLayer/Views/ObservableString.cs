@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace pod_app.PresentationLayer
 {
+    /// <summary>
+    /// Class used to create strings that are update dynamicly in XAML.
+    /// </summary>
     public class ObservableString : INotifyPropertyChanged
     {
         private string? value;
@@ -27,11 +30,15 @@ namespace pod_app.PresentationLayer
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        /// <summary>
+        /// Contructs from initial value.
+        /// </summary>
+        /// <param name="initial"></param>
         public ObservableString(string? initial = null)
         {
             value = initial;
         }
-
+        
         public override string? ToString() => Value;
     }
 }

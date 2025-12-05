@@ -30,21 +30,35 @@ namespace pod_app.PresentationLayer.Views
             InitializeComponent();
         }
 
-
-        private async void OnDeletePodcast_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Triggers this usercontrols DeleteClicked eventhandler.
+        /// </summary>
+        /// <param name="sender">The sender of this event.</param>
+        /// <param name="e">The arguments of this event</param>
+        private  void OnDeletePodcast_Click(object sender, RoutedEventArgs e)
         {
             if (DeleteClicked is not null)
                 DeleteClicked(this, EventArgs.Empty);
 
         }
-        private async void OnEditCategory_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Triggers this usercontrols CategoryClicked eventhandler.
+        /// </summary>
+        /// <param name="sender">The sender of this event.</param>
+        /// <param name="e">The arguments of this event</param>
+        private void OnEditCategory_Click(object sender, RoutedEventArgs e)
         {
             if (CategoryClicked is not null)
                 CategoryClicked(this, EventArgs.Empty);
 
         }
+        /// <summary>
+        /// Triggers this usercontrols EditClicked eventhandler.
+        /// </summary>
+        /// <param name="sender">The sender of this event.</param>
+        /// <param name="e">The arguments of this event</param>
 
-        private async void OnRenamePodcast_Click(object sender, RoutedEventArgs e)
+        private void OnRenamePodcast_Click(object sender, RoutedEventArgs e)
         {
             if (EditClicked is not null)
                 EditClicked(this, EventArgs.Empty);

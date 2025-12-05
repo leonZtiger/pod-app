@@ -29,8 +29,7 @@ namespace pod_app.PresentationLayer.Pages
     /// </summary>
     public partial class HomePage : Page
     {
-        private readonly PodcastManagerAsync _manager;
-        private Frame parentFrame;
+        private readonly MainWindow parent;
         public ObservableString PodcastImageUrl { get; set; }
         public ObservableString PodcastTitle { get; set; }
         public ObservableString PodcastCategory { get; set; }
@@ -43,8 +42,15 @@ namespace pod_app.PresentationLayer.Pages
         private bool isLoadingMore = false;
         public ObservableBool IsSearching { get; set; }
 
-        public HomePage()
+        /// <summary>
+        /// Creates a SavedPage instance with refrence to what database manager to use & its parent frame.
+        /// </summary>
+        /// <param name="parentFrame">The parent frame for navigation.</param>
+        /// <param name="manager">The database manager to use.</param>
+        public HomePage(MainWindow parent)
         {
+            this.parent = parent;
+
             InitializeComponent();
             ResultsList = new();
             PodcastImageUrl = new();
@@ -53,59 +59,35 @@ namespace pod_app.PresentationLayer.Pages
             PodcastDescription = new();
             IsSearching = new(false);
             this.DataContext = this;
-            UpdateConnectButtonUI();
         }
 
-        public HomePage(Frame parentFrame, PodcastManagerAsync manager) : this()
-        {
-            this.parentFrame = parentFrame;
-            _manager = manager;
 
-        }
-
+        /// <summary>
+        /// On go to Saved click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            parentFrame.Navigate(new SavedPage(parentFrame, _manager));
+            parent.GoToSaved();
         }
 
-        // Changes the status of the connect button depending on the status of the MongoDB connection
-        public void UpdateConnectButtonUI()
-        {
-            if (MainWindow.podcastManager is null)
-            {
-                ConnectButton.Content = "Anslut";
-            }
-            else
-            {
-                ConnectButton.Content = "Koppla från";
-            }
-        }
-
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ConnectButton_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.podcastManager is null)
-            {
-
-                MainWindow.InitDbManager();            // Sends the user to the connectionDialog pop up if theres no connection to the database
-            }
-            else
-            {
-
-                MainWindow.podcastManager = null;
-
-
-                Properties.Settings.Default.ConnectionString = string.Empty;    // Removing the connection by Emptying the connectionString
-                Properties.Settings.Default.Save();
-            }
-
-            UpdateConnectButtonUI();  // Updates the status of the button
+            MainWindow.InitDbManager();
         }
 
 
-
-
-
+        /// <summary>
+        /// on Search button pressed, handles a search by given query from SearchBox.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             // Validates the user input
@@ -148,10 +130,12 @@ namespace pod_app.PresentationLayer.Pages
             IsSearching.Value = false;
         }
 
-
-
-
-
+        /// <summary>
+        /// On scroll of page changed. Triggers LoadNextPage if reached end else, returns.
+        /// </summary>
+        /// <see cref="LoadNextPage"/>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ScrollContainer_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             var sv = sender as ScrollViewer;
@@ -172,6 +156,9 @@ namespace pod_app.PresentationLayer.Pages
             }
         }
 
+        /// <summary>
+        /// Adds a batch of result items  to the result container.
+        /// </summary>
         private void LoadNextPage()
         {
             if (currentPodcastFeed is null || currentPodcastFeed.Episodes is null || currentPodcastFeed.Episodes.Count == 0) return;
@@ -185,7 +172,12 @@ namespace pod_app.PresentationLayer.Pages
             }
         }
 
-        // Sends the user to the PodcastDetailsDialog to save the name and category 
+        /// <summary>
+        /// Starts a save dialog and handles the save.
+        /// </summary>
+        /// <see cref="PodcastDetailsDialog"/>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnPodcastLike_Click(object sender, RoutedEventArgs e)
         {
             if (currentPodcastFeed is null)
@@ -194,8 +186,6 @@ namespace pod_app.PresentationLayer.Pages
 
             var dialog = new PodcastDetailsDialog(currentPodcastFeed);
             dialog.ShowDialog();
-
         }
-
     }
 }

@@ -12,19 +12,17 @@ namespace pod_app.PresentationLayer.Pages
 {
     public partial class SavedPage : Page
     {
-        private readonly PodcastManagerAsync _manager;
-        private readonly Frame parentFrame;
+        private readonly MainWindow parent;
 
         public List<Episode> EpisodesList { get; set; } = new();
         private Podcast selectedPodcast;
         private int itemsToShow = 10;
 
-        public SavedPage(Frame parentFrame, PodcastManagerAsync manager)
+        public SavedPage(MainWindow parent)
         {
-            InitializeComponent();
-            this._manager = manager;
-            this.parentFrame = parentFrame;
+            this.parent = parent;
 
+            InitializeComponent();
             this.DataContext = this;
 
             LoadPodFlows();
@@ -34,7 +32,7 @@ namespace pod_app.PresentationLayer.Pages
         {
             try
             {
-                var feeds = await _manager.GetAllFeedsAsync();
+                var feeds = await MainWindow.podcastManager.GetAllFeedsAsync();
                 PodListControl.ItemsSource = feeds;
             }
             catch (Exception ex)
@@ -45,7 +43,7 @@ namespace pod_app.PresentationLayer.Pages
 
         public async Task RefreshSavedFeeds()
         {
-            var feeds = await _manager.GetAllFeedsAsync();
+            var feeds = await MainWindow.podcastManager.GetAllFeedsAsync();
             PodListControl.ItemsSource = feeds;
         }
 
@@ -96,7 +94,7 @@ namespace pod_app.PresentationLayer.Pages
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
-            parentFrame.Navigate(MainWindow.homePage);
+            parent.GoToHome();
         }
 
         private async void FilterItem_Click(object sender, RoutedEventArgs e)
@@ -108,7 +106,7 @@ namespace pod_app.PresentationLayer.Pages
             if (string.IsNullOrWhiteSpace(category))
                 return;
 
-            var allFeeds = await _manager.GetAllFeedsAsync();
+            var allFeeds = await MainWindow.podcastManager.GetAllFeedsAsync();
 
             if (category == "Alla")
             {
@@ -135,7 +133,7 @@ namespace pod_app.PresentationLayer.Pages
             menu.Items.Clear();
 
 
-            var categories = await _manager.GetAllCategoriesAsync();
+            var categories = await MainWindow.podcastManager.GetAllCategoriesAsync();
 
 
             var allItem = new MenuItem { Header = "Alla" };
@@ -158,18 +156,25 @@ namespace pod_app.PresentationLayer.Pages
         private async void CategoryHandler_Click(object sender, RoutedEventArgs e)
         {
 
-            var dlg = new CategoryManagerDialog(_manager)
+            if ((sender as FrameworkElement)?.DataContext is not Podcast pod)
+                return;
+
+            var categories = await MainWindow.podcastManager.GetAllCategoriesAsync();
+
+            var dlg = new EditPodcastCategoryDialog(pod, categories)
             {
                 Owner = Window.GetWindow(this)
             };
 
-            dlg.ShowDialog();
+            bool? result = dlg.ShowDialog();
+
+            if (result == true)
+            {
+                string newCategory = dlg.SelectedCategory;
+                await MainWindow.podcastManager.AddCategoryToPodcastAsync(pod.Id, newCategory);
+            }
 
             await RefreshSavedFeeds();
-
-
-
-
 
         }
 
@@ -179,7 +184,7 @@ namespace pod_app.PresentationLayer.Pages
                 return;
 
             string newName = Microsoft.VisualBasic.Interaction.InputBox(
-              "Nytt namn:", "Byt namn", pod.Title);
+                "Nytt namn:", "Byt namn", pod.Title);
 
             if (string.IsNullOrWhiteSpace(newName))
                 return;
@@ -189,6 +194,7 @@ namespace pod_app.PresentationLayer.Pages
             // Spara i databasen
             await MainWindow.podcastManager?.UpdateFeedAsync(pod);
 
+
             // Ladda om listan så UI uppdateras
             RefreshSavedFeeds();
 
@@ -196,18 +202,25 @@ namespace pod_app.PresentationLayer.Pages
 
         private async void PodcastView_CategoryClicked(object sender, EventArgs e)
         {
-            if ((sender as FrameworkElement)?.DataContext is not Podcast pod) return;
-
-            string newCat = Microsoft.VisualBasic.Interaction.InputBox(
-                "Ny kategori:", "Byt kategori", pod.Category);
-
-            if (string.IsNullOrWhiteSpace(newCat))
+            if ((sender as FrameworkElement)?.DataContext is not Podcast pod)
                 return;
 
-            await MainWindow.podcastManager.AddCategoryToPodcastAsync(pod.Id, newCat);
-            RefreshSavedFeeds();
+            var categories = await MainWindow.podcastManager.GetAllCategoriesAsync();
 
+            var dlg = new EditPodcastCategoryDialog(pod, categories)
+            {
+                Owner = Window.GetWindow(this)
+            };
 
+            bool? result = dlg.ShowDialog();
+
+            if (result == true)
+            {
+                string newCategory = dlg.SelectedCategory;
+                await MainWindow.podcastManager.AddCategoryToPodcastAsync(pod.Id, newCategory);
+                RefreshSavedFeeds();
+
+            }
         }
 
         private async void PodcastView_DeleteClicked(object sender, EventArgs e)
@@ -225,6 +238,12 @@ namespace pod_app.PresentationLayer.Pages
                 return;
 
             await MainWindow.podcastManager?.DeleteFeedAsync(pod);
+
+            RefreshSavedFeeds();
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
             RefreshSavedFeeds();
         }
     }

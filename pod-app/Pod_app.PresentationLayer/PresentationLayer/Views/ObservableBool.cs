@@ -2,6 +2,9 @@
 
 namespace pod_app.PresentationLayer.Pages
 {
+    /// <summary>
+    /// Class used to create booleans that are update dynamicly in XAML.
+    /// </summary>
     public class ObservableBool : INotifyPropertyChanged
     {
 
@@ -22,7 +25,7 @@ namespace pod_app.PresentationLayer.Pages
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
-
+            
         public ObservableBool(bool initial)
         {
             value = initial;

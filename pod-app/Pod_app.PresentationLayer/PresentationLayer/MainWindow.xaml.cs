@@ -9,17 +9,18 @@ namespace pod_app
 {
     public partial class MainWindow : Window
     {
-        public static HomePage? homePage = null;
-        public static SavedPage? savedPage = null;
+        private HomePage? homePage = null;
+        private SavedPage? savedPage = null;
         public static PodcastManagerAsync? podcastManager;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            
-            string con_str = Properties.Settings.Default.ConnectionString;  // Persistent connectionString
+            // Load connection string
+            string con_str = Properties.Settings.Default.ConnectionString; 
 
+            // If on exist, try to connect to database
             if (!string.IsNullOrWhiteSpace(con_str)) 
             {
                 try
@@ -36,26 +37,39 @@ namespace pod_app
                 }
             }
 
-           
+            // Else if failed, prompt user
             if (podcastManager is null)
             {
                 InitDbManager();
             }
 
             
-            homePage = new HomePage(mainFrame, podcastManager!);
-            savedPage = new SavedPage(mainFrame, podcastManager!);
+            homePage = new HomePage(this);
+            savedPage = new SavedPage(this);
 
             this.DataContext = this;
             mainFrame.Navigate(homePage);
         }
 
+        /// <summary>
+        /// Initiates the database manager by prompting the user for a connection-string.
+        /// </summary>
         public static void InitDbManager()
         {
             var dialog = new ConnectionDialog();
             dialog.ShowDialog();
             dialog.Close();
             
+        }
+
+        public void GoToSaved()
+        {
+            mainFrame.Navigate(savedPage);
+        }
+
+        public void GoToHome()
+        {
+            mainFrame.Navigate(homePage);
         }
     }
 }

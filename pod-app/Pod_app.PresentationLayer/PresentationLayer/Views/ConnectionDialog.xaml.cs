@@ -48,6 +48,7 @@ namespace pod_app.PresentationLayer.Views
             try
             {
                 MainWindow.podcastManager = new(new MongoDbRepositoryAsync(Input));
+                // Test to ensure the correct database
                 await MainWindow.podcastManager.GetAllFeedsAsync();
                 // Store new connection string
                 Properties.Settings.Default.ConnectionString = Input;
@@ -84,6 +85,10 @@ namespace pod_app.PresentationLayer.Views
         private void Continue_Click(object sender, RoutedEventArgs e)
         {
             MainWindow.podcastManager = new(new PodcastRepositoryInMemoryAsync());
+            
+            Properties.Settings.Default.ConnectionString = String.Empty;
+            Properties.Settings.Default.Save();
+
             Close();
         }
     }
