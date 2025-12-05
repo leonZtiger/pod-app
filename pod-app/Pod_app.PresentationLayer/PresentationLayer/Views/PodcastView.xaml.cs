@@ -46,17 +46,24 @@ namespace pod_app.PresentationLayer.Views
         }
         private async void OnEditCategory_Click(object sender, RoutedEventArgs e)
         {
-            if ((sender as FrameworkElement)?.DataContext is not Podcast pod) return;
-
-            string newCat = Microsoft.VisualBasic.Interaction.InputBox(
-                "Ny kategori:", "Byt kategori", pod.Category);
-
-            if (string.IsNullOrWhiteSpace(newCat))
+            if ((sender as FrameworkElement)?.DataContext is not Podcast pod)
                 return;
 
-            await MainWindow.podcastManager.AddCategoryToPodcastAsync(pod.Id, newCat);
-            //  RefreshSavedFeeds();
+            var categories = await MainWindow.podcastManager.GetAllCategoriesAsync();
 
+            var dlg = new EditPodcastCategoryDialog(pod, categories)
+            {
+                Owner = Window.GetWindow(this)
+            };
+
+            bool? result = dlg.ShowDialog();
+
+            if (result == true)
+            {
+                string newCategory = dlg.SelectedCategory;
+                await MainWindow.podcastManager.AddCategoryToPodcastAsync(pod.Id, newCategory);
+            }
+        
 
         }
 
